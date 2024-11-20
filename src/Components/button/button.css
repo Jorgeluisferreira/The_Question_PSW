@@ -1,0 +1,27 @@
+.btn{
+    background-color: white;
+    color: white;
+    font-size: 4vw;
+    border: none;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    clip-path: polygon(10% 20%, 100% 0, 100% 100%, 0% 90%);
+    width: 33vw;
+    height: 5vh;
+    transition: transform 0.3s ease;
+    box-shadow: 5px 5px 10px rgba(255, 255, 255, 1), 10px 10px 20px rgba(255, 255, 255, 1);
+}
+
+.btn::before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 32vw;
+    height: 5vh;
+    clip-path: polygon(10% 20%, 100% 0, 100% 100%, 0% 90%);
+    background-color: #D92323;
+    z-index: -1;
+    transform: translate(-0.5vw, -1vh);
+}

@@ -1,0 +1,9 @@
+.initial{
+    padding-top: 7vh;
+    width: 100vw;
+    height: 40vh;
+    border-bottom: .3vh solid black;
+    background-color: #D92323;
+    display: flex;
+    flex-wrap: wrap;
+}
