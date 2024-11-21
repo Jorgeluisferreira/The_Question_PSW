@@ -10,9 +10,9 @@ const Boxes = () => {
                 <p>Caixas Anteriores</p>
             </div>
             <div className='boxes-pannels'>
-                <BoxPannel img={lastbox} nome={"teste"} desc={"Breve descrição"} />
-                <BoxPannel img={lastbox} nome={"teste"} desc={"Breve descrição"} />
-                <BoxPannel img={lastbox} nome={"teste"} desc={"Breve descrição"} />
+                <BoxPannel img={lastbox} nome={"tema"} desc={"Breve descrição"} />
+                <BoxPannel img={lastbox} nome={"tema"} desc={"Breve descrição"} />
+                <BoxPannel img={lastbox} nome={"tema"} desc={"Breve descrição"} />
             </div>
         </div>
     );

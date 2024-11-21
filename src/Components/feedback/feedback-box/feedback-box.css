@@ -1,0 +1,35 @@
+.feedbackBox{
+    min-width: 60vw;
+    max-width: 60vw;
+    height: 35vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-top: 1vh;
+    align-items: flex-start;
+}
+
+.feedbackBox-img{
+    width: 65%;
+    height: 50%;
+    background-color: black;
+    border-radius: 50%;
+
+}
+
+.feedbackBox-img img{
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+}
+
+.feedbackBox h1{
+    color: white;
+    
+}
+
+.feedbackBox p{
+    color: white;
+    max-width: 100%;
+   
+}

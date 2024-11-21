@@ -61,6 +61,6 @@
     justify-content: center;
 }
 
-.pannel:last-child{
+.box:last-child{
     margin-right: 10vw;
 }

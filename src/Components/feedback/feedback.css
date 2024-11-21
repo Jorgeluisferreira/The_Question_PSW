@@ -1,5 +1,36 @@
-.aboutUs{
+.feedbacks{
     width: 100vw;
-    height: 40vh;
-    background-color: #D92323;   
+    height: 50vh;
+    background-color: #000;   
+}
+
+.feedbacks-title{
+    display: flex;
+    justify-content: center;
+    color: white;
+    font-family: "Cinzel Decorative";
+    padding-top: 1.5vh;
+    padding-bottom: .5vh;
+    width: 100vw;
+}
+
+.feedbacks-title p{
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.feedbacks-pannels{
+    margin-top: 2vh;
+    margin-left: 10vw;
+    padding-left: 4vw;
+    padding-bottom: 1.5vh;
+    height: 100vw;
+    display: flex;
+    gap: 5vw;
+    scroll-behavior: smooth;
+    transition: all 0.25s ease-in;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    overflow: auto;
+    scroll-snap-type: x mandatory;
 }
