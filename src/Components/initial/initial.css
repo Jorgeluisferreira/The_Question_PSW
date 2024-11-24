@@ -1,9 +1,53 @@
 .initial{
     padding-top: 7vh;
     width: 100vw;
-    height: 40vh;
+    height: 30vh;
     border-bottom: .3vh solid black;
-    background-color: #D92323;
+    background-image: url(../../images/stars.png);
+    background-size: 70vh;
     display: flex;
     flex-wrap: wrap;
 }
+
+.up{
+    width: 100vw;
+    height: 80%;
+    background-color: rgb(15, 15, 15);
+    border-bottom-left-radius: 20%;
+    border-bottom-right-radius: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20vw;
+   
+}
+
+
+
+.up h2{
+    color: white;
+    font-family: "Cinzel Decorative";
+    text-align: start;
+   
+}
+
+
+.down{
+    width: 100vw;
+    height: 40%;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    
+}
+
+.initial-img{
+    width: 40vw;
+}
+
+.arrow-down{
+    color: white;
+    font-size: 2.5rem
+}
+
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
