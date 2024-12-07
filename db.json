@@ -1,0 +1,97 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "nome": "Admin",
+      "email": "admin@admin.com",
+      "senha": "123",
+      "tipo": "admin"
+    },
+    {
+      "id": "2",
+      "nome": "jorge luis",
+      "email": "jorgejlfa@hotmail.com",
+      "senha": "123",
+      "tipo": "usuario",
+      "assinatura": "media",
+      "endereco": "Não informado"
+    },
+    {
+      "id": "3",
+      "nome": "nome",
+      "email": "email@hotmail.com",
+      "senha": "123",
+      "tipo": "usuario"
+    }
+  ],
+  "planos": [
+    {
+      "id": "1",
+      "nome": "plano Simples",
+      "itens": [
+        "camiseta"
+      ],
+      "image": "/images/box1.png"
+    },
+    {
+      "id": "2",
+      "nome": "plano medio",
+      "itens": [
+        "camiseta",
+        "livro",
+        "2x item aleatorio"
+      ],
+      "image": "/images/box2.png"
+    },
+    {
+      "id": "3",
+      "nome": "plano Foda",
+      "itens": [
+        "camiseta",
+        "livro",
+        "3x item aleatorio",
+        "pelucia"
+      ],
+      "image": "/images/box.png"
+    }
+  ],
+  "caixasPassadas": [
+    {
+      "id": "1",
+      "tema": "persona",
+      "itens": [
+        "camiseta",
+        "livro",
+        "3x item aleatorio",
+        "pelucia"
+      ]
+    },
+    {
+      "id": "2",
+      "tema": "tema 2",
+      "itens": [
+        "camiseta",
+        "livro",
+        "3x item aleatorio",
+        "pelucia"
+      ]
+    },
+    {
+      "id": "3",
+      "tema": "tema 3",
+      "itens": [
+        "camiseta",
+        "livro",
+        "3x item aleatorio",
+        "pelucia"
+      ]
+    }
+  ],
+  "feedbacks": [
+    {
+      "id": "1",
+      "nome": "Jorge",
+      "mensagem": "Ansioso pela proxima caixa"
+    }
+  ]
+}

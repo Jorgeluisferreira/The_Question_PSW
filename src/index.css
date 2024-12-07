@@ -1,0 +1,161 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+.footerRedes{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.footerRedes i {
+  font-size: 1.8rem;
+}
+
+.userPic{
+  height: 4vh;
+}
+
+.navbar-nav{
+  display: flex;
+  align-items: center;
+}
+
+.nav-item{
+  font-size: 1.25rem;
+}
+
+.navbar-brand{
+  font-size: 1.5rem !important;
+}
+
+/* HomePage.css */
+
+.sectionHome {
+  max-height: 50vh; /* Ocupa metade da altura da tela */
+  background-color: black;
+}
+
+.homeLeft{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: start;
+  
+}
+
+.img-fluid{
+  max-height: 30vh;
+}
+
+.titulo{
+  width: 100%;
+  height: auto;
+  
+}
+
+.lead{
+  width: 100%;
+  height: auto;
+}
+
+/* Adiciona scroll horizontal nos dispositivos móveis */
+.scroll-container {
+  display: flex;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* Melhor experiência em iOS */
+  gap: 10px; /* Espaço entre os cards */
+}
+
+.card-item {
+  flex: 0 0 auto;  /* Impede que os itens encolham */
+  width: 18rem; /* Largura fixa dos cards */
+  margin: 10px; /* Espaço entre os cards */
+  box-shadow: black -1vw 1vh;
+  border-radius: 5px;
+}
+
+/* Tamanho fixo para os cards */
+.card{
+  width: 18rem; /* Largura fixa */
+  min-height: 450px; /* Altura fixa */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  
+  
+}
+
+.card-boxes{
+  width: 18rem; /* Largura fixa */
+  min-height: 350px; /* Altura fixa */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  
+}
+
+/* Para os itens dentro do card */
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%; /* Faz o conteúdo ocupar todo o espaço disponível */
+
+}
+
+.card-img-top {
+  width: 100%;  /* A largura da imagem será 100% do tamanho do card */
+  height: 200px;  /* Defina a altura que você deseja para a imagem */
+  object-fit: contain; /* Garante que a imagem não seja cortada */
+  padding:  5px 10px;
+  background-image: url(../public/images/stars.png);
+  background-size: contain;
+}
+
+
+
+/* Remove a borda e o espaçamento entre os itens */
+.card .list-group-item, .card-boxes .list-group-item  {
+  display: flex;
+  border: none; /* Remove a borda */
+  padding: 2px 10px; /* Ajusta o padding para dar um bom espaçamento */
+  justify-content: start;
+  
+}
+
+.card .list-group-item:last-child, .card-boxes .list-group-item:last-child {
+  margin-bottom: 5px;
+}
+
+
+/* Para dispositivos com tela pequena (mobile) */
+@media (max-width: 767px) {
+  .scroll-container {
+    padding: 0 10px; /* Espaçamento nas laterais */
+
+  }
+}
+
+/* Para dispositivos maiores (desktop) */
+@media (min-width: 768px) {
+  .scroll-container {
+    gap: 15px; /* Mais espaçamento entre os cards no desktop */
+    justify-content: center;
+  }
+  .card-item {
+    box-shadow: black -.5vw 1vh;
+  }
+}
