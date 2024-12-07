@@ -92,6 +92,7 @@ const userSlice = createSlice({
       })
       .addCase(editUser.fulfilled, (state, action) => {
         state.currentUser = action.payload; // Atualiza o usuário no estado global
+        localStorage.setItem("currentUser", JSON.stringify(action.payload));
       })
       .addCase(editUser.rejected, (state, action) => {
         state.error = action.payload; // Armazena o erro da edição
