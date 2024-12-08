@@ -1,120 +1,96 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch , useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUser, loginUser, fetchUsers } from "./store/userReducer";
 import { useNavigate } from "react-router-dom";
+import "./RegisterPage.css"; 
 
 function RegisterPage() {
+  const { users, status, error } = useSelector((state) => state.users);
 
-    const { users, status, error } = useSelector((state) => state.users);
+  const [nome, setNome] = useState("");
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [confirmaSenha, setConfirmaSenha] = useState("");
 
-    const [nome, setNome] = useState('');
-    const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');
-    const [confirmaSenha, setConfirmaSenha] = useState('');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchUsers());
+    }
+  }, [status, dispatch]);
 
-    useEffect(() => {
-        if (status === "idle") {
-          dispatch(fetchUsers());
-        }
-      }, [status, dispatch]);
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const newUser = { id: `${Math.max(0, ...users.map((user) => user.id)) + 1}`, nome, email, senha, tipo: "usuario", assinatura: '', endereço: '' };
-        dispatch(addUser(newUser))
-        try{
-            await dispatch(loginUser({ email, senha })).then(() => {
-                navigate("/"); // Redireciona para a página inicial ou página protegida
-              })
-        }catch (error) {
-            alert(error.message); // Se houver erro no login, mostra uma mensagem de erro
-          }
-       
-      };
-
-      
-    
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newUser = {
+      id: `${Math.max(0, ...users.map((user) => user.id)) + 1}`,
+      nome,
+      email,
+      senha,
+      tipo: "usuario",
+      assinatura: "",
+      endereço: "",
+    };
+    dispatch(addUser(newUser));
+    try {
+      await dispatch(loginUser({ email, senha })).then(() => {
+        navigate("/"); // Redireciona para a página inicial ou página protegida
+      });
+    } catch (error) {
+      alert(error.message); // Se houver erro no login, mostra uma mensagem de erro
+    }
+  };
 
   return (
-    <div className="d-flex align-items-center justify-content-center vh-100 bg-light">
-      <div className="container p-4 shadow-lg rounded bg-white" style={{ maxWidth: "500px" }}>
-        <h2 className="text-center mb-4">Cadastro</h2>     
+    <div className="register-page">
+      <div className="register-card">
+        <h2>Registrar</h2>
         <form onSubmit={handleSubmit}>
-          {/* Campo de Nome */}
-          <div className="mb-3">
-            <label htmlFor="name" className="form-label">
-              Nome Completo
-            </label>
+          <div className="input-group">
+            <label htmlFor="nome">Usuário</label>
             <input
               type="text"
-              className="form-control"
               id="nome"
-              placeholder="Digite seu nome completo"
               value={nome}
-              onChange={e => setNome(e.target.value)}
+              onChange={(e) => setNome(e.target.value)}
+              placeholder="Usuário"
             />
           </div>
-
-          {/* Campo de E-mail */}
-          <div className="mb-3">
-            <label htmlFor="email" className="form-label">
-              E-mail
-            </label>
+          <div className="input-group">
+            <label htmlFor="email">Email</label>
             <input
               type="email"
-              className="form-control"
               id="email"
-              placeholder="Digite seu e-mail"
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
             />
           </div>
-
-          {/* Campo de Senha */}
-          <div className="mb-3">
-            <label htmlFor="password" className="form-label">
-              Senha
-            </label>
+          <div className="input-group">
+            <label htmlFor="senha">Senha</label>
             <input
               type="password"
-              className="form-control"
-              id="password"
-              placeholder="Digite sua senha"
+              id="senha"
               value={senha}
-              onChange={e => setSenha(e.target.value)}
+              onChange={(e) => setSenha(e.target.value)}
+              placeholder="Senha"
             />
           </div>
-
-          {/* Campo de Confirmação de Senha */}
-          <div className="mb-3">
-            <label htmlFor="confirmPassword" className="form-label">
-              Confirmar Senha
-            </label>
+          <div className="input-group">
+            <label htmlFor="confirmaSenha">Confirmar Senha</label>
             <input
               type="password"
-              className="form-control"
-              id="confirmPassword"
-              placeholder="Confirme sua senha"
+              id="confirmaSenha"
               value={confirmaSenha}
-              onChange={e => setConfirmaSenha(e.target.value)}
+              onChange={(e) => setConfirmaSenha(e.target.value)}
+              placeholder="Confirmar Senha"
             />
           </div>
-
-          {/* Botão de Cadastro */}
-          <button type="submit" className="btn btn-primary w-100"  >
-            cadastrar
+          <button type="submit" className="register-btn">
+            Entrar
           </button>
-          
         </form>
-
-        {/* Link para Login */}
-        <div className="text-center mt-3">
-          <p>Já possui uma conta? <a href="/loginpage">Faça login</a></p>
-        </div>
       </div>
     </div>
   );

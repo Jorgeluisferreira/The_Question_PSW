@@ -37,6 +37,15 @@
       "tipo": "usuario",
       "assinatura": "",
       "endereco": "Não informado"
+    },
+    {
+      "id": "5",
+      "nome": "vitoria",
+      "email": "email@gmail.com",
+      "senha": "123",
+      "tipo": "usuario",
+      "assinatura": "",
+      "endereço": ""
     }
   ],
   "planos": [
