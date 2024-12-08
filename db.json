@@ -9,12 +9,16 @@
     },
     {
       "id": "2",
-      "nome": "jorge luis",
+      "nome": "jorge",
+      "cpf": "4534",
       "email": "jorgejlfa@hotmail.com",
       "senha": "123",
       "tipo": "usuario",
-      "assinatura": "",
-      "endereco": "Não informado"
+      "assinatura": "plano Simples",
+      "endereco": "teste",
+      "numeroCartao": "123",
+      "validadeCartao": "123",
+      "cvv": "123"
     },
     {
       "id": "3",
