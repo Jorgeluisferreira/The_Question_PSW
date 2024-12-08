@@ -1,43 +1,62 @@
-import React, { useState } from "react";
-import { useDispatch} from "react-redux";
-import { editUser } from "../store/userReducer";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector} from "react-redux";
+import { editUser, loginUser } from "../store/userReducer";
 
-function UserInfo(props) {
+function UserInfo() {
 
+  const currentUser = useSelector((state) => state.users.currentUser);
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false); // Estado de edição
   const [userData, setUserData] = useState({
-    id: props.id,
-    nome: props.nome,
-    email: props.email,
-    senha: props.senha,
-    tipo: props.tipo,
-    assinatura: props.assinatura || "Não possui assinatura",
-    endereco: props.endereco || "Não informado",
+    id: currentUser.id,
+    nome: currentUser.nome,
+    email: currentUser.email,
+    senha: currentUser.senha,
+    tipo: currentUser.tipo,
+    assinatura: currentUser.assinatura || "Não possui assinatura",
+    endereco: currentUser.endereco || "Não informado",
   });
+
+   // Atualiza o estado local se o currentUser for alterado
+   useEffect(() => {
+    if (currentUser) {
+      setUserData({
+        id: currentUser.id,
+        nome: currentUser.nome,
+        email: currentUser.email,
+        senha: currentUser.senha,
+        tipo: currentUser.tipo,
+        assinatura: currentUser.assinatura || "Não possui assinatura",
+        endereco: currentUser.endereco || "Não informado",
+      });
+    }
+  }, [currentUser]);
 
   console.log(userData)
 
-  const handleEditClick = () => {
+  const handleEditClick = (e) => {
+    e.preventDefault();
     setIsEditing(!isEditing); // Alterna entre modo de edição e visualização
-  };
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUserData({ ...userData, [name]: value }); // Atualiza o valor do campo
+    setUserData({ ...userData, [name]: value })// Atualiza o valor do campo
+  
   };
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(editUser(userData)); // Envia os dados atualizados para o Redux
-    console.log("dados enviados")
-    console.log(userData)
+    setIsEditing(false);
+
   };
 
   return (
     <div>
       <h3>Informações do Usuário</h3>
-      <form onSubmit={handleSubmit}>
+      <form>
         <div className="mb-3">
           <label htmlFor="nome" className="form-label">
             Nome do Usuário:
@@ -69,21 +88,6 @@ function UserInfo(props) {
         </div>
 
         <div className="mb-3">
-          <label htmlFor="assinatura" className="form-label">
-            Assinatura:
-          </label>
-          <input
-            type="text"
-            id="assinatura"
-            name="assinatura"
-            className="form-control"
-            value={userData.assinatura}
-            onChange={handleChange}
-            disabled={!isEditing}
-          />
-        </div>
-
-        <div className="mb-3">
           <label htmlFor="endereco" className="form-label">
             Endereço:
           </label>
@@ -98,14 +102,8 @@ function UserInfo(props) {
           />
         </div>
 
-        {isEditing ? <button></button> : <button></button>}
-        <button
-          type={isEditing ? "submit" : "button"}
-          className="btn btn-primary"
-          onClick={handleEditClick}
-        >
-          {isEditing ? "Salvar" : "Editar"} {/* Alterna o texto do botão */}
-        </button>
+        {isEditing ? <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Salvar</button> : <button type="button" className="btn btn-primary" onClick={handleEditClick}>Editar</button>}
+
       </form>
     </div>
   );

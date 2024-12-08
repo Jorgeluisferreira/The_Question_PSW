@@ -23,7 +23,7 @@ function RegisterPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const newUser = { id: Math.max(0, ...users.map((user) => user.id)) + 1, nome, email, senha, tipo: "usuario", assinatura: '', endereço: '' };
+        const newUser = { id: `${Math.max(0, ...users.map((user) => user.id)) + 1}`, nome, email, senha, tipo: "usuario", assinatura: '', endereço: '' };
         dispatch(addUser(newUser))
         try{
             await dispatch(loginUser({ email, senha })).then(() => {

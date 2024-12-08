@@ -6,6 +6,7 @@ import { logout } from "./store/userReducer";
 import { useNavigate } from "react-router-dom";
 import { Navbar, Nav, Dropdown, Button } from "react-bootstrap";
 import UserInfo from "./component/userInfo";
+import AssinaturaUser from "./component/assinaturaUser";
 
 
 
@@ -171,13 +172,10 @@ function UserPage() {
                
                 <div className="col-md-9 p-4">
                 {selectedOption === "usuario" && (
-                    <UserInfo id={currentUser.id} nome={currentUser.nome} email={currentUser.email} senha={currentUser.senha} tipo={currentUser.tipo} assinatura={currentUser.assinatura} endereco={currentUser.endereco} />
+                    <UserInfo />
                 )}
                 {selectedOption === "assinatura" && (
-                    <div>
-                    <h3>Informações da Assinatura</h3>
-                    <p>Conteúdo relacionado à Opção 2.</p>
-                    </div>
+                    <AssinaturaUser />
                 )}
                 
                 </div>

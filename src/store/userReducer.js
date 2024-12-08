@@ -83,6 +83,7 @@ const userSlice = createSlice({
       })
       .addCase(addUser.fulfilled, (state, action) => {
         state.users.push(action.payload);
+        localStorage.setItem("currentUser", JSON.stringify(action.payload));
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.currentUser = action.payload; // Define o usuário logado
@@ -92,6 +93,7 @@ const userSlice = createSlice({
       })
       .addCase(editUser.fulfilled, (state, action) => {
         state.currentUser = action.payload; // Atualiza o usuário no estado global
+        localStorage.setItem("currentUser", JSON.stringify(action.payload));
       })
       .addCase(editUser.rejected, (state, action) => {
         state.error = action.payload; // Armazena o erro da edição
