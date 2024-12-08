@@ -17,7 +17,6 @@ import { useState } from "react";
 
 function HomePage() {
 
-    
     const [showMenu, setShowMenu] = useState(false);
 
     const toggleMenu = () => {
@@ -251,7 +250,7 @@ function HomePage() {
                     ) : (
                         <div className="scroll-container">
                             {plans.map((plano, index) => (
-                                <PlanCard planoUser={currentUser.assinatura}id={plano.id} nome={plano.nome} image={`http://localhost:3001${plano.image}`} itens={plano.itens} />
+                                <PlanCard planoUser={currentUser ? currentUser.assinatura : ""}id={plano.id} nome={plano.nome} image={`http://localhost:3001${plano.image}`} itens={plano.itens} />
                             ))}
                         </div>
                     )}

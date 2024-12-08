@@ -81,9 +81,10 @@ function AssinarPlano() {
     return (
         
       <div>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"></link>
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-            <button onClick={handleBack} className="btn btn-link">
-             Voltar
+            <button onClick={handleBack} className="btn btn-link voltar">
+            <i class="bi bi-arrow-left"></i> Voltar
             </button>
        </nav>
 

@@ -12,6 +12,13 @@ code {
     monospace;
 }
 
+
+.voltar{
+  text-decoration: none !important;
+  color: white !important;
+  font-size: 1.2rem; 
+}
+
 .form-group{
   padding-bottom: 10px;
 }
