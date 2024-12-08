@@ -10,11 +10,15 @@ function UserInfo() {
   const [userData, setUserData] = useState({
     id: currentUser.id,
     nome: currentUser.nome,
+    cpf: currentUser.cpf,
     email: currentUser.email,
     senha: currentUser.senha,
     tipo: currentUser.tipo,
-    assinatura: currentUser.assinatura || "Não possui assinatura",
-    endereco: currentUser.endereco || "Não informado",
+    assinatura: currentUser.assinatura,
+    endereco: currentUser.endereco,
+    numeroCartao: currentUser.numeroCartao,
+    validadeCartao: currentUser.validadeCartao,
+    cvv: currentUser.cvv
   });
 
    // Atualiza o estado local se o currentUser for alterado
@@ -23,11 +27,15 @@ function UserInfo() {
       setUserData({
         id: currentUser.id,
         nome: currentUser.nome,
+        cpf: currentUser.cpf,
         email: currentUser.email,
         senha: currentUser.senha,
         tipo: currentUser.tipo,
-        assinatura: currentUser.assinatura || "Não possui assinatura",
-        endereco: currentUser.endereco || "Não informado",
+        assinatura: currentUser.assinatura,
+        endereco: currentUser.endereco,
+        numeroCartao: currentUser.numeroCartao,
+        validadeCartao: currentUser.validadeCartao,
+        cvv: currentUser.cvv
       });
     }
   }, [currentUser]);

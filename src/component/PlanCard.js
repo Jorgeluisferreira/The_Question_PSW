@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 function PlanCard(props) {
+    const navigate = useNavigate();
+  
     return(
         <div key={props.id} className="card-item">
             <div className="card" style={{ width: "18rem" }}>
@@ -10,7 +14,7 @@ function PlanCard(props) {
                             <li key={idx} className="list-group-item">{item}</li>
                         ))}
                     </ul>
-                    <a className="btn btn-primary">Ver mais</a>
+                    <a className="btn btn-primary" onClick={() => props.planoUser ? alert("Usuario já possui Assinatura") : navigate(`/planos`)}>Assinar</a>
                 </div>
             </div>
         </div>
