@@ -260,7 +260,7 @@ function HomePage() {
         {/* Seção de Planos com Carrossel */}
       <section className="py-5 bg-light text-center">
                 <div className="container">
-                    <h2>Nossos Planos</h2>
+                    <h2>Feedbacks</h2>
                     {feedbacks.length === 0 ? (
                         <p>Nenhum plano encontrado.</p>
                     ) : (
