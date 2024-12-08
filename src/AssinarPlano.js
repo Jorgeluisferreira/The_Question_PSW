@@ -87,104 +87,110 @@ function AssinarPlano() {
             </button>
        </nav>
 
-       <form onSubmit={handleSubmit}>
-            <div className="form-group">
+       <div className="container d-flex justify-content-center align-items-center" style={{ height: "90vh" }}>
+      <div className="card p-4 w-100" style={{ maxWidth: "600px" }}>
+        <h3 className="text-center mb-4">Assine o Plano</h3>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
             <label htmlFor="planSelect">Selecione o Plano:</label>
             <select
-                id="planSelect"
-                className="form-control"
-                value={userData.assinatura}
-                onChange={(e) => setUserData({ ...userData, assinatura: e.target.value })}
-                required
+              id="planSelect"
+              className="form-control"
+              value={userData.assinatura}
+              onChange={(e) => setUserData({ ...userData, assinatura: e.target.value })}
+              required
             >
-                <option value="" disabled>
+              <option value="" disabled>
                 Selecione um plano
-                </option>
-                {plans.map((plan) => (
+              </option>
+              {plans.map((plan) => (
                 <option key={plan.id} value={plan.nome}>
-                    {plan.nome} - {plan.itens}
+                  {plan.nome} - {plan.itens}
                 </option>
-                ))}
+              ))}
             </select>
-            </div>
+          </div>
 
-            <div className="form-group">
-            <label htmlFor="nome">Nome:</label>
-            <input
+          <div className="form-group">
+                <label htmlFor="nome">Nome:</label>
+                <input
                 type="text"
                 className="form-control"
                 id="nome"
                 value={userData.nome}
                 onChange={(e) => setUserData({ ...userData, nome: e.target.value })}
                 required
-            />
+                />
             </div>
 
             <div className="form-group">
-            <label htmlFor="cpf">CPF:</label>
-            <input
+                <label htmlFor="cpf">CPF:</label>
+                <input
                 type="text"
                 className="form-control"
                 id="cpf"
                 value={userData.cpf}
                 onChange={(e) => setUserData({ ...userData, cpf: e.target.value })}
                 required
-            />
+                />
             </div>
 
             <div className="form-group">
-            <label htmlFor="endereco">Endereço:</label>
-            <input
+                <label htmlFor="endereco">Endereço:</label>
+                <input
                 type="text"
                 className="form-control"
                 id="endereco"
                 value={userData.endereco}
                 onChange={(e) => setUserData({ ...userData, endereco: e.target.value })}
                 required
-            />
+                />
             </div>
 
             <h5>Informações de Pagamento</h5>
+
             <div className="form-group">
-            <label htmlFor="numeroCartao">Número do Cartão:</label>
-            <input
+                <label htmlFor="numeroCartao">Número do Cartão:</label>
+                <input
                 type="text"
                 className="form-control"
                 id="numeroCartao"
                 value={userData.numeroCartao}
                 onChange={(e) => setUserData({ ...userData, numeroCartao: e.target.value })}
                 required
-            />
+                />
             </div>
 
             <div className="form-group">
-            <label htmlFor="validadeCartao">Validade do Cartão:</label>
-            <input
+                <label htmlFor="validadeCartao">Validade do Cartão:</label>
+                <input
                 type="text"
                 className="form-control"
                 id="validadeCartao"
                 value={userData.validadeCartao}
                 onChange={(e) => setUserData({ ...userData, validadeCartao: e.target.value })}
                 required
-            />
+                />
             </div>
 
             <div className="form-group">
-            <label htmlFor="cvv">CVV:</label>
-            <input
+                <label htmlFor="cvv">CVV:</label>
+                <input
                 type="text"
                 className="form-control"
                 id="cvv"
                 value={userData.cvv}
                 onChange={(e) => setUserData({ ...userData, cvv: e.target.value })}
                 required
-            />
+                />
             </div>
 
-            <button type="submit" className="btn btn-primary">
-            Confirmar Assinatura
+            <button type="submit" className="btn btn-primary w-100">
+                Confirmar Assinatura
             </button>
-        </form>
+            </form>
+        </div>
+        </div>
       </div>
     );
   }

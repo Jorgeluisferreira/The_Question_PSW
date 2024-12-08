@@ -12,6 +12,9 @@ code {
     monospace;
 }
 
+.form-group{
+  padding-bottom: 10px;
+}
 
 .footerRedes{
   width: 100%;
