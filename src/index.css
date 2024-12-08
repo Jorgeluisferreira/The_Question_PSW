@@ -48,7 +48,10 @@ code {
 }
 
 .navbar-brand{
-  font-size: 1.5rem !important;
+  font-size: 1.8rem !important;
+  font-family: "Gentium Book Plus", serif !important;
+  font-weight: bold !important;
+  font-style: normal !important;
 }
 
 .card-feedback{
@@ -95,6 +98,8 @@ code {
 .titulo{
   width: 100%;
   height: auto;
+
+  
   
 }
 
@@ -191,3 +196,6 @@ code {
     box-shadow: black -.5vw 1vh;
   }
 }
+
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Gentium+Book+Plus:ital,wght@0,400;0,700;1,400;1,700&display=swap');

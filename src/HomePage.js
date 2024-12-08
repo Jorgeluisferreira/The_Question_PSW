@@ -14,6 +14,7 @@ import BoxCard from "./component/BoxCard";
 import { fetchFeedbacks } from "./store/feedbackReducer";
 import FeedbackCard from "./component/FeedbackCard";
 import { useState } from "react";
+import { current } from "@reduxjs/toolkit";
 
 function HomePage() {
 
@@ -96,7 +97,7 @@ function HomePage() {
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div className="container">
           <a className="navbar-brand" href="#home">
-            The question
+            THE QUESTION
           </a>
           <button
             className="navbar-toggler"
@@ -161,22 +162,17 @@ function HomePage() {
                     style={{ top: "100%", right: 0 }}
                     >
                     <li>
+                        <a className="dropdown-item" href="/user">
+                        Meu Perfil
+                        </a>
+                    </li>
+                    <li>
                         <button
                         className="dropdown-item"
                         onClick={handleLogout}
                         >
                         Logout
                         </button>
-                    </li>
-                    <li>
-                        <a className="dropdown-item" href="/user">
-                        Meu Perfil
-                        </a>
-                    </li>
-                    <li>
-                        <a className="dropdown-item" href="/configuracoes">
-                        Configurações
-                        </a>
                     </li>
                     </ul>
                 )}
@@ -250,7 +246,7 @@ function HomePage() {
                     ) : (
                         <div className="scroll-container">
                             {plans.map((plano, index) => (
-                                <PlanCard planoUser={currentUser ? currentUser.assinatura : ""}id={plano.id} nome={plano.nome} image={`http://localhost:3001${plano.image}`} itens={plano.itens} />
+                                <PlanCard planoUser={currentUser ? currentUser.id : ""} id={plano.id} nome={plano.nome} image={`http://localhost:3001${plano.image}`} itens={plano.itens} />
                             ))}
                         </div>
                     )}

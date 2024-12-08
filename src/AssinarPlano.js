@@ -11,47 +11,62 @@ function AssinarPlano() {
     const { plans, PlanStatus, error } = useSelector((state) => state.plans);
     const currentUser = useSelector((state) => state.users.currentUser);
 
+    // Verifique se o usuário está logado, se não, redirecione para a página de login
+    
 
     const [userData, setUserData] = useState({
-        id: currentUser.id,
-        nome: currentUser.nome,
-        cpf: currentUser.cpf,
-        email: currentUser.email,
-        senha: currentUser.senha,
-        tipo: currentUser.tipo,
-        assinatura: currentUser.assinatura,
-        endereco: currentUser.endereco,
-        numeroCartao: currentUser.numeroCartao,
-        validadeCartao: currentUser.validadeCartao,
-        cvv: currentUser.cvv
+        id: currentUser  ? currentUser.id : "",
+        nome: currentUser ? currentUser.nome : "",
+        cpf: currentUser ? currentUser.cpf : "",
+        email: currentUser ? currentUser.email : "",
+        senha: currentUser ? currentUser.senha : "", 
+        tipo: currentUser ? currentUser.tipo : "",
+        assinatura: currentUser ? currentUser.assinatura : "",
+        endereco: currentUser ? currentUser.endereco : "",
+        numeroCartao: currentUser ? currentUser.numeroCartao : "",
+        validadeCartao: currentUser ? currentUser.validadeCartao : "",
+        cvv: currentUser ? currentUser.cvv : ""
       });
 
-
-    // Atualiza o estado local se o currentUser for alterado
-   useEffect(() => {
+  useEffect(() => {
     if (currentUser) {
       setUserData({
-        id: currentUser.id,
-        nome: currentUser.nome,
-        cpf: currentUser.cpf,
-        email: currentUser.email,
-        senha: currentUser.senha,
-        tipo: currentUser.tipo,
-        assinatura: currentUser.assinatura,
-        endereco: currentUser.endereco,
-        numeroCartao: currentUser.numeroCartao,
-        validadeCartao: currentUser.validadeCartao,
-        cvv: currentUser.cvv
-      });
+        id: currentUser  ? currentUser.id : "",
+        nome: currentUser ? currentUser.nome : "",
+        cpf: currentUser ? currentUser.cpf : "",
+        email: currentUser ? currentUser.email : "",
+        senha: currentUser ? currentUser.senha : "", 
+        tipo: currentUser ? currentUser.tipo : "",
+        assinatura: currentUser ? currentUser.assinatura : "",
+        endereco: currentUser ? currentUser.endereco : "",
+        numeroCartao: currentUser ? currentUser.numeroCartao : "",
+        validadeCartao: currentUser ? currentUser.validadeCartao : "",
+        cvv: currentUser ? currentUser.cvv : ""
+      })
     }
-  }, [currentUser]);
-  
+  },[currentUser, navigate]);
+
+  useEffect(() => {
+    if (!currentUser) {
+      navigate('/loginpage');  // Redireciona para a página de login
+    }
+  }, [currentUser, navigate]);
+
+ 
+
+    
     // Carregar planos
     useEffect(() => {
       if (PlanStatus === "idle") {
         dispatch(fetchPlans());
       }
     }, [PlanStatus, dispatch]);
+
+    
+      // Verifique se os dados do usuário estão disponíveis antes de renderizar
+      if (!currentUser) {
+        return null;  // Retorna null enquanto redireciona, ou você pode exibir um carregando
+      }
   
     if (PlanStatus === "loading") {
       return <div>Carregando...</div>;
@@ -64,7 +79,7 @@ function AssinarPlano() {
     if (!plans || plans.length === 0) {
       return <div>Nenhum plano encontrado.</div>;
     }
-  
+
   
     // Função para lidar com o envio do formulário
     const handleSubmit = (e) => {

@@ -21,6 +21,18 @@ function UserPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    //verifica se tem usuario logado
+    useEffect(() => {
+        if (!currentUser) {
+          navigate('/loginpage');  // Redireciona para a página de login
+        }
+      }, [currentUser, navigate]);
+    
+      // Verifique se os dados do usuário estão disponíveis antes de renderizar
+      if (!currentUser) {
+        return null;  // Retorna null enquanto redireciona, ou você pode exibir um carregando
+      }
+
     const toggleMenu = () => {
         setShowMenu((prev) => !prev); // Alterna entre abrir e fechar o menu
     };
@@ -41,7 +53,7 @@ function UserPage() {
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
                 <div className="container">
                 <a className="navbar-brand" href="/">
-                    The question
+                    THE QUESTION
                 </a>
                 <button
                     className="navbar-toggler"
@@ -82,22 +94,17 @@ function UserPage() {
                             style={{ top: "100%", right: 0 }}
                             >
                             <li>
+                                <a className="dropdown-item" href="/user">
+                                Meu Perfil
+                                </a>
+                            </li>
+                            <li>
                                 <button
                                 className="dropdown-item"
                                 onClick={handleLogout}
                                 >
                                 Logout
                                 </button>
-                            </li>
-                            <li>
-                                <a className="dropdown-item" href="/user">
-                                Meu Perfil
-                                </a>
-                            </li>
-                            <li>
-                                <a className="dropdown-item" href="/configuracoes">
-                                Configurações
-                                </a>
                             </li>
                             </ul>
                         )}
