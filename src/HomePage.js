@@ -35,7 +35,6 @@ function HomePage() {
    const { boxes, boxStatus, boxError } = useSelector((state) => state.boxes);
     //buscar feedbacks do redux store
    const { feedbacks, feedbackStatus, feedbackError } = useSelector((state) => state.feedbacks);
-    
 
     // Quando a página for carregada, dispara a ação para buscar os planos
     useEffect(() => {

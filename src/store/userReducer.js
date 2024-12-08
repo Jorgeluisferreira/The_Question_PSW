@@ -83,6 +83,7 @@ const userSlice = createSlice({
       })
       .addCase(addUser.fulfilled, (state, action) => {
         state.users.push(action.payload);
+        localStorage.setItem("currentUser", JSON.stringify(action.payload));
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.currentUser = action.payload; // Define o usuário logado

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector} from "react-redux";
 import { editUser, loginUser } from "../store/userReducer";
-import { useNavigate } from "react-router-dom";
 
 function UserInfo() {
 
@@ -50,17 +49,8 @@ function UserInfo() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(editUser(userData)); // Envia os dados atualizados para o Redux
-    try{
-      let email = userData.email
-      let senha = userData.senha
-      console.log("dados enviados")
-      console.log(userData)
-      dispatch(loginUser({email, senha }))
-      setIsEditing(false);
-      
-    }catch (error) {
-        alert(error.message); // Se houver erro no login, mostra uma mensagem de erro
-      }
+    setIsEditing(false);
+
   };
 
   return (
