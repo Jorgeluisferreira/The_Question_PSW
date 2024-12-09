@@ -52,7 +52,7 @@ function LoginPage() {
               onChange={(e) => setSenha(e.target.value)}
             />
           </div>
-          <button type="submit" className="login-button">
+          <button type="submit" className="button">
             ENTRAR
           </button>
         </form>

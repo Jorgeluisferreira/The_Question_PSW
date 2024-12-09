@@ -4,11 +4,12 @@ import './index.css';
 import loginPic from './images/UserProfile.png';
 import { logout } from "./store/userReducer";
 import { useNavigate } from "react-router-dom";
-import { Navbar, Dropdown, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import UserInfo from "./component/userInfo";
 import AssinaturaUser from "./component/assinaturaUser";
 import AdminConfig from "./AdminConfig"; // Componente da página de configurações do administrador
-import FeedbackScreen from "./feedbackScreen";
+import Navbar from "./component/Navbar";
+
 
 function UserPage() {
     // Informações do usuário logado
@@ -48,83 +49,7 @@ function UserPage() {
     return (
         <div>
             {/* Navbar Sticky */}
-            <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-                <div className="container">
-                    <a className="navbar-brand" href="/">
-                        THE QUESTION
-                    </a>
-                    <button
-                        className="navbar-toggler"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#navbarNav"
-                        aria-controls="navbarNav"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation"
-                    >
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-
-                    <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav ms-auto">
-                            <li className="nav-item">
-                                {currentUser ? (
-                                    <div className="position-relative">
-                                        {/* Botão para abrir/fechar o menu */}
-                                        <button
-                                            className="nav-link btn btn-link"
-                                            onClick={toggleMenu}
-                                            style={{ display: "flex", alignItems: "center" }}
-                                        >
-                                            <img
-                                                className="userPic"
-                                                src={loginPic}
-                                                alt="User"
-                                            />
-                                            <span style={{ marginLeft: "10px" }}>{currentUser.nome}</span>
-                                        </button>
-
-                                        {/* Menu dropdown exibido abaixo */}
-                                        {showMenu && (
-                                            <ul
-                                                className="dropdown-menu show position-absolute"
-                                                style={{ top: "100%", right: 0 }}
-                                            >
-                                                <li>
-                                                    <a className="dropdown-item" href="/user">
-                                                        Meu Perfil
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a className="dropdown-item" href="/feedback">
-                                                        Feedback
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <button
-                                                        className="dropdown-item"
-                                                        onClick={handleLogout}
-                                                    >
-                                                        Logout
-                                                    </button>
-                                                </li>
-                                            </ul>
-                                        )}
-                                    </div>
-                                ) : (
-                                    <a className="nav-link" href="/loginpage">
-                                        <img
-                                            className="userPic"
-                                            src={loginPic}
-                                            alt="Login"
-                                        />
-                                    </a>
-                                )}
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+            <Navbar nome={currentUser ? currentUser.nome : ''} />
 
             <div className="container-fluid">
                 <div className="row vh-100">

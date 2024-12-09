@@ -8,21 +8,15 @@ import PlanCard from "./component/PlanCard";
 import homeImage from './images/box.png'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import loginPic from './images/UserProfile.png'
 import { fetchBoxes } from "./store/boxesReducer";
 import BoxCard from "./component/BoxCard";
 import { fetchFeedbacks } from "./store/feedbackReducer";
 import FeedbackCard from "./component/FeedbackCard";
 import { useState } from "react";
-import { current } from "@reduxjs/toolkit";
+import Navbar from "./component/Navbar";
 
 function HomePage() {
 
-    const [showMenu, setShowMenu] = useState(false);
-
-    const toggleMenu = () => {
-        setShowMenu((prev) => !prev); // Alterna entre abrir e fechar o menu
-    };
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -83,114 +77,13 @@ function HomePage() {
     return <p>Erro ao carregar planos: {feedbackError}</p>;
     }
       
-    
-    const handleLogout = () => {
-        dispatch(logout()); // Dispara a ação de logout
-        navigate("/"); // Redireciona para a página de login
-      };
 
 
     return (
     <div>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"></link>
       {/* Navbar Sticky */}
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-        <div className="container">
-          <a className="navbar-brand" href="#home">
-            THE QUESTION
-          </a>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav ms-auto">
-              <li className="nav-item">
-                <a className="nav-link" href="#home">
-                  Início
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#sobre">
-                  Sobre
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#caixas">
-                  Caxias Anteriores
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#planos">
-                  Planos
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#contato">
-                  Contato
-                </a>
-              </li>
-              <li className="nav-item">
-              {currentUser ? (
-                <div className="position-relative" >
-                {/* Botão para abrir/fechar o menu */}
-                <button
-                    className="nav-link btn btn-link"
-                    onClick={toggleMenu}
-                    style={{ display: "flex", alignItems: "center" }}
-                >
-                    <img
-                    className="userPic"
-                    src={loginPic}
-                    alt="User"
-                
-                    />
-                    <span style={{ marginLeft: "10px" }}>{currentUser.nome}</span>
-                </button>
-
-                {/* Menu dropdown exibido abaixo */}
-                {showMenu && (
-                    <ul
-                    className="dropdown-menu show position-absolute"
-                    style={{ top: "100%", right: 0 }}
-                    >
-                    <li>
-                        <a className="dropdown-item" href="/user">
-                        Meu Perfil
-                        </a>
-                    </li>
-                    <li>
-                        <button
-                        className="dropdown-item"
-                        onClick={handleLogout}
-                        >
-                        Logout
-                        </button>
-                    </li>
-                    </ul>
-                )}
-                </div>
-            ) : (
-                <a className="nav-link" href="/loginpage">
-                <img
-                    className="userPic"
-                    src={loginPic}
-                    alt="Login"
-                />
-                </a>
-            )}
-            </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+      <Navbar nome={currentUser ? currentUser.nome : ''} itens={"all"} />
             
 
         {/* Seção de Início */}
@@ -246,7 +139,7 @@ function HomePage() {
                     ) : (
                         <div className="scroll-container">
                             {plans.map((plano, index) => (
-                                <PlanCard planoUser={currentUser ? currentUser.id : ""} id={plano.id} nome={plano.nome} image={`http://localhost:3001${plano.image}`} itens={plano.itens} />
+                                <PlanCard planoUser={currentUser ? currentUser.assinatura : ""} id={plano.id} nome={plano.nome} image={`http://localhost:3001${plano.image}`} itens={plano.itens} />
                             ))}
                         </div>
                     )}

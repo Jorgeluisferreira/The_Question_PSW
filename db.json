@@ -10,15 +10,11 @@
     {
       "id": "2",
       "nome": "Jorge",
-      "cpf": "4534",
       "email": "jorgejlfa@hotmail.com",
       "senha": "123",
       "tipo": "usuario",
-      "assinatura": "plano Foda",
-      "endereco": "teste",
-      "numeroCartao": "123",
-      "validadeCartao": "123",
-      "cvv": "123"
+      "assinatura": "",
+      "endereco": "teste"
     },
     {
       "id": "3",
@@ -69,7 +65,7 @@
     },
     {
       "id": "3",
-      "nome": "plano Foda",
+      "nome": "plano premium",
       "itens": [
         "camiseta",
         "livro",
@@ -114,6 +110,7 @@
   "feedbacks": [
     {
       "id": "1",
+      "idUser": "2",
       "nome": "Jorge",
       "mensagem": "Ansioso pela proxima caixa"
     },
@@ -123,5 +120,15 @@
       "mensagem": "Amei!",
       "createdAt": "2024-12-09T23:17:02.843Z"
     }
+  ],
+  "vendas": [
+    {
+      "id":"1",
+      "idUser":"2",
+      "idCaixa":"3",
+      "status": "enviada",
+      "mensagens": ["Nota Fiscal Emitida", "Pedido enviado para transportadora"]
+    }
   ]
+
 }
