@@ -9,6 +9,7 @@ import UserInfo from "./component/userInfo";
 import AssinaturaUser from "./component/assinaturaUser";
 import AdminConfig from "./AdminConfig"; // Componente da página de configurações do administrador
 import Navbar from "./component/Navbar";
+import FeedbackScreen from "./feedbackScreen"
 
 
 function UserPage() {

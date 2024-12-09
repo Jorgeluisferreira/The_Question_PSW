@@ -7,9 +7,8 @@ import './FeedbackScreen.css';
 const FeedbackScreen = () => {
   const dispatch = useDispatch();
   const { feedbacks, feedbackStatus, feedbackError } = useSelector((state) => state.feedbacks);
-
+  const currentUser = useSelector((state) => state.users.currentUser);
   const [newFeedback, setNewFeedback] = useState("");
-  const [userName, setUserName] = useState(""); 
 
   useEffect(() => {
     if (feedbackStatus === "idle") {
@@ -23,20 +22,15 @@ const FeedbackScreen = () => {
       return;
     }
 
-    if (userName.trim() === "") {
-      alert("Por favor, informe seu nome.");
-      return;
-    }
-
     try {
       await axios.post("http://localhost:3001/feedbacks", {
-        nome: userName,       
+        nome: currentUser.nome,       
         mensagem: newFeedback, 
         createdAt: new Date().toISOString(),
       });
 
-      setNewFeedback(""); 
-      setUserName("");   
+      setNewFeedback("");    
+      alert("Obrigado Pelo feedback")
 
       dispatch(fetchFeedbacks()); 
     } catch (error) {
@@ -47,13 +41,6 @@ const FeedbackScreen = () => {
   return (
     <div className="feedback-container">
       <h1>Deixe seu Feedback</h1>
-
-      <input
-        type="text"
-        placeholder="Digite seu nome"
-        value={userName}
-        onChange={(e) => setUserName(e.target.value)} 
-      />
 
       <textarea
         className="feedback-textarea"

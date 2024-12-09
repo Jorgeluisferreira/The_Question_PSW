@@ -123,12 +123,14 @@
   ],
   "vendas": [
     {
-      "id":"1",
-      "idUser":"2",
-      "idCaixa":"3",
+      "id": "1",
+      "idUser": "2",
+      "idCaixa": "3",
       "status": "enviada",
-      "mensagens": ["Nota Fiscal Emitida", "Pedido enviado para transportadora"]
+      "mensagens": [
+        "Nota Fiscal Emitida",
+        "Pedido enviado para transportadora"
+      ]
     }
   ]
-
 }
