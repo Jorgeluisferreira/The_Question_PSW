@@ -1,3 +1,4 @@
+/* AdminConfig.css */
 .admin-config {
     font-family: Arial, sans-serif;
     background-color: #121212; /* Fundo preto */
@@ -15,7 +16,7 @@
     margin-bottom: 20px;
 }
 
-.tabs {
+.admin-config .tabs {
     display: flex;
     justify-content: space-around;
     margin-bottom: 20px;
@@ -23,7 +24,7 @@
     padding-bottom: 10px;
 }
 
-.tab-button {
+.admin-config .tab-button {
     background: none;
     border: none;
     color: #fff;
@@ -33,28 +34,28 @@
     transition: all 0.3s ease;
 }
 
-.tab-button:hover {
+.admin-config .tab-button:hover {
     color: #D92323;
     transform: scale(1.05);
 }
 
-.tab-button.active {
+.admin-config .tab-button.active {
     border-bottom: 2px solid #D92323;
     font-weight: bold;
 }
 
-.content {
+.admin-config .content {
     background-color: #1f1f1f; /* Cinza escuro */
     padding: 20px;
     border-radius: 10px;
 }
 
-.content h3 {
+.admin-config .content h3 {
     color: #D92323;
     margin-bottom: 15px;
 }
 
-button {
+.admin-config button {
     background-color: #D92323;
     border: none;
     color: #fff;
@@ -65,17 +66,17 @@ button {
     transition: background-color 0.3s ease;
 }
 
-button:hover {
+.admin-config button:hover {
     background-color: #E54444; /* Vermelho mais claro para hover */
 }
 
-ul {
+.admin-config ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
 }
 
-li {
+.admin-config li {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -85,7 +86,7 @@ li {
     color: #fff;
 }
 
-li button {
+.admin-config li button {
     background-color: #333;
     color: #D92323;
     font-size: 12px;
@@ -94,13 +95,13 @@ li button {
     border-radius: 3px;
 }
 
-li button:hover {
+.admin-config li button:hover {
     background-color: #D92323;
     color: #fff;
 }
 
 /* Form Overlay: Fundo escurecido */
-.form-overlay {
+.admin-config .form-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -114,7 +115,7 @@ li button:hover {
 }
 
 /* Formulário do Admin */
-.admin-form {
+.admin-config .admin-form {
     background-color: #1a1a1a; /* Preto sólido */
     color: #fff; /* Texto branco */
     padding: 2rem;
@@ -125,7 +126,7 @@ li button:hover {
 }
 
 /* Títulos do formulário */
-.admin-form h3 {
+.admin-config .admin-form h3 {
     font-size: 1.5rem;
     margin-bottom: 1.5rem;
     color: #ff1a1a; /* Vermelho vibrante */
@@ -133,14 +134,14 @@ li button:hover {
 }
 
 /* Labels e inputs */
-.admin-form label {
+.admin-config .admin-form label {
     display: block;
     font-size: 1rem;
     margin-bottom: 0.5rem;
     color: #e6e6e6; /* Cinza claro */
 }
 
-.admin-form input {
+.admin-config .admin-form input {
     width: 100%;
     padding: 0.8rem;
     margin-bottom: 1rem;
@@ -152,14 +153,14 @@ li button:hover {
 }
 
 /* Inputs em foco */
-.admin-form input:focus {
+.admin-config .admin-form input:focus {
     outline: none;
     border-color: #ff4d4d; /* Borda vermelha */
     box-shadow: 0 0 5px #ff4d4d; /* Efeito de brilho */
 }
 
 /* Botões */
-.admin-form button {
+.admin-config .admin-form button {
     padding: 0.8rem 1.5rem;
     font-size: 1rem;
     margin-right: 0.5rem;
@@ -169,25 +170,25 @@ li button:hover {
     transition: all 0.3s ease-in-out;
 }
 
-.admin-form button[type="submit"] {
+.admin-config .admin-form button[type="submit"] {
     background-color: #ff1a1a; /* Vermelho vibrante */
     color: #fff;
 }
 
-.admin-form button[type="submit"]:hover {
+.admin-config .admin-form button[type="submit"]:hover {
     background-color: #cc0000; /* Vermelho mais escuro */
 }
 
-.admin-form button[type="button"] {
+.admin-config .admin-form button[type="button"] {
     background-color: #333; /* Cinza escuro */
     color: #fff;
 }
 
-.admin-form button[type="button"]:hover {
+.admin-config .admin-form button[type="button"]:hover {
     background-color: #4d4d4d; /* Cinza um pouco mais claro */
 }
 
-.user-card {
+.admin-config .user-card {
     background-color: #1a1a1a;
     color: #e6e6e6;
     padding: 1rem;
@@ -196,10 +197,10 @@ li button:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-.user-card p {
+.admin-config .user-card p {
     margin: 0.5rem 0;
 }
 
-.user-card strong {
+.admin-config .user-card strong {
     color: #ff4d4d; /* Destaque em vermelho */
 }
