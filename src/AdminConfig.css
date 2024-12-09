@@ -187,3 +187,20 @@ li button:hover {
 .admin-form button[type="button"]:hover {
     background-color: #4d4d4d; /* Cinza um pouco mais claro */
 }
+
+.user-card {
+    background-color: #1a1a1a;
+    color: #e6e6e6;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.user-card p {
+    margin: 0.5rem 0;
+}
+
+.user-card strong {
+    color: #ff4d4d; /* Destaque em vermelho */
+}

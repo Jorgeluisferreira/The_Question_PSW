@@ -7,12 +7,12 @@ const AdminConfig = () => {
     const [boxes, setBoxes] = useState([]);
     const [users, setUsers] = useState([]);
     const [selectedTab, setSelectedTab] = useState("plans");
+    const [formType, setFormType] = useState(null); // "plan" ou "box"
+    const [formData, setFormData] = useState({}); // Dados do formulário
     const [showForm, setShowForm] = useState(false);
-    const [formData, setFormData] = useState({});
 
     const API_URL = "http://localhost:3000";
 
-    // Função para carregar dados do JSON Server
     const fetchData = async () => {
         try {
             const [plansRes, boxesRes, usersRes] = await Promise.all([
@@ -32,27 +32,24 @@ const AdminConfig = () => {
         fetchData();
     }, []);
 
-    // Função para lidar com o clique em "Adicionar Plano" ou "Adicionar Box"
-    const handleAddClick = (type) => {
-        setFormData({ type }); // Define o tipo de formulário
-        setShowForm(true); // Exibe o formulário
+    const handleAdd = (type) => {
+        setFormType(type);
+        setFormData({});
+        setShowForm(true);
     };
 
-    // Função para enviar o formulário
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async () => {
         try {
-            if (formData.type === "plan") {
+            if (formType === "plan") {
                 const response = await axios.post(`${API_URL}/planos`, formData);
                 setPlans([...plans, response.data]);
-            } else if (formData.type === "box") {
+            } else if (formType === "box") {
                 const response = await axios.post(`${API_URL}/caixasPassadas`, formData);
                 setBoxes([...boxes, response.data]);
             }
-            setShowForm(false); // Fecha o formulário após adicionar
-            setFormData({});
+            setShowForm(false);
         } catch (error) {
-            console.error("Erro ao enviar formulário:", error);
+            console.error("Erro ao salvar:", error);
         }
     };
 
@@ -84,7 +81,7 @@ const AdminConfig = () => {
                 {selectedTab === "plans" && (
                     <div>
                         <h3>Planos</h3>
-                        <button onClick={() => handleAddClick("plan")}>Adicionar Plano</button>
+                        <button onClick={() => handleAdd("plan")}>Adicionar Plano</button>
                         <ul>
                             {plans.map((plan) => (
                                 <li key={plan.id}>
@@ -98,11 +95,11 @@ const AdminConfig = () => {
                 {selectedTab === "boxes" && (
                     <div>
                         <h3>Boxes</h3>
-                        <button onClick={() => handleAddClick("box")}>Adicionar Box</button>
+                        <button onClick={() => handleAdd("box")}>Adicionar Box</button>
                         <ul>
                             {boxes.map((box) => (
                                 <li key={box.id}>
-                                    {box.tema} - Itens: {box.itens.join(", ")}
+                                    Tema: {box.tema} - Itens: {box.itens.join(", ")}
                                 </li>
                             ))}
                         </ul>
@@ -114,8 +111,20 @@ const AdminConfig = () => {
                         <h3>Cadastros</h3>
                         <ul>
                             {users.map((user) => (
-                                <li key={user.id}>
-                                    {user.nome} - Tipo: {user.tipo}
+                                <li key={user.id} className="user-card">
+                                    <p><strong>Nome:</strong> {user.nome}</p>
+                                    <p><strong>Email:</strong> {user.email}</p>
+                                    {user.tipo === "usuario" && (
+                                        <>
+                                            <p><strong>Assinatura:</strong> {user.assinatura || "Nenhuma"}</p>
+                                            <p><strong>Endereço:</strong> {user.endereco || "Não informado"}</p>
+                                            {user.cpf && <p><strong>CPF:</strong> {user.cpf}</p>}
+                                            {user.numeroCartao && (
+                                                <p><strong>Cartão:</strong> **** **** **** {user.numeroCartao.slice(-4)}</p>
+                                            )}
+                                        </>
+                                    )}
+                                    {user.tipo === "admin" && <p><strong>Tipo:</strong> Administrador</p>}
                                 </li>
                             ))}
                         </ul>
@@ -125,57 +134,42 @@ const AdminConfig = () => {
 
             {showForm && (
                 <div className="form-overlay">
-                    <form className="admin-form" onSubmit={handleSubmit}>
-                        <h3>{formData.type === "plan" ? "Adicionar Plano" : "Adicionar Box"}</h3>
-                        {formData.type === "plan" && (
-                            <>
-                                <label>Nome do Plano:</label>
+                    <div className="admin-form">
+                        <h3>{formType === "plan" ? "Adicionar Plano" : "Adicionar Box"}</h3>
+                        <label>
+                            Nome:
+                            <input
+                                type="text"
+                                value={formData.nome || ""}
+                                onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
+                            />
+                        </label>
+                        <label>
+                            Itens:
+                            <input
+                                type="text"
+                                value={formData.itens?.join(", ") || ""}
+                                onChange={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        itens: e.target.value.split(",").map((item) => item.trim()),
+                                    })
+                                }
+                            />
+                        </label>
+                        {formType === "box" && (
+                            <label>
+                                Tema:
                                 <input
                                     type="text"
-                                    onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
-                                    required
-                                />
-                                <label>Itens (separados por vírgula):</label>
-                                <input
-                                    type="text"
-                                    onChange={(e) =>
-                                        setFormData({ ...formData, itens: e.target.value.split(",") })
-                                    }
-                                    required
-                                />
-                                <label>Imagem (URL):</label>
-                                <input
-                                    type="text"
-                                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                                    required
-                                />
-                            </>
-                        )}
-
-                        {formData.type === "box" && (
-                            <>
-                                <label>Tema do Box:</label>
-                                <input
-                                    type="text"
+                                    value={formData.tema || ""}
                                     onChange={(e) => setFormData({ ...formData, tema: e.target.value })}
-                                    required
                                 />
-                                <label>Itens (separados por vírgula):</label>
-                                <input
-                                    type="text"
-                                    onChange={(e) =>
-                                        setFormData({ ...formData, itens: e.target.value.split(",") })
-                                    }
-                                    required
-                                />
-                            </>
+                            </label>
                         )}
-
-                        <button type="submit">Salvar</button>
-                        <button type="button" onClick={() => setShowForm(false)}>
-                            Cancelar
-                        </button>
-                    </form>
+                        <button onClick={handleSubmit}>Salvar</button>
+                        <button onClick={() => setShowForm(false)}>Cancelar</button>
+                    </div>
                 </div>
             )}
         </div>
