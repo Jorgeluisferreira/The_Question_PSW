@@ -1,0 +1,94 @@
+/* Estilo para o container de feedback */
+.feedback-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Título da tela */
+  .feedback-container h1 {
+    text-align: center;
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  /* Estilo para o campo de nome */
+  input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+  }
+  
+  input[type="text"]:focus {
+    border-color: #6c63ff; /* Cor da borda ao focar */
+  }
+  
+  /* Estilo para a área de texto (feedback) */
+  .feedback-textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    min-height: 120px;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+  }
+  
+  .feedback-textarea:focus {
+    border-color: #6c63ff; /* Cor da borda ao focar */
+  }
+  
+  /* Estilo do botão */
+  .feedback-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #D92323;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .feedback-button:hover {
+    background-color: #5a54e3;
+  }
+  
+  /* Estilo para a lista de feedbacks */
+  .feedback-list {
+    margin-top: 40px;
+  }
+  
+  .feedback-card {
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .feedback-card h3 {
+    margin: 0 0 10px;
+    color: #333;
+    font-size: 1.2rem;
+  }
+  
+  .feedback-card p {
+    margin: 0;
+    color: #555;
+    font-size: 1rem;
+  }
+  

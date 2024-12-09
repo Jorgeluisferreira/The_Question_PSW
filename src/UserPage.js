@@ -8,6 +8,7 @@ import { Navbar, Dropdown, Button } from "react-bootstrap";
 import UserInfo from "./component/userInfo";
 import AssinaturaUser from "./component/assinaturaUser";
 import AdminConfig from "./AdminConfig"; // Componente da página de configurações do administrador
+import FeedbackScreen from "./feedbackScreen";
 
 function UserPage() {
     // Informações do usuário logado
@@ -95,6 +96,11 @@ function UserPage() {
                                                     </a>
                                                 </li>
                                                 <li>
+                                                    <a className="dropdown-item" href="/feedback">
+                                                        Feedback
+                                                    </a>
+                                                </li>
+                                                <li>
                                                     <button
                                                         className="dropdown-item"
                                                         onClick={handleLogout}
@@ -129,9 +135,7 @@ function UserPage() {
                             <li className="nav-item">
                                 <Button
                                     variant="link"
-                                    className={`text-white ${
-                                        selectedOption === "usuario" ? "active" : ""
-                                    }`}
+                                    className={`text-white ${selectedOption === "usuario" ? "active" : ""}`}
                                     onClick={() => handleMenuClick("usuario")}
                                 >
                                     Informações do Usuário
@@ -140,9 +144,7 @@ function UserPage() {
                             <li className="nav-item">
                                 <Button
                                     variant="link"
-                                    className={`text-white ${
-                                        selectedOption === "assinatura" ? "active" : ""
-                                    }`}
+                                    className={`text-white ${selectedOption === "assinatura" ? "active" : ""}`}
                                     onClick={() => handleMenuClick("assinatura")}
                                 >
                                     Informações da Assinatura
@@ -152,15 +154,22 @@ function UserPage() {
                                 <li className="nav-item">
                                     <Button
                                         variant="link"
-                                        className={`text-white ${
-                                            selectedOption === "adminConfig" ? "active" : ""
-                                        }`}
+                                        className={`text-white ${selectedOption === "adminConfig" ? "active" : ""}`}
                                         onClick={() => handleMenuClick("adminConfig")}
                                     >
                                         Configurações de Administrador
                                     </Button>
                                 </li>
                             )}
+                            <li className="nav-item">
+                                <Button
+                                    variant="link"
+                                    className={`text-white ${selectedOption === "feedback" ? "active" : ""}`}
+                                    onClick={() => handleMenuClick("feedback")}
+                                >
+                                    Feedback
+                                </Button>
+                            </li>
                         </ul>
                     </div>
 
@@ -168,9 +177,8 @@ function UserPage() {
                     <div className="col-md-9 p-4">
                         {selectedOption === "usuario" && <UserInfo />}
                         {selectedOption === "assinatura" && <AssinaturaUser />}
-                        {selectedOption === "adminConfig" && currentUser?.tipo === "admin" && (
-                            <AdminConfig />
-                        )}
+                        {selectedOption === "adminConfig" && currentUser?.tipo === "admin" && <AdminConfig />}
+                        {selectedOption === "feedback" && <FeedbackScreen />}
                     </div>
                 </div>
             </div>
