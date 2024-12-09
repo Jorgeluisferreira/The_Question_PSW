@@ -14,8 +14,8 @@ function AssinaturaUser() {
     email: currentUser.email,
     senha: currentUser.senha,
     tipo: currentUser.tipo,
-    assinatura: currentUser.assinatura || "Não possui assinatura",
-    endereco: currentUser.endereco || "Não informado",
+    assinatura: currentUser.assinatura,
+    endereco: currentUser.endereco,
   });
 
   
@@ -36,12 +36,15 @@ function AssinaturaUser() {
   return (
     <div>
       <h3>Informações do Usuário</h3>
-      <h5>Tipo de assinatura: {userData.assinatura}</h5><br></br>
-      {userData.assinatura = "" ? <h5>Valor: x </h5>: <></>}
+      <h5>Tipo de assinatura: {userData.assinatura == "" ? "não possui assinatura" : userData.assinatura}</h5><br></br>
+      {userData.assinatura == "" ? <h5>Valor: x </h5>: <></>}
 
-      <button type="button" className="btn btn-danger" onClick={handleSubmit} >
-        Cancelar
-      </button>
+      {userData.assinatura != "" ?
+        <button type="button" className="btn btn-danger" onClick={handleSubmit} >
+          Cancelar
+        </button> : <></>
+      }
+      
       
     </div>
   );

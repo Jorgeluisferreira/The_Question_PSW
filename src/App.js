@@ -8,6 +8,7 @@ import Teste from "./Teste";
 import UserPage from "./UserPage";
 import AssinarPlano from "./AssinarPlano"
 import Agradecimento from "./agradecimento";
+import Pedidos from "./Pedidos";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path="user" element={<UserPage />} />
           <Route path="/planos" element={<AssinarPlano />} />
           <Route path="/agradecimento" element={<Agradecimento />} />
+          <Route path="/user/pedidos" element={<Pedidos />} />
           <Route path="teste" element={<Teste />} />
       </Routes>
     </Router>

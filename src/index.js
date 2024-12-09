@@ -10,13 +10,15 @@ import UserReducer from  './store/userReducer'
 import PlansReducer from './store/plansReducer'
 import BoxesReducer from './store/boxesReducer'
 import FeedbackReducer from './store/feedbackReducer'
+import VendasReducer from './store/vendasReducer'
 
 const store = configureStore({
   reducer:{
     users: UserReducer,
     plans: PlansReducer,
     boxes: BoxesReducer,
-    feedbacks: FeedbackReducer
+    feedbacks: FeedbackReducer,
+    vendas: VendasReducer
   }
 })
 

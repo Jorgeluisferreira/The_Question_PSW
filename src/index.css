@@ -13,6 +13,26 @@ code {
 }
 
 
+.button {
+  background: #ff0000;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+  box-shadow: 5px 5px 0px black;
+  transform: skew(-5deg);
+  transition: 0.3s;
+  text-decoration: none;
+}
+
+.button:hover {
+  transform: scale(1.1);
+
+}
+
 .voltar{
   text-decoration: none !important;
   color: white !important;
@@ -98,8 +118,6 @@ code {
 .titulo{
   width: 100%;
   height: auto;
-
-  
   
 }
 

@@ -14,7 +14,7 @@ function PlanCard(props) {
                             <li key={idx} className="list-group-item">{item}</li>
                         ))}
                     </ul>
-                    <a className="btn btn-primary" onClick={() => props.planoUser ? alert("Usuario já possui Assinatura") : navigate(`/planos`)}>Assinar</a>
+                    <a className="button" onClick={() => props.planoUser ? alert("Usuario já possui Assinatura") : navigate(`/planos`)}>Assinar</a>
                 </div>
             </div>
         </div>

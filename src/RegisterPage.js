@@ -87,9 +87,12 @@ function RegisterPage() {
               placeholder="Confirmar Senha"
             />
           </div>
-          <button type="submit" className="register-btn">
+          <button type="submit" className="button">
             Entrar
           </button>
+          <p className="register-link">
+            já possui conta? <a href="/loginpage">Login</a>
+          </p>
         </form>
       </div>
     </div>
