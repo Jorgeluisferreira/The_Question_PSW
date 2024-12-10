@@ -51,7 +51,9 @@
       "itens": [
         "camiseta"
       ],
+      "price": 79.90,
       "image": "/images/box1.png"
+      
     },
     {
       "id": "2",
@@ -61,7 +63,9 @@
         "livro",
         "2x item aleatorio"
       ],
+      "price": 99.90,
       "image": "/images/box2.png"
+      
     },
     {
       "id": "3",
@@ -72,7 +76,9 @@
         "3x item aleatorio",
         "pelucia"
       ],
+      "props.price": 119.90,
       "image": "/images/box.png"
+      
     }
   ],
   "caixasPassadas": [
@@ -105,6 +111,7 @@
         "3x item aleatorio",
         "pelucia"
       ]
+    
     }
   ],
   "feedbacks": [
