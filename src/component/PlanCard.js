@@ -14,6 +14,12 @@ function PlanCard(props) {
                             <li key={idx} className="list-group-item">{item}</li>
                         ))}
                     </ul>
+                    
+                    <div className="price-section mt-3">
+                        <strong className="text-success">
+                            Preço: {props.price ? `R$ ${props.price}` : "Sob consulta"}
+                        </strong>
+                    </div>
                     <a className="button" onClick={() => props.planoUser ? alert("Usuario já possui Assinatura") : navigate(`/planos`)}>Assinar</a>
                 </div>
             </div>
