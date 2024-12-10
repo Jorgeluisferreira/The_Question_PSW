@@ -88,21 +88,22 @@ function HomePage() {
 
         {/* Seção de Início */}
         <section id="home" className="text-white text-center vh-100 d-flex align-items-center justify-content-center sectionHome">
-            <div className="container ">
-                {/* Coluna da esquerda com o texto */}
-                <Row className="homeRow" xs={1} md={2}>
-                <Col className="homeLeft" >
-                    <h1 className="titulo">Bem-vindo {currentUser ? currentUser.nome : ""}</h1>
-                    <p className="lead">Explore nossos serviços e saiba mais sobre nós!</p>
-                </Col>
+  <div className="container ">
+    {/* Coluna da esquerda com o texto */}
+    <Row className="homeRow" xs={1} md={2}>
+      <Col className="homeLeft">
+        <h1 className="titulo">Bem-vindo {currentUser ? currentUser.nome : ""}</h1>
+        <p className="lead">Explore nossos serviços e saiba mais sobre nós!</p>
+      </Col>
 
-                {/* Coluna da direita com a imagem */}
-                <Col >
-                    <img src={homeImage} alt="Imagem" className="img-fluid" />
-                </Col>
-                </Row>
-            </div>
-        </section>
+      {/* Coluna da direita com a imagem */}
+      <Col>
+        <img src={homeImage} alt="Imagem" className="img-fluid" />
+      </Col>
+    </Row>
+  </div>
+</section>
+
 
       {/* Seção Sobre */}
       <section id="sobre" className="py-5 bg-light text-center">
