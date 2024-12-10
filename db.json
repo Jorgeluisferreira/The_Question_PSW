@@ -28,11 +28,15 @@
     {
       "id": "4",
       "nome": "joao",
+      "cpf": "12345678",
       "email": "joao@gmail.com",
       "senha": "123",
       "tipo": "usuario",
-      "assinatura": "",
-      "endereco": "Não informado"
+      "assinatura": "plano Simples",
+      "endereco": "rua dos bobos numero 0",
+      "numeroCartao": "12345678",
+      "validadeCartao": "31/2",
+      "cvv": "123"
     },
     {
       "id": "5",
@@ -51,9 +55,8 @@
       "itens": [
         "camiseta"
       ],
-      "price": 79.90,
+      "price": 99.9,
       "image": "/images/box1.png"
-      
     },
     {
       "id": "2",
@@ -63,9 +66,8 @@
         "livro",
         "2x item aleatorio"
       ],
-      "price": 99.90,
+      "price": 119.9,
       "image": "/images/box2.png"
-      
     },
     {
       "id": "3",
@@ -76,15 +78,14 @@
         "3x item aleatorio",
         "pelucia"
       ],
-      "props.price": 119.90,
+      "price": 139.9,
       "image": "/images/box.png"
-      
     }
   ],
   "caixasPassadas": [
     {
       "id": "1",
-      "tema": "persona",
+      "tema": "Persona 5",
       "itens": [
         "camiseta",
         "livro",
@@ -94,7 +95,7 @@
     },
     {
       "id": "2",
-      "tema": "tema 2",
+      "tema": "Star Wars",
       "itens": [
         "camiseta",
         "livro",
@@ -104,14 +105,13 @@
     },
     {
       "id": "3",
-      "tema": "tema 3",
+      "tema": "Senhor dos anéis",
       "itens": [
         "camiseta",
         "livro",
         "3x item aleatorio",
         "pelucia"
       ]
-    
     }
   ],
   "feedbacks": [
@@ -126,6 +126,12 @@
       "nome": "Vitória",
       "mensagem": "Amei!",
       "createdAt": "2024-12-09T23:17:02.843Z"
+    },
+    {
+      "id": "d091",
+      "nome": "joao",
+      "mensagem": "itens muito legais e chegou rapidinho !!",
+      "createdAt": "2024-12-10T18:46:45.265Z"
     }
   ],
   "vendas": [
