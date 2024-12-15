@@ -84,6 +84,53 @@ function AssinarPlano() {
     // Função para lidar com o envio do formulário
     const handleSubmit = (e) => {
       e.preventDefault();
+    
+  const validateCardNumber = (number) => {
+    return /^\d{16}$/.test(number);
+  };
+
+  
+  const validateCVV = (cvv) => {
+    return /^\d{3}$/.test(cvv);
+  };
+
+
+  const validateCPF = (cpf) => {
+    return /^\d{11}$/.test(cpf);
+  };
+
+  const validateCardExpiry = (expiry) => {
+    return /^(0[1-9]|1[0-2])\/\d{4}$/.test(expiry);
+  };
+
+
+  if (!validateCardNumber(userData.numeroCartao)) {
+    alert('Número do cartão inválido. Deve conter exatamente 16 dígitos numéricos.');
+    return;
+  }
+
+  if (!validateCVV(userData.cvv)) {
+    alert('CVV inválido. Deve conter exatamente 3 dígitos numéricos.');
+    return;
+  }
+
+  if (!validateCPF(userData.cpf)) {
+    alert('CPF inválido. Deve conter exatamente 11 dígitos numéricos.');
+    return;
+  }
+
+  if (!validateCardExpiry(userData.validadeCartao)) {
+    alert('Validade do cartão inválida. Formato correto: MM/AAAA.');
+    return;
+  }
+
+  try {
+    dispatch(editUser(userData));
+    navigate("/agradecimento");
+  } catch (error) {
+    console.error("Erro ao assinar o plano:", error);
+    alert('Erro ao assinar o plano. Tente novamente.');
+  }
       // Aqui você pode fazer algo com os dados, como enviar para o Redux ou backend
       dispatch(editUser(userData));
       navigate("/agradecimento")
