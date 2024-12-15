@@ -10,6 +10,7 @@ import AssinaturaUser from "./component/assinaturaUser";
 import AdminConfig from "./AdminConfig"; // Componente da página de configurações do administrador
 import Navbar from "./component/Navbar";
 import FeedbackScreen from "./feedbackScreen"
+import SuggestionScreen from "./SuggestionScreen";
 
 
 function UserPage() {
@@ -96,6 +97,16 @@ function UserPage() {
                                     Feedback
                                 </Button>
                             </li>
+
+                            <li className="nav-item">
+                            <Button
+                                variant="link"
+                                className={`text-white ${selectedOption === "suggestion" ? "active" : ""}`}
+                                onClick={() => handleMenuClick("suggestion")}
+                            >
+                                Sugestão de Temas
+                            </Button>
+                            </li>
                         </ul>
                     </div>
 
@@ -105,6 +116,7 @@ function UserPage() {
                         {selectedOption === "assinatura" && <AssinaturaUser />}
                         {selectedOption === "adminConfig" && currentUser?.tipo === "admin" && <AdminConfig />}
                         {selectedOption === "feedback" && <FeedbackScreen />}
+                        {selectedOption === "suggestion" && <SuggestionScreen />}
                     </div>
                 </div>
             </div>
