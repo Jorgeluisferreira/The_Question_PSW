@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPlans } from "./store/plansReducer";
 import { editUser } from "./store/userReducer";
+import "./AssinarPlano.css";
+
 
 function AssinarPlano() {
 
@@ -150,104 +152,138 @@ function AssinarPlano() {
             </button>
        </nav>
 
-       <div className="container d-flex justify-content-center align-items-center" style={{ height: "90vh" }}>
-      <div className="card p-4 w-100" style={{ maxWidth: "600px" }}>
-        <h3 className="text-center mb-4">Assine o Plano</h3>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="planSelect">Selecione o Plano:</label>
-            <select
-              id="planSelect"
-              className="form-control"
-              value={userData.assinatura}
-              onChange={(e) => setUserData({ ...userData, assinatura: e.target.value })}
-              required
-            >
-              <option value="" disabled>
-                Selecione um plano
-              </option>
-              {plans.map((plan) => (
-                <option key={plan.id} value={plan.nome}>
-                  {plan.nome} - {plan.itens}
-                </option>
-              ))}
-            </select>
-          </div>
+       
+        <div className="tema-formulário">
+  <div className="card p-4 w-100" style={{ maxWidth: "600px", overflowY: "auto", maxHeight: "90vh" }}>
+    <h3 className="text-center mb-4">Assine o Plano</h3>
+    <form onSubmit={handleSubmit}>
+      {/* Seção 1: Informações Pessoais */}
+      <h5 className="mb-3">Informações Pessoais</h5>
+      <div className="form-group">
+        <label htmlFor="nome">Nome:</label>
+        <input
+          type="text"
+          className="form-control"
+          id="nome"
+          value={userData.nome}
+          onChange={(e) => setUserData({ ...userData, nome: e.target.value })}
+          required
+        />
+      </div>
 
-          <div className="form-group">
-                <label htmlFor="nome">Nome:</label>
-                <input
-                type="text"
-                className="form-control"
-                id="nome"
-                value={userData.nome}
-                onChange={(e) => setUserData({ ...userData, nome: e.target.value })}
-                required
-                />
-            </div>
+      <div className="form-group">
+        <label htmlFor="cpf">CPF:</label>
+        <input
+          type="text"
+          className="form-control"
+          id="cpf"
+          value={userData.cpf}
+          onChange={(e) => setUserData({ ...userData, cpf: e.target.value })}
+          required
+        />
+      </div>
 
-            <div className="form-group">
-                <label htmlFor="cpf">CPF:</label>
-                <input
-                type="text"
-                className="form-control"
-                id="cpf"
-                value={userData.cpf}
-                onChange={(e) => setUserData({ ...userData, cpf: e.target.value })}
-                required
-                />
-            </div>
+      <div className="form-group">
+        <label htmlFor="endereco">Endereço:</label>
+        <input
+          type="text"
+          className="form-control"
+          id="endereco"
+          value={userData.endereco}
+          onChange={(e) => setUserData({ ...userData, endereco: e.target.value })}
+          required
+        />
+      </div>
 
-            <div className="form-group">
-                <label htmlFor="endereco">Endereço:</label>
-                <input
-                type="text"
-                className="form-control"
-                id="endereco"
-                value={userData.endereco}
-                onChange={(e) => setUserData({ ...userData, endereco: e.target.value })}
-                required
-                />
-            </div>
+      {/* Seção 2: Informações de Pagamento */}
+      <h5 className="mb-3 mt-4">Informações de Pagamento</h5>
+      <div className="form-group">
+        <label htmlFor="numeroCartao">Número do Cartão:</label>
+        <input
+          type="text"
+          className="form-control"
+          id="numeroCartao"
+          value={userData.numeroCartao}
+          onChange={(e) => setUserData({ ...userData, numeroCartao: e.target.value })}
+          required
+        />
+      </div>
 
-            <h5>Informações de Pagamento</h5>
+      <div className="form-group">
+        <label htmlFor="validadeCartao">Validade do Cartão (MM/AAAA):</label>
+        <input
+          type="text"
+          className="form-control"
+          id="validadeCartao"
+          value={userData.validadeCartao}
+          onChange={(e) => setUserData({ ...userData, validadeCartao: e.target.value })}
+          required
+        />
+      </div>
 
-            <div className="form-group">
-                <label htmlFor="numeroCartao">Número do Cartão:</label>
-                <input
-                type="text"
-                className="form-control"
-                id="numeroCartao"
-                value={userData.numeroCartao}
-                onChange={(e) => setUserData({ ...userData, numeroCartao: e.target.value })}
-                required
-                />
-            </div>
+      <div className="form-group">
+        <label htmlFor="cvv">CVV:</label>
+        <input
+          type="text"
+          className="form-control"
+          id="cvv"
+          value={userData.cvv}
+          onChange={(e) => setUserData({ ...userData, cvv: e.target.value })}
+          required
+        />
+      </div>
 
-            <div className="form-group">
-                <label htmlFor="validadeCartao">Validade do Cartão:</label>
-                <input
-                type="text"
-                className="form-control"
-                id="validadeCartao"
-                value={userData.validadeCartao}
-                onChange={(e) => setUserData({ ...userData, validadeCartao: e.target.value })}
-                required
-                />
-            </div>
+      {/* Seção 3: Escolha do Plano */}
+      <h5 className="mb-3 mt-4">Escolha do Plano</h5>
+      <div className="form-group">
+        <label htmlFor="planSelect">Plano:</label>
+        <select
+          id="planSelect"
+          className="form-control"
+          value={userData.assinatura}
+          onChange={(e) => setUserData({ ...userData, assinatura: e.target.value })}
+          required
+        >
+          <option value="" disabled>Selecione um plano</option>
+          {plans.map((plan) => (
+            <option key={plan.id} value={plan.nome}>
+              {plan.nome} - {plan.itens}
+            </option>
+          ))}
+        </select>
+      </div>
 
-            <div className="form-group">
-                <label htmlFor="cvv">CVV:</label>
-                <input
-                type="text"
-                className="form-control"
-                id="cvv"
-                value={userData.cvv}
-                onChange={(e) => setUserData({ ...userData, cvv: e.target.value })}
-                required
-                />
-            </div>
+      {/* Seção 4: Detalhes da Camiseta */}
+      <h5 className="mb-3 mt-4">Camiseta</h5>
+      <div className="form-group">
+        <label htmlFor="tamanho">Tamanho:</label>
+        <select
+          id="tamanho"
+          className="form-control"
+          value={userData.tamanho}
+          onChange={(e) => setUserData({ ...userData, tamanho: e.target.value })}
+        >
+          <option value="PP">PP</option>
+          <option value="P">P</option>
+          <option value="M">M</option>
+          <option value="G">G</option>
+          <option value="GG">GG</option>
+          <option value="XGG">XGG</option>
+        </select>
+      </div>
 
+      <div className="form-group">
+        <label htmlFor="estilo">Estilo:</label>
+        <select
+          id="estilo"
+          className="form-control"
+          value={userData.estilo}
+          onChange={(e) => setUserData({ ...userData, estilo: e.target.value })}
+        >
+          <option value="Unisex">Unisex</option>
+          <option value="Babylook">Babylook</option>
+        </select>
+      </div>
             <button type="submit" className="btn btn-primary w-100">
                 Confirmar Assinatura
             </button>
@@ -255,6 +291,7 @@ function AssinarPlano() {
         </div>
         </div>
       </div>
+      
     );
   }
 
