@@ -32,11 +32,15 @@ function HomePage() {
 
     // Quando a página for carregada, dispara a ação para buscar os planos
     useEffect(() => {
-        if (PlanStatus === "idle") {
+      if (PlanStatus === "idle") {
         dispatch(fetchPlans());
-        }
+      }
     }, [PlanStatus, dispatch]);
-
+    
+    useEffect(() => {
+      console.log("Plan state atualizado:", plans);
+    }, [plans]);  // Debug: Confirma se os planos estão sendo atualizados
+    
     // Quando a página for carregada, dispara a ação para buscar as caixas
    useEffect(() => {
     if (boxStatus === "idle") {
@@ -131,21 +135,29 @@ function HomePage() {
 
 
 
-      {/* Seção de Planos com Carrossel */}
-      <section className="py-5 bg-light text-center" id="planos">
-                <div className="container">
-                    <h2>Nossos Planos</h2>
-                    {plans.length === 0 ? (
-                        <p>Nenhum plano encontrado.</p>
-                    ) : (
-                        <div className="scroll-container">
-                            {plans.map((plano, index) => (
-                                <PlanCard planoUser={currentUser ? currentUser.assinatura : ""} id={plano.id} nome={plano.nome} image={`http://localhost:3001${plano.image}`} itens={plano.itens} price={plano.price} />
-                            ))}
-                        </div>
-                    )}
-                </div>
-        </section>
+        <section className="py-5 bg-light text-center" id="planos">
+    <div className="container">
+        <h2>Nossos Planos</h2>
+        {plans.length === 0 ? (
+            <p>Nenhum plano encontrado.</p>
+        ) : (
+            <div className="scroll-container">
+                {plans.map((plano, index) => (
+                    <PlanCard
+                        key={plano.id}
+                        planoUser={currentUser ? currentUser.assinatura : ""}
+                        id={plano.id}
+                        nome={plano.nome}
+                        image={`http://localhost:3001${plano.image}`}
+                        itens={plano.itens}
+                        price={plano.price}
+                    />
+                ))}
+            </div>
+        )}
+    </div>
+</section>
+
 
         {/* Seção de Planos com Carrossel */}
       <section className="py-5 bg-light text-center">

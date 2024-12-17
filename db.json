@@ -76,6 +76,18 @@
       ],
       "price": 139.9,
       "image": "/images/box.png"
+    },
+    {
+      "id": "2444",
+      "nome": "plano supremo",
+      "itens": [
+        "camisa",
+        "livro",
+        "pelucia",
+        "7x itens colecionáveis"
+      ],
+      "price": "179.99",
+      "image": "blob:http://localhost:3000/7d9547cd-710e-4502-be02-0733941c03ec"
     }
   ],
   "caixasPassadas": [

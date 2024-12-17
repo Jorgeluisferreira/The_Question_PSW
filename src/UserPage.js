@@ -11,6 +11,8 @@ import AdminConfig from "./AdminConfig"; // Componente da página de configuraç
 import Navbar from "./component/Navbar";
 import FeedbackScreen from "./feedbackScreen"
 import SuggestionScreen from "./SuggestionScreen";
+import CreatePlanScreen from "./component/CreatePlanScreen";
+
 
 
 function UserPage() {
@@ -107,6 +109,18 @@ function UserPage() {
                                 Sugestão de Temas
                             </Button>
                             </li>
+                            {currentUser?.tipo === "admin" && (
+                                    <li className="nav-item">
+                                        <Button
+                                            variant="link"
+                                            className={`text-white ${selectedOption === "criarPlanos" ? "active" : ""}`}
+                                            onClick={() => handleMenuClick("criarPlanos")}
+                                        >
+                                            Criar Novos Planos
+                                        </Button>
+                                    </li>
+                                )}
+
                         </ul>
                     </div>
 
@@ -117,6 +131,8 @@ function UserPage() {
                         {selectedOption === "adminConfig" && currentUser?.tipo === "admin" && <AdminConfig />}
                         {selectedOption === "feedback" && <FeedbackScreen />}
                         {selectedOption === "suggestion" && <SuggestionScreen />}
+                        {selectedOption === "criarPlanos" && currentUser?.tipo === "admin" && <CreatePlanScreen />}
+
                     </div>
                 </div>
             </div>
