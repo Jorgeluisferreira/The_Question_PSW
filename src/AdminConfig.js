@@ -132,8 +132,41 @@ const AdminConfig = () => {
               ) : (
                 users.map((user) => (
                   <li key={user.id} className="user-card">
-                    <p><strong>Nome:</strong> {user.nome}</p>
-                    <p><strong>Email:</strong> {user.email}</p>
+                    <p><strong>Nome:</strong> 
+                      {user.tipo === "admin" ? ( 
+                        <input 
+                          type="text" 
+                          defaultValue={user.nome} 
+                          className="name-input"
+                        />
+                      ) : (
+                        user.nome
+                      )}
+                    </p>
+                    <p><strong>Email:</strong> 
+                      {user.tipo === "admin" ? ( 
+                        <input 
+                          type="email" 
+                          defaultValue={user.email} 
+                          className="email-input"
+                        />
+                      ) : (
+                        user.email
+                      )}
+                    </p>
+                    <p><strong>Tipo:</strong>
+                      {user.tipo === "admin" ? (
+                        <select 
+                          defaultValue={user.tipo} 
+                          className="type-select"
+                        >
+                          <option value="usuario">Usuário</option>
+                          <option value="admin">Administrador</option>
+                        </select>
+                      ) : (
+                        user.tipo === "usuario" ? "Usuário" : "Administrador"
+                      )}
+                    </p>
                     {user.tipo === "usuario" && (
                       <>
                         <p><strong>Assinatura:</strong> {user.assinatura || "Nenhuma"}</p>
@@ -144,13 +177,13 @@ const AdminConfig = () => {
                         )}
                       </>
                     )}
-                    {user.tipo === "admin" && <p><strong>Tipo:</strong> Administrador</p>}
                   </li>
                 ))
               )}
             </ul>
           </div>
         )}
+
       </div>
 
       {showForm && (
