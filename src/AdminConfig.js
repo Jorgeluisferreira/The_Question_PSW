@@ -132,50 +132,68 @@ const AdminConfig = () => {
               ) : (
                 users.map((user) => (
                   <li key={user.id} className="user-card">
-                    <p><strong>Nome:</strong> 
-                      {user.tipo === "admin" ? ( 
+                    <p>
+                      <strong>Nome:</strong> 
+                      <input 
+                        type="text" 
+                        defaultValue={user.nome} 
+                        className="name-input"
+                      />
+                    </p>
+                    <p>
+                      <strong>Email:</strong> 
+                      <input 
+                        type="email" 
+                        defaultValue={user.email} 
+                        className="email-input"
+                      />
+                    </p>
+                    <p>
+                      <strong>Tipo:</strong>
+                      <select 
+                        defaultValue={user.tipo} 
+                        className="type-select"
+                      >
+                        <option value="usuario">Usuário</option>
+                        <option value="admin">Administrador</option>
+                      </select>
+                    </p>
+                    <p>
+                      <strong>Assinatura:</strong>
+                      <input 
+                        type="text" 
+                        defaultValue={user.assinatura || "Nenhuma"} 
+                        className="subscription-input"
+                      />
+                    </p>
+                    <p>
+                      <strong>Endereço:</strong>
+                      <input 
+                        type="text" 
+                        defaultValue={user.endereco || "Não informado"} 
+                        className="address-input"
+                      />
+                    </p>
+                    {user.cpf && (
+                      <p>
+                        <strong>CPF:</strong>
                         <input 
                           type="text" 
-                          defaultValue={user.nome} 
-                          className="name-input"
+                          defaultValue={user.cpf} 
+                          className="cpf-input"
                         />
-                      ) : (
-                        user.nome
-                      )}
-                    </p>
-                    <p><strong>Email:</strong> 
-                      {user.tipo === "admin" ? ( 
+                      </p>
+                    )}
+                    {user.numeroCartao && (
+                      <p>
+                        <strong>Cartão:</strong> 
                         <input 
-                          type="email" 
-                          defaultValue={user.email} 
-                          className="email-input"
+                          type="text" 
+                          defaultValue={`**** **** **** ${user.numeroCartao.slice(-4)}`} 
+                          className="card-input"
+                          disabled
                         />
-                      ) : (
-                        user.email
-                      )}
-                    </p>
-                    <p><strong>Tipo:</strong>
-                      {user.tipo === "admin" ? (
-                        <select 
-                          defaultValue={user.tipo} 
-                          className="type-select"
-                        >
-                          <option value="usuario">Usuário</option>
-                          <option value="admin">Administrador</option>
-                        </select>
-                      ) : (
-                        user.tipo === "usuario" ? "Usuário" : "Administrador"
-                      )}
-                    </p>
-                    {user.tipo === "usuario" && (
-                      <>
-                        <p><strong>Assinatura:</strong> {user.assinatura || "Nenhuma"}</p>
-                        <p><strong>Endereço:</strong> {user.endereco || "Não informado"}</p>
-                        {user.cpf && <p><strong>CPF:</strong> {user.cpf}</p>}
-                        {user.numeroCartao && (
-                          <p><strong>Cartão:</strong> **** **** **** {user.numeroCartao.slice(-4)}</p>
-                        )}
-                      </>
+                      </p>
                     )}
                   </li>
                 ))
@@ -183,7 +201,6 @@ const AdminConfig = () => {
             </ul>
           </div>
         )}
-
       </div>
 
       {showForm && (

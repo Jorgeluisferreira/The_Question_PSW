@@ -51,6 +51,15 @@
       "tipo": "usuario",
       "assinatura": "",
       "endereço": ""
+    },
+    {
+      "id": "7",
+      "nome": "teste",
+      "email": "teste@teste.com",
+      "senha": "123",
+      "tipo": "usuario",
+      "assinatura": "",
+      "endereço": ""
     }
   ],
   "planos": [
