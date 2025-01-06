@@ -1,9 +1,10 @@
+
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPlans } from "./store/plansReducer";
 import { fetchBoxes } from "./store/boxesReducer";
-import { fetchUsers } from "./store/userReducer"; 
-import axios from 'axios';
+import { fetchUsers, editUser, addUser } from "./store/userReducer"; // Importando editUser e addUser
+import axios from "axios";
 import "./AdminConfig.css";
 
 const AdminConfig = () => {
@@ -13,11 +14,17 @@ const AdminConfig = () => {
   const [formType, setFormType] = useState(null);
   const [formData, setFormData] = useState({});
   const [showForm, setShowForm] = useState(false);
+  const [editingItem, setEditingItem] = useState(null); // Para saber qual item está sendo editado
 
-  const { plans, status: planStatus, error: planError } = useSelector((state) => state.plans);
-  const { boxes, status: boxStatus, error: boxError } = useSelector((state) => state.boxes);
-  const { users, status: userStatus, error: userError } = useSelector((state) => state.users);
-
+  const { plans, status: planStatus, error: planError } = useSelector(
+    (state) => state.plans
+  );
+  const { boxes, status: boxStatus, error: boxError } = useSelector(
+    (state) => state.boxes
+  );
+  const { users, status: userStatus, error: userError } = useSelector(
+    (state) => state.users
+  );
 
   useEffect(() => {
     if (planStatus === "idle") {
@@ -31,24 +38,52 @@ const AdminConfig = () => {
     }
   }, [dispatch, planStatus, boxStatus, userStatus]);
 
-  
   const handleAdd = (type) => {
     setFormType(type);
     setFormData({});
+    setEditingItem(null); // Não estamos editando nenhum item
     setShowForm(true);
   };
 
-  
+  const handleEdit = (item, type) => {
+    setFormType(type);
+    setEditingItem(item);
+    setFormData({ ...item }); // Preencher os dados do item a ser editado no formulário
+    setShowForm(true);
+  };
+
   const handleSubmit = async () => {
     try {
       if (formType === "plan") {
-        
-        const response = await axios.post("http://localhost:3000/planos", formData);
-        dispatch(fetchPlans());  // Recarregar planos
+        if (editingItem) {
+          // Atualizando um plano
+          await axios.put(`http://localhost:3000/planos/${editingItem.id}`, formData);
+          dispatch(fetchPlans()); // Recarregar planos
+        } else {
+          // Adicionando um novo plano
+          await axios.post("http://localhost:3000/planos", formData);
+          dispatch(fetchPlans()); // Recarregar planos
+        }
       } else if (formType === "box") {
-        
-        const response = await axios.post("http://localhost:3000/caixasPassadas", formData);
-        dispatch(fetchBoxes());  // Recarregar caixas
+        if (editingItem) {
+          // Atualizando um box
+          await axios.put(`http://localhost:3000/caixasPassadas/${editingItem.id}`, formData);
+          dispatch(fetchBoxes()); // Recarregar caixas
+        } else {
+          // Adicionando um novo box
+          await axios.post("http://localhost:3000/caixasPassadas", formData);
+          dispatch(fetchBoxes()); // Recarregar caixas
+        }
+      } else if (formType === "user") {
+        if (editingItem) {
+          // Atualizando dados de usuário através da ação Redux
+          await dispatch(editUser({ ...formData, id: editingItem.id }));
+          dispatch(fetchUsers()); // Recarregar usuários
+        } else {
+          // Adicionando um novo usuário
+          await dispatch(addUser(formData));
+          dispatch(fetchUsers()); // Recarregar usuários
+        }
       }
       setShowForm(false);
     } catch (error) {
@@ -94,6 +129,7 @@ const AdminConfig = () => {
                 plans.map((plan) => (
                   <li key={plan.id}>
                     {plan.nome} - Itens: {plan.itens.join(", ")}
+                    <button onClick={() => handleEdit(plan, "plan")}>Editar</button>
                   </li>
                 ))
               )}
@@ -114,6 +150,7 @@ const AdminConfig = () => {
                 boxes.map((box) => (
                   <li key={box.id}>
                     Tema: {box.tema} - Itens: {box.itens.join(", ")}
+                    <button onClick={() => handleEdit(box, "box")}>Editar</button>
                   </li>
                 ))
               )}
@@ -132,19 +169,8 @@ const AdminConfig = () => {
               ) : (
                 users.map((user) => (
                   <li key={user.id} className="user-card">
-                    <p><strong>Nome:</strong> {user.nome}</p>
-                    <p><strong>Email:</strong> {user.email}</p>
-                    {user.tipo === "usuario" && (
-                      <>
-                        <p><strong>Assinatura:</strong> {user.assinatura || "Nenhuma"}</p>
-                        <p><strong>Endereço:</strong> {user.endereco || "Não informado"}</p>
-                        {user.cpf && <p><strong>CPF:</strong> {user.cpf}</p>}
-                        {user.numeroCartao && (
-                          <p><strong>Cartão:</strong> **** **** **** {user.numeroCartao.slice(-4)}</p>
-                        )}
-                      </>
-                    )}
-                    {user.tipo === "admin" && <p><strong>Tipo:</strong> Administrador</p>}
+                    {user.nome} - {user.email} - {user.tipo}
+                    <button onClick={() => handleEdit(user, "user")}>Editar</button>
                   </li>
                 ))
               )}
@@ -156,7 +182,19 @@ const AdminConfig = () => {
       {showForm && (
         <div className="form-overlay">
           <div className="admin-form">
-            <h3>{formType === "plan" ? "Adicionar Plano" : "Adicionar Box"}</h3>
+            <h3>
+              {formType === "plan"
+                ? editingItem
+                  ? "Editar Plano"
+                  : "Adicionar Plano"
+                : formType === "box"
+                ? editingItem
+                  ? "Editar Box"
+                  : "Adicionar Box"
+                : editingItem
+                ? "Editar Cadastro"
+                : "Adicionar Cadastro"}
+            </h3>
             <label>
               Nome:
               <input
@@ -187,6 +225,28 @@ const AdminConfig = () => {
                   onChange={(e) => setFormData({ ...formData, tema: e.target.value })}
                 />
               </label>
+            )}
+            {formType === "user" && (
+              <div>
+                <label>
+                  Email:
+                  <input
+                    type="email"
+                    value={formData.email || ""}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  />
+                </label>
+                <label>
+                  Tipo:
+                  <select
+                    value={formData.tipo || ""}
+                    onChange={(e) => setFormData({ ...formData, tipo: e.target.value })}
+                  >
+                    <option value="usuario">Usuário</option>
+                    <option value="admin">Administrador</option>
+                  </select>
+                </label>
+              </div>
             )}
             <button onClick={handleSubmit}>Salvar</button>
             <button onClick={() => setShowForm(false)}>Cancelar</button>
