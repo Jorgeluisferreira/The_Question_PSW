@@ -54,7 +54,7 @@
     },
     {
       "id": "7",
-      "nome": "teste",
+      "nome": "teste2",
       "email": "teste@teste.com",
       "senha": "123",
       "tipo": "usuario",
@@ -138,6 +138,14 @@
         "3x item aleatorio",
         "pelucia"
       ]
+    },
+    {
+      "id": "681a",
+      "nome": "Indiana Jones",
+      "itens": [
+        "Lego"
+      ],
+      "tema": "India"
     }
   ],
   "feedbacks": [
