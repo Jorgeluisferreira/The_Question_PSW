@@ -13,9 +13,8 @@ export const fetchPlans = createAsyncThunk("plans/fetchPlans", async () => {
 export const createPlan = createAsyncThunk('plans/createPlan', async (plan, { dispatch, rejectWithValue }) => {
   try {
     console.log('Plano enviado ao backend:', plan);
-    const { data } = await axios.post(`${BASE_URL}/planos`, plan);
+    const { data } = await axios.post(`${BASE_URL}/plans`, plan);
     console.log('Plano adicionado ao DB:', data);
-
     // Recarrega os planos após criar um plano
     dispatch(fetchPlans());
     return data;

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Planos</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+  <h1>Cadastro de Planos</h1>
+  
+  <form id="planForm">
+    <label for="name">Nome do Plano:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="name">Preço do Plano:</label>
+    <input type="text" id="price" name="price" required>
+    
+    <div>
+      <label>Itens:</label>
+      <input
+        type="text"
+        id="itemInput"
+        placeholder="Digite um item"
+      />
+      <button type="button" id="addItemButton">Adicionar Item</button>
+    </div>
+
+    <h3>Itens Adicionados:</h3>
+    <ul id="itemList">
+      <!-- Lista de itens será exibida aqui -->
+    </ul>
+
+    <button type="submit">Criar Plano</button>
+  </form>
+
+  <script>
+    let itens = []; // Array para armazenar os itens adicionados
+
+    // Lidar com o evento de adicionar item
+    document.getElementById("addItemButton").addEventListener("click", function() {
+      const itemInput = document.getElementById("itemInput");
+      const itemValue = itemInput.value.trim();
+
+      if (itemValue !== "") {
+        // Adiciona o item ao array
+        itens.push(itemValue);
+        
+        // Atualiza a lista de itens na tela
+        const itemList = document.getElementById("itemList");
+        const listItem = document.createElement("li");
+        listItem.textContent = itemValue;
+        itemList.appendChild(listItem);
+
+        // Limpa o campo de entrada de item
+        itemInput.value = "";
+      } else {
+        alert("Digite um item antes de adicionar.");
+      }
+    });
+
+    // Lidar com o envio do formulário
+    document.getElementById("planForm").addEventListener("submit", async function(event) {
+      event.preventDefault(); // Previne o comportamento padrão do formulário
+
+      const name = document.getElementById("name").value;
+      const price = document.getElementById("price").value;
+
+      // Envia os dados para a API
+      try {
+        const response = await fetch("http://localhost:3004/plans", { 
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, itens, price }) // Envia o nome, descrição e itens
+        });
+
+        const result = await response.json();
+        
+        if (response.ok) {
+          alert(result.message || "Plano cadastrado com sucesso!");
+          document.getElementById("planForm").reset(); // Limpa os campos do formulário
+          itens = []; // Limpa a lista de itens
+          document.getElementById("itemList").innerHTML = ""; // Limpa a lista de itens exibidos
+        } else {
+          alert("Erro ao cadastrar: " + result.message);
+        }
+
+      } catch (error) {
+        console.error("Erro ao enviar:", error);
+        alert("Erro ao cadastrar plano.");
+      }
+    });
+  </script>
+</bod

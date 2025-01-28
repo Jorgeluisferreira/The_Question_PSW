@@ -144,10 +144,10 @@ function HomePage() {
             <div className="scroll-container">
                 {plans.map((plano, index) => (
                     <PlanCard
-                        key={plano.id}
+                        key={plano._id}
                         planoUser={currentUser ? currentUser.assinatura : ""}
-                        id={plano.id}
-                        nome={plano.nome}
+                        id={plano._id}
+                        nome={plano.name}
                         image={`http://localhost:3001${plano.image}`}
                         itens={plano.itens}
                         price={plano.price}
