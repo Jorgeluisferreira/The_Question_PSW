@@ -5,16 +5,21 @@
       "nome": "Admin",
       "email": "admin@admin.com",
       "senha": "123",
+      "assinatura": "",
       "tipo": "admin"
     },
     {
       "id": "2",
       "nome": "Jorge",
+      "cpf": "16316523",
       "email": "jorgejlfa@hotmail.com",
       "senha": "123",
       "tipo": "usuario",
-      "assinatura": "",
-      "endereco": "teste"
+      "assinatura": "plano premium",
+      "endereco": "teste",
+      "numeroCartao": "21321",
+      "validadeCartao": "121331",
+      "cvv": "124"
     },
     {
       "id": "3",

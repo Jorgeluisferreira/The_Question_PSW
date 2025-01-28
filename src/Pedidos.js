@@ -63,7 +63,7 @@ function Pedidos(){
             {expanded === venda.id && (
               <div className="mt-3">
                 <h6>Detalhes do Pedido:</h6>
-                <p>ID do Caixa: {findBox(venda.idCaixa)}</p>
+                <p>tema da Caixa: {findBox(venda.idCaixa)}</p>
                 <p>
                   Atualizações:{" "}
                   {venda.mensagens

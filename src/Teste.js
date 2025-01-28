@@ -1,36 +1,31 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchUsers, addUser } from "./store/userReducer";
+import { fetchPlans } from "./store/plansReducer";
 
 function UserList() {
   const dispatch = useDispatch();
-  const { users, status, error } = useSelector((state) => state.users);
-
-  
+   // Buscar planos do Redux Store
+  const { plans, PlanStatus, error } = useSelector((state) => state.plans);
   useEffect(() => {
-    if (status === "idle") {
-      dispatch(fetchUsers());
-    }
-  }, [status, dispatch]);
+        if (PlanStatus === "idle") {
+        dispatch(fetchPlans());
+        }
+  }, [PlanStatus, dispatch]);
 
-  const handleAddUser = () => {
-    const newUser = { id: Date.now(), name: "Novo Usuário" };
-    dispatch(addUser(newUser));
-  };
 
   return (
     <div>
-      <h1>Lista de Usuários</h1>
-      {status === "loading" && <p>Carregando...</p>}
-      {status === "failed" && <p>Erro: {error}</p>}
-      {status === "succeeded" && (
+      <h2>Lista de Planos </h2>
+      {PlanStatus === "loading" && <p>Carregando...</p>}
+      {PlanStatus === "failed" && <p>Erro: {error}</p>}
+      {PlanStatus === "succeeded" && (
         <ul>
-          {users.map((user) => (
-            <li key={user.id}>{user.nome}</li>
+          {plans.map((plan) => (
+            <li id={plan._id}>{plan.name}</li>
           ))}
         </ul>
       )}
-      <button onClick={handleAddUser}>Adicionar Usuário</button>
+    
     </div>
   );
 }

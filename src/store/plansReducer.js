@@ -1,13 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:3001'; // Atualize com a URL do seu JSON Server
+const BASE_URL = 'http://localhost:3004'; // Atualize com a URL do seu JSON Server
 
 // Thunk para buscar planos
 export const fetchPlans = createAsyncThunk("plans/fetchPlans", async () => {
-  const response = await axios.get(`${BASE_URL}/planos`);
+  const response = await axios.get(`${BASE_URL}/plans`);
   return response.data;
-});
+  });
 
 // Slice de planos
 const plansSlice = createSlice({
@@ -26,6 +26,7 @@ const plansSlice = createSlice({
       .addCase(fetchPlans.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+        console.log(state.error)
       });
       
   },

@@ -55,7 +55,7 @@ function HomePage() {
     }
      
     if (PlanStatus === "failed") {
-    return <p>Erro ao carregar planos: {error}</p>;
+    return <p>Erro ao carregar planos: {error} {PlanStatus} {plans}</p>;
     } 
 
 
@@ -65,7 +65,7 @@ function HomePage() {
    }
    
    if (boxStatus === "failed") {
-   return <p>Erro ao carregar planos: {boxError}</p>;
+   return <p>Erro ao carregar caixas: {boxError}</p>;
    }
 
    //para Feedbacks
@@ -74,7 +74,7 @@ function HomePage() {
     }
 
     if (feedbackStatus === "failed") {
-    return <p>Erro ao carregar planos: {feedbackError}</p>;
+    return <p>Erro ao carregar feedback: {feedbackError}</p>;
     }
       
 

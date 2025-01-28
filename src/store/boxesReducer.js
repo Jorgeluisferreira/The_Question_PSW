@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:3001'; // Atualize com a URL do seu JSON Server
+const BASE_URL = 'http://localhost:3004'; // Atualize com a URL do seu JSON Server
 
 // Thunk para buscar caixas
 export const fetchBoxes = createAsyncThunk("boxes/fetchBoxes", async () => {
-  const response = await axios.get(`${BASE_URL}/caixasPassadas`);
+  const response = await axios.get(`${BASE_URL}/boxes`);
   return response.data;
 });
 
