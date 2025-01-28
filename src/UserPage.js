@@ -10,6 +10,9 @@ import AssinaturaUser from "./component/assinaturaUser";
 import AdminConfig from "./AdminConfig"; // Componente da página de configurações do administrador
 import Navbar from "./component/Navbar";
 import FeedbackScreen from "./feedbackScreen"
+import SuggestionScreen from "./SuggestionScreen";
+import CreatePlanScreen from "./component/CreatePlanScreen";
+
 
 
 function UserPage() {
@@ -96,6 +99,28 @@ function UserPage() {
                                     Feedback
                                 </Button>
                             </li>
+
+                            <li className="nav-item">
+                            <Button
+                                variant="link"
+                                className={`text-white ${selectedOption === "suggestion" ? "active" : ""}`}
+                                onClick={() => handleMenuClick("suggestion")}
+                            >
+                                Sugestão de Temas
+                            </Button>
+                            </li>
+                            {currentUser?.tipo === "admin" && (
+                                    <li className="nav-item">
+                                        <Button
+                                            variant="link"
+                                            className={`text-white ${selectedOption === "criarPlanos" ? "active" : ""}`}
+                                            onClick={() => handleMenuClick("criarPlanos")}
+                                        >
+                                            Criar Novos Planos
+                                        </Button>
+                                    </li>
+                                )}
+
                         </ul>
                     </div>
 
@@ -105,6 +130,9 @@ function UserPage() {
                         {selectedOption === "assinatura" && <AssinaturaUser />}
                         {selectedOption === "adminConfig" && currentUser?.tipo === "admin" && <AdminConfig />}
                         {selectedOption === "feedback" && <FeedbackScreen />}
+                        {selectedOption === "suggestion" && <SuggestionScreen />}
+                        {selectedOption === "criarPlanos" && currentUser?.tipo === "admin" && <CreatePlanScreen />}
+
                     </div>
                 </div>
             </div>

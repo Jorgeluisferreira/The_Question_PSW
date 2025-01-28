@@ -1,0 +1,84 @@
+/* Container principal */
+.suggestion-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Título principal */
+  .suggestion-container h1 {
+    text-align: center;
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  /* Área de texto para sugestões */
+  .suggestion-textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    min-height: 120px;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+  }
+  
+  .suggestion-textarea:focus {
+    border-color: #6c63ff;
+  }
+  
+  /* Botão de envio */
+  .suggestion-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #D92323;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .suggestion-button:hover {
+    background-color: #5a54e3;
+  }
+  
+  /* Lista de sugestões */
+  .suggestion-list {
+    margin-top: 20px;
+  }
+  
+  .suggestion-list h2 {
+    color: #333;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+  
+  .suggestion-card {
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .suggestion-card h3 {
+    margin: 0 0 10px;
+    color: #333;
+    font-size: 1.2rem;
+  }
+  
+  .suggestion-card p {
+    margin: 0;
+    color: #555;
+    font-size: 1rem;
+  }
+  

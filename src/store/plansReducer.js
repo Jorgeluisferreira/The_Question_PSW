@@ -1,15 +1,31 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+
 const BASE_URL = 'http://localhost:3004'; // Atualize com a URL do seu JSON Server
 
-// Thunk para buscar planos
+
 export const fetchPlans = createAsyncThunk("plans/fetchPlans", async () => {
   const response = await axios.get(`${BASE_URL}/plans`);
   return response.data;
   });
 
-// Slice de planos
+export const createPlan = createAsyncThunk('plans/createPlan', async (plan, { dispatch, rejectWithValue }) => {
+  try {
+    console.log('Plano enviado ao backend:', plan);
+    const { data } = await axios.post(`${BASE_URL}/planos`, plan);
+    console.log('Plano adicionado ao DB:', data);
+
+    // Recarrega os planos após criar um plano
+    dispatch(fetchPlans());
+    return data;
+  } catch (error) {
+    console.error('Erro ao criar o plano:', error.message);
+    return rejectWithValue('Erro ao criar o plano');
+  }
+});
+
+
 const plansSlice = createSlice({
   name: "plans",
   initialState: { plans: [], PlanStatus: "idle", error: null },
@@ -24,12 +40,13 @@ const plansSlice = createSlice({
         state.PlanStatus = "loading";
       })
       .addCase(fetchPlans.rejected, (state, action) => {
-        state.status = "failed";
+        state.PlanStatus = "failed";
         state.error = action.error.message;
         console.log(state.error)
       });
-      
   },
 });
 
 export default plansSlice.reducer;
+
+

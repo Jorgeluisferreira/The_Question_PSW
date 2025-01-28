@@ -9,6 +9,11 @@ export const fetchBoxes = createAsyncThunk("boxes/fetchBoxes", async () => {
   return response.data;
 });
 
+export const createBox = createAsyncThunk("boxes/createBox", async (boxData) => {
+  const response = await axios.post(`${BASE_URL}/caixasPassadas`, boxData);
+  return response.data;  // Retorna a box criada (ou qualquer dado relevante)
+});
+
 // Slice de caixas
 const boxesSlice = createSlice({
   name: "boxes",

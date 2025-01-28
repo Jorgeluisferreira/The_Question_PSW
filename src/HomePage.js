@@ -32,11 +32,15 @@ function HomePage() {
 
     // Quando a página for carregada, dispara a ação para buscar os planos
     useEffect(() => {
-        if (PlanStatus === "idle") {
+      if (PlanStatus === "idle") {
         dispatch(fetchPlans());
-        }
+      }
     }, [PlanStatus, dispatch]);
-
+    
+    useEffect(() => {
+      console.log("Plan state atualizado:", plans);
+    }, [plans]);  // Debug: Confirma se os planos estão sendo atualizados
+    
     // Quando a página for carregada, dispara a ação para buscar as caixas
    useEffect(() => {
     if (boxStatus === "idle") {
@@ -88,21 +92,22 @@ function HomePage() {
 
         {/* Seção de Início */}
         <section id="home" className="text-white text-center vh-100 d-flex align-items-center justify-content-center sectionHome">
-            <div className="container ">
-                {/* Coluna da esquerda com o texto */}
-                <Row className="homeRow" xs={1} md={2}>
-                <Col className="homeLeft" >
-                    <h1 className="titulo">Bem-vindo {currentUser ? currentUser.nome : ""}</h1>
-                    <p className="lead">Explore nossos serviços e saiba mais sobre nós!</p>
-                </Col>
+  <div className="container ">
+    {/* Coluna da esquerda com o texto */}
+    <Row className="homeRow" xs={1} md={2}>
+      <Col className="homeLeft">
+        <h1 className="titulo">Bem-vindo {currentUser ? currentUser.nome : ""}</h1>
+        <p className="lead">Explore nossos serviços e saiba mais sobre nós!</p>
+      </Col>
 
-                {/* Coluna da direita com a imagem */}
-                <Col >
-                    <img src={homeImage} alt="Imagem" className="img-fluid" />
-                </Col>
-                </Row>
-            </div>
-        </section>
+      {/* Coluna da direita com a imagem */}
+      <Col>
+        <img src={homeImage} alt="Imagem" className="img-fluid" />
+      </Col>
+    </Row>
+  </div>
+</section>
+
 
       {/* Seção Sobre */}
       <section id="sobre" className="py-5 bg-light text-center">
@@ -130,21 +135,29 @@ function HomePage() {
 
 
 
-      {/* Seção de Planos com Carrossel */}
-      <section className="py-5 bg-light text-center" id="planos">
-                <div className="container">
-                    <h2>Nossos Planos</h2>
-                    {plans.length === 0 ? (
-                        <p>Nenhum plano encontrado.</p>
-                    ) : (
-                        <div className="scroll-container">
-                            {plans.map((plano, index) => (
-                                <PlanCard planoUser={currentUser ? currentUser.assinatura : ""} id={plano.id} nome={plano.nome} image={`http://localhost:3001${plano.image}`} itens={plano.itens} />
-                            ))}
-                        </div>
-                    )}
-                </div>
-        </section>
+        <section className="py-5 bg-light text-center" id="planos">
+    <div className="container">
+        <h2>Nossos Planos</h2>
+        {plans.length === 0 ? (
+            <p>Nenhum plano encontrado.</p>
+        ) : (
+            <div className="scroll-container">
+                {plans.map((plano, index) => (
+                    <PlanCard
+                        key={plano.id}
+                        planoUser={currentUser ? currentUser.assinatura : ""}
+                        id={plano.id}
+                        nome={plano.nome}
+                        image={`http://localhost:3001${plano.image}`}
+                        itens={plano.itens}
+                        price={plano.price}
+                    />
+                ))}
+            </div>
+        )}
+    </div>
+</section>
+
 
         {/* Seção de Planos com Carrossel */}
       <section className="py-5 bg-light text-center">

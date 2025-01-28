@@ -1,0 +1,71 @@
+/* Plano de fundo */
+.tema-formulário {
+    background: linear-gradient(135deg, #000000, #8b0000);
+    color: #000000;
+    font-family: 'Arial', sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Estilo do formulário */
+  .tema-formulário.card {
+    background-color: #9e0d0d;
+    border: 2px solid #ff0000;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
+  }
+  
+  .tema-formulário h3 {
+    color: #ff0000;
+    font-weight: bold;
+  }
+  
+  .tema-formulário h5 {
+    color: #ff0000;
+    margin-bottom: 10px;
+  }
+  
+  .tema-formulário label {
+    color: #000000;
+    font-size: 14px;
+  }
+  
+  .tema-formulário input, .tema-formulário select {
+    background-color: #ffffff;
+    color: #2c2c2c;
+    border: 1px solid #ff0000;
+    border-radius: 5px;
+    padding: 8px;
+  }
+  
+  .tema-formulário input:focus, .tema-formulário select:focus {
+    outline: none;
+    box-shadow: 0 0 5px #ff0000;
+  }
+  
+  .tema-formulário button {
+    background-color: #ff0000;
+    color: #000000;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 15px;
+    transition: all 0.3s;
+  }
+  
+  .tema-formulário button:hover {
+    background-color: #d00000;
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(255, 0, 0, 0.8);
+  }
+  
+  /* Responsividade */
+   @media (max-width: 768px) {
+    .tema-formulário.card {
+      width: 90%;
+    }
+  }
+  

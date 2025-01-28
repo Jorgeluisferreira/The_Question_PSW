@@ -1,3 +1,4 @@
+
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -18,55 +19,59 @@ export const addUser = createAsyncThunk("users/addUser", async (user) => {
 
 // Thunk para verificar o login
 export const loginUser = createAsyncThunk(
-    "users/loginUser",
-    async ({ email, senha }, { rejectWithValue }) => {
-      try {
-        const response = await axios.get(BASE_URL);
-        const users = response.data;
-  
-        // Verifica se o usuário existe e a senha está correta
-        const user = users.find((u) => u.email === email && u.senha === senha);
-        if (!user) {
-          throw new Error("E-mail ou senha inválidos.");
-        }
+  "users/loginUser",
+  async ({ email, senha }, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(BASE_URL);
+      const users = response.data;
 
-        localStorage.setItem("currentUser", JSON.stringify(user));
-        return user; // Retorna o usuário encontrado
-      } catch (error) {
-        return rejectWithValue(error.message); // Rejeita com a mensagem de erro
+      // Verifica se o usuário existe e a senha está correta
+      const user = users.find((u) => u.email === email && u.senha === senha);
+      if (!user) {
+        throw new Error("E-mail ou senha inválidos.");
       }
-    }
-  );
 
-  // Thunk para editar os dados do usuário
-  export const editUser = createAsyncThunk(
-    "users/editUser",
-    async (userData, { rejectWithValue }) => {
-      try {
-        const response = await axios.put(`${BASE_URL}/${userData.id}`, userData);
-        return response.data; // Retorna os dados atualizados
-      } catch (error) {
-        return rejectWithValue(error.message); // Rejeita com a mensagem de erro
-      }
+      localStorage.setItem("currentUser", JSON.stringify(user));
+      return user; // Retorna o usuário encontrado
+    } catch (error) {
+      return rejectWithValue(error.message); // Rejeita com a mensagem de erro
     }
-  );
+  }
+);
 
-  export const logout = () => (dispatch) => {
-    dispatch({
-      type: "users/logout", // Dispara a ação de logout
-    });
-    localStorage.removeItem("currentUser"); // Remove o usuário do localStorage
-  };
-  
+// Thunk para editar os dados do usuário
+export const editUser = createAsyncThunk(
+  "users/editUser",
+  async (userData, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(`${BASE_URL}/${userData.id}`, userData);
+      return response.data; // Retorna os dados atualizados
+    } catch (error) {
+      return rejectWithValue(error.message); // Rejeita com a mensagem de erro
+    }
+  }
+);
+
+export const logout = () => (dispatch) => {
+  dispatch({
+    type: "users/logout", // Dispara a ação de logout
+  });
+  localStorage.removeItem("currentUser"); // Remove o usuário do localStorage
+};
 
 // Slice de usuário
 const userSlice = createSlice({
   name: "users",
-  initialState: { users: [], currentUser: JSON.parse(localStorage.getItem("currentUser")) || null, status: "idle", error: null },
+  initialState: {
+    users: [],
+    currentUser: JSON.parse(localStorage.getItem("currentUser")) || null,
+    status: "idle",
+    error: null,
+  },
   reducers: {
     logout: (state) => {
-        state.currentUser = null; // Limpa o estado do currentUser
-    }
+      state.currentUser = null; // Limpa o estado do currentUser
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -92,14 +97,20 @@ const userSlice = createSlice({
         state.error = action.payload; // Armazena o erro do login
       })
       .addCase(editUser.fulfilled, (state, action) => {
-        state.currentUser = action.payload; // Atualiza o usuário no estado global
-        localStorage.setItem("currentUser", JSON.stringify(action.payload));
+        // Verifica se o usuário editado é o mesmo que está logado
+        if (state.currentUser && state.currentUser.id === action.payload.id) {
+          state.currentUser = action.payload; // Atualiza o usuário logado
+        }
+        // Atualiza os dados do usuário na lista de usuários
+        state.users = state.users.map((user) =>
+          user.id === action.payload.id ? action.payload : user
+        );
+        localStorage.setItem("currentUser", JSON.stringify(state.currentUser));
       })
       .addCase(editUser.rejected, (state, action) => {
         state.error = action.payload; // Armazena o erro da edição
       });
   },
 });
-
 
 export default userSlice.reducer;
