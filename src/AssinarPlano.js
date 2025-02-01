@@ -87,7 +87,7 @@ function AssinarPlano() {
 
   
     // Função para lidar com o envio do formulário
-    const handleSubmit = (e) => {
+  const handleSubmit = (e) => {
       e.preventDefault();
     
   const validateCardNumber = (number) => {
@@ -129,21 +129,15 @@ function AssinarPlano() {
     return;
   }
 
-  const newUserData = {
-    ...userData,
-    inicioAssinatura: new Date().toISOString(), // Salva a data no formato ISO
-  };
-
   try {
-    dispatch(editUser(newUserData));
+
+    dispatch(editUser(userData));
     navigate("/agradecimento");
   } catch (error) {
     console.error("Erro ao assinar o plano:", error);
     alert('Erro ao assinar o plano. Tente novamente.');
   }
-      // Aqui você pode fazer algo com os dados, como enviar para o Redux ou backend
-      dispatch(editUser(userData));
-      navigate("/agradecimento")
+     
     };
 
     const handleBack = () => {
@@ -254,7 +248,7 @@ function AssinarPlano() {
         >
           <option value="" disabled>Selecione um plano</option>
           {plans.map((plan) => (
-            <option key={plan._id} value={plan.name}>
+            <option key={plan._id} value={plan._id}>
               {plan.name}
             </option>
           ))}

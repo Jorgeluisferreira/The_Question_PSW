@@ -25,7 +25,7 @@ function AssinaturaUser() {
     
     if (confirmCancel) {
       // Se o usuário confirmar, atualiza a assinatura para vazio
-      const updatedUserData = { ...userData, assinatura: "", inicioAssinatura: null };
+      const updatedUserData = { ...userData, assinatura: null, inicioAssinatura: null };
       setUserData(updatedUserData);
       
       // Envia a atualização para o Redux
@@ -37,8 +37,12 @@ function AssinaturaUser() {
   return (
     <div>
       <h3>Informações do Usuário</h3>
-      <h5>Tipo de assinatura: {userData.assinatura == "" ? "não possui assinatura" : userData.assinatura}</h5><br></br>
-      <h5>Assinatura ativa desde: {userData.assinatura == "" ? "não possui assinatura" : userData.inicioAssinatura}</h5><br></br>
+      <h5>Tipo de assinatura: {userData.assinatura == null ? "não possui assinatura" : userData.assinatura.name}</h5>
+      <h5>Preço: {userData.assinatura == null ? "não possui assinatura" : userData.assinatura.price}</h5>
+      <h5>Itens:</h5> 
+      {userData.assinatura == null ? "não possui assinatura" :
+       userData.assinatura.itens.map((item,index) => (<h6>{item}</h6>))
+      }<br></br>
 
       {userData.assinatura != "" ?
         <button type="button" className="btn btn-danger" onClick={handleSubmit} >

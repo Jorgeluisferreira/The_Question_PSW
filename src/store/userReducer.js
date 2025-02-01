@@ -44,7 +44,11 @@ export const editUser = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       const response = await axios.put(`${BASE_URL}/${userData.id}`, userData);
-      return response.data; // Retorna os dados atualizados
+      const user = response.data;
+
+      localStorage.setItem("currentUser", JSON.stringify(user));
+      console.log(user)
+      return user; // Retorna os dados atualizados
     } catch (error) {
       return rejectWithValue(error.message); // Rejeita com a mensagem de erro
     }

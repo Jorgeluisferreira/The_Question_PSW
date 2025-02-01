@@ -19,7 +19,8 @@ const usersSchema = new Schema({
         required: true
     },
     assinatura:{
-        type:String
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'plans'
     },
     endereco:{
         type:String
@@ -35,12 +36,8 @@ const usersSchema = new Schema({
     },
     validadeCartao:{
         type:String
-    },
-    inicioAssinatura:{
-        type:Date,
-        default: Date.now
     }
-
+ 
 })
 
 var Users = mongoose.model('users', usersSchema)
