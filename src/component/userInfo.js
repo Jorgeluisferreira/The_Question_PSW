@@ -8,7 +8,7 @@ function UserInfo() {
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false); // Estado de edição
   const [userData, setUserData] = useState({
-    id: currentUser.id,
+    id: currentUser._id,
     nome: currentUser.nome,
     cpf: currentUser.cpf,
     email: currentUser.email,
@@ -25,7 +25,7 @@ function UserInfo() {
    useEffect(() => {
     if (currentUser) {
       setUserData({
-        id: currentUser.id,
+        id: currentUser._id,
         nome: currentUser.nome,
         cpf: currentUser.cpf,
         email: currentUser.email,
@@ -79,6 +79,21 @@ function UserInfo() {
             disabled={!isEditing} // Bloqueia ou habilita o input
           />
         </div>
+
+        <div className="mb-3">
+          <label htmlFor="cpf" className="form-label">
+            CPF:
+          </label>
+          <input
+            type="text"
+            id="cpf"
+            name="cpf"
+            className="form-control"
+            value={userData.cpf}
+            disabled={true}
+          />
+        </div>
+
 
         <div className="mb-3">
           <label htmlFor="email" className="form-label">

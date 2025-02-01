@@ -17,7 +17,7 @@ function AssinarPlano() {
     
 
     const [userData, setUserData] = useState({
-        id: currentUser  ? currentUser.id : "",
+        id: currentUser  ? currentUser._id : "",
         nome: currentUser ? currentUser.nome : "",
         cpf: currentUser ? currentUser.cpf : "",
         email: currentUser ? currentUser.email : "",
@@ -27,13 +27,15 @@ function AssinarPlano() {
         endereco: currentUser ? currentUser.endereco : "",
         numeroCartao: currentUser ? currentUser.numeroCartao : "",
         validadeCartao: currentUser ? currentUser.validadeCartao : "",
-        cvv: currentUser ? currentUser.cvv : ""
+        cvv: currentUser ? currentUser.cvv : "",
+        inicioAssinatura: currentUser ? currentUser.inicioAssinatura : ""
+        
       });
 
   useEffect(() => {
     if (currentUser) {
       setUserData({
-        id: currentUser  ? currentUser.id : "",
+        id: currentUser  ? currentUser._id : "",
         nome: currentUser ? currentUser.nome : "",
         cpf: currentUser ? currentUser.cpf : "",
         email: currentUser ? currentUser.email : "",
@@ -43,7 +45,8 @@ function AssinarPlano() {
         endereco: currentUser ? currentUser.endereco : "",
         numeroCartao: currentUser ? currentUser.numeroCartao : "",
         validadeCartao: currentUser ? currentUser.validadeCartao : "",
-        cvv: currentUser ? currentUser.cvv : ""
+        cvv: currentUser ? currentUser.cvv : "",
+        inicioAssinatura: currentUser ? currentUser.inicioAssinatura : ""
       })
     }
   },[currentUser, navigate]);
@@ -126,8 +129,13 @@ function AssinarPlano() {
     return;
   }
 
+  const newUserData = {
+    ...userData,
+    inicioAssinatura: new Date().toISOString(), // Salva a data no formato ISO
+  };
+
   try {
-    dispatch(editUser(userData));
+    dispatch(editUser(newUserData));
     navigate("/agradecimento");
   } catch (error) {
     console.error("Erro ao assinar o plano:", error);
@@ -246,8 +254,8 @@ function AssinarPlano() {
         >
           <option value="" disabled>Selecione um plano</option>
           {plans.map((plan) => (
-            <option key={plan.id} value={plan.nome}>
-              {plan.nome} - {plan.itens}
+            <option key={plan._id} value={plan.name}>
+              {plan.name}
             </option>
           ))}
         </select>

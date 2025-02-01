@@ -1,11 +1,10 @@
-
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Button, Form } from "react-bootstrap";
 import { createPlan } from "../store/plansReducer";
 
 function CreatePlanScreen() {
-  const [nome, setNome] = useState("");
+  const [name, setName] = useState("");
   const [itens, setItens] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState(null);
@@ -19,7 +18,7 @@ function CreatePlanScreen() {
     const itensArray = itens.split(",").map(item => item.trim()).filter(item => item);
 
     const planData = {
-      nome,
+      name,
       itens: itensArray,
       price,
       image: image ? URL.createObjectURL(image) : "/images/default.png",
@@ -28,7 +27,7 @@ function CreatePlanScreen() {
     try {
       await dispatch(createPlan(planData));
       console.log("Plano salvo com sucesso!");
-      setNome("");
+      setName("");
       setItens("");
       setPrice("");
       setImage(null);
@@ -45,8 +44,8 @@ function CreatePlanScreen() {
         <Form.Control
           type="text"
           placeholder="Digite o nome do plano"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           required
         />
       </Form.Group>
