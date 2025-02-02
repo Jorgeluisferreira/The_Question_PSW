@@ -20,7 +20,8 @@ const usersSchema = new Schema({
     },
     assinatura:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'plans'
+        ref:'plans',
+        default: null
     },
     endereco:{
         type:String

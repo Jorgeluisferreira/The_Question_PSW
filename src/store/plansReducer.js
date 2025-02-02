@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 
-const BASE_URL = 'http://localhost:3004'; // Atualize com a URL do seu JSON Server
+const BASE_URL = 'http://127.0.0.1:3004'; // Atualize com a URL do seu JSON Server
 
 
 export const fetchPlans = createAsyncThunk("plans/fetchPlans", async () => {
