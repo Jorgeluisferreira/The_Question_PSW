@@ -23,14 +23,15 @@ const FeedbackScreen = () => {
     }
 
     try {
-      await axios.post("http://localhost:3001/feedbacks", {
+      // Ajuste a URL para seu servidor Express com MongoDB
+      await axios.post("http://127.0.0.1:3004/feedback", {
         nome: currentUser.nome,       
         mensagem: newFeedback, 
         createdAt: new Date().toISOString(),
       });
 
       setNewFeedback("");    
-      alert("Obrigado Pelo feedback")
+      alert("Obrigado pelo feedback!");
 
       dispatch(fetchFeedbacks()); 
     } catch (error) {
