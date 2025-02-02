@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Box = require('../models/Box');
+const Box = require('../models/boxes');
 
 // Buscar todas as caixas
 router.get('/', async (req, res) => {
