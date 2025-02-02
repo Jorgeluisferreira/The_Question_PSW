@@ -37,8 +37,14 @@ const usersSchema = new Schema({
     },
     validadeCartao:{
         type:String
+    },
+    boxes: [{ 
+        type: Schema.Types.ObjectId, 
+        ref: "boxes" 
+    }],
+    dataCancelamento: {
+        type: Date
     }
- 
 })
 
 var Users = mongoose.model('users', usersSchema)
