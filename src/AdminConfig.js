@@ -29,10 +29,8 @@ const AdminConfig = () => {
   );
 
   useEffect(() => {
-    if (boxStatus === "idle") {
-      dispatch(fetchBoxes());
-    }
-  }, [dispatch, boxStatus]);
+    dispatch(fetchBoxes());
+  }, [dispatch]);
   
 
   const handleAdd = (type) => {
@@ -143,8 +141,19 @@ const AdminConfig = () => {
               ) : (
                 boxes.map((box) => (
                   <li key={box.id}>
-                    Tema: {box.tema} - Itens: {box.itens.join(", ")}
-                    <button onClick={() => handleEdit(box, "box")}>Editar</button>
+                    Nome: {box.nome} - Tema: {box.tema} - Itens: {box.itens.join(", ")}
+                    <button 
+                      className="edit-button"
+                      onClick={() => handleEdit(box, "box")}
+                    >
+                      Editar
+                    </button>
+                    <button
+                      className="edit-button"
+                      onClick={() => handleDelete(box.id)} // Passando o id corretamente
+                    >
+                      Deletar
+                    </button>
                   </li>
                 ))
               )}
