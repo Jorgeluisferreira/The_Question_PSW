@@ -38,6 +38,13 @@ const boxesSlice = createSlice({
       state.boxes = action.payload;
       state.boxStatus = "succeeded";
     })
+    .addCase(fetchBoxes.pending, (state) => {
+      state.boxStatus = "loading";
+    })
+    .addCase(fetchBoxes.rejected, (state, action) => {
+      state.boxStatus = "failed";
+      state.boxError = action.error.message;
+    })
     .addCase(createBox.fulfilled, (state, action) => {
       state.boxes.push(action.payload); // Adiciona a caixa nova
     })
@@ -50,13 +57,6 @@ const boxesSlice = createSlice({
     .addCase(deleteBox.fulfilled, (state, action) => {
       state.boxes = state.boxes.filter(box => box._id !== action.payload); // Remove a caixa deletada
     })
-    .addCase(fetchBoxes.pending, (state) => {
-      state.boxStatus = "loading";
-    })
-    .addCase(fetchBoxes.rejected, (state, action) => {
-      state.boxStatus = "failed";
-      state.boxError = action.error.message;
-    });
   },
 });
 
