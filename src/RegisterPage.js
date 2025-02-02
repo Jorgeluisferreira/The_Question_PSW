@@ -28,7 +28,6 @@ function RegisterPage() {
       email,
       senha,
       tipo: "usuario",
-      assinatura: "",
       endereço: "",
     };
     dispatch(addUser(newUser));

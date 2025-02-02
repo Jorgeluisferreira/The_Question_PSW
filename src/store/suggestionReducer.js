@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const BASE_URL = "http://localhost:3001"; // Atualize com a URL do backend
+const BASE_URL = "http://127.0.0.1:3001"; // Atualize com a URL do backend
 
 // **Thunk** para buscar sugestões do backend
 export const fetchSuggestions = createAsyncThunk("suggestions/fetchSuggestions", async () => {

@@ -204,3 +204,23 @@
 .admin-config .user-card strong {
     color: #ff4d4d; /* Destaque em vermelho */
 }
+
+.admin-config .edit-button {
+    background-color: #ff4d4d; /* Cor clara, mas não tão intensa quanto o branco */
+  color: white; /* Cor de texto escura para contraste */
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 25px; /* Bordas arredondadas */
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.admin-config .edit-button:hover {
+  background-color: #e0e0e0; /* Leve escurecimento ao passar o mouse */
+  transform: scale(1.05); /* Leve aumento de tamanho ao passar o mouse */
+}
+
+.admin-config .edit-button:focus {
+  outline: none; /* Remove o contorno padrão do foco */
+}
