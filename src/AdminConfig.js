@@ -42,11 +42,15 @@ const AdminConfig = () => {
     setShowForm(true);
   };
   
-  const handleEdit = (item, type) => {
-    setFormType(type);
-    setEditingItem(item);
-    setFormData({ ...item }); // Preencher os dados do item a ser editado no formulário
-    setShowForm(true);
+  const handleEdit = (box) => {
+    setFormData({
+      nome: box.nome,
+      itens: box.itens || [],
+      tema: box.tema || "",  // Inicializando o tema
+    });
+    setFormType("box");
+    setEditingItem(box);  // Definindo o item a ser editado
+    setShowForm(true);  // Exibindo o formulário para edição
   };
 
   const handleDelete = (id) => {
@@ -57,46 +61,28 @@ const AdminConfig = () => {
     try {
       let response;
   
-      if (formType === "plan") {
+      if (formType === "box") {
         if (editingItem) {
-          // Atualizando um plano
-          await axios.put(`http://localhost:3000/planos/${editingItem.id}`, formData);
+          // Atualizando uma caixa existente
+          await axios.put(`http://localhost:3004/boxes/${editingItem._id}`, formData); // Usando o _id para MongoDB
         } else {
-          // Adicionando um novo plano
-          response = await axios.post("http://localhost:3000/planos", formData);
+          // Adicionando uma nova caixa
+          response = await axios.post("http://localhost:3004/boxes", formData);
         }
-        dispatch(fetchPlans()); // Recarregar planos
-      } else if (formType === "box") {
-        if (editingItem) {
-          // Atualizando um box
-          await axios.put(`http://localhost:3000/caixasPassadas/${editingItem.id}`, formData);
-        } else {
-          // Adicionando um novo box com ID manual
-          const newBox = { id: Date.now().toString(), ...formData };
-          response = await axios.post("http://localhost:3000/caixasPassadas", newBox);
+        dispatch(fetchBoxes()); // Recarregar as caixas após a criação ou edição
+  
+        // Exibir alerta em caso de sucesso
+        if (response && response.status === 201) {
+          alert("Box salvo com sucesso!");
         }
-        dispatch(fetchBoxes()); // Recarregar caixas
-      } else if (formType === "user") {
-        if (editingItem) {
-          // Atualizando dados de usuário através da ação Redux
-          await dispatch(editUser({ ...formData, id: editingItem.id }));
-        } else {
-          // Adicionando um novo usuário
-          await dispatch(addUser(formData));
-        }
-        dispatch(fetchUsers()); // Recarregar usuários
       }
   
-      // Exibir alerta em caso de sucesso para planos e caixas
-      if (response && response.status === 201) {
-        alert(`${formType === "plan" ? "Plano" : "Box"} salvo com sucesso!`);
-      }
-  
-      setShowForm(false);
+      setShowForm(false); // Fechar o formulário após o envio
     } catch (error) {
-      console.error("Erro ao salvar:", error);
+      console.error("Erro ao salvar a caixa:", error);
+      alert("Erro ao salvar a caixa.");
     }
-  };
+  };  
   
 
   return (
@@ -106,23 +92,23 @@ const AdminConfig = () => {
         <button
           className={`tab-button ${selectedTab === "plans" ? "active" : ""}`}
           onClick={() => setSelectedTab("plans")}
-          >
+        >
           Planos
-          </button>
-          <button
+        </button>
+        <button
           className={`tab-button ${selectedTab === "boxes" ? "active" : ""}`}
           onClick={() => setSelectedTab("boxes")}
         >
-        Boxes
+          Boxes
         </button>
         <button
           className={`tab-button ${selectedTab === "users" ? "active" : ""}`}
           onClick={() => setSelectedTab("users")}
         >
-        Cadastros
+          Cadastros
         </button>
       </div>
-
+  
       <div className="content">
         {selectedTab === "plans" && (
           <div>
@@ -144,7 +130,7 @@ const AdminConfig = () => {
             </ul>
           </div>
         )}
-
+  
         {selectedTab === "boxes" && (
           <div>
             <h3>Boxes</h3>
@@ -165,11 +151,11 @@ const AdminConfig = () => {
             </ul>
           </div>
         )}
-
+  
         {selectedTab === "users" && (
           <div>
-          <h3>Cadastros</h3>
-          <ul>
+            <h3>Cadastros</h3>
+            <ul>
               {userStatus === "loading" ? (
                 <p>Carregando usuários...</p>
               ) : userStatus === "failed" ? (
@@ -183,55 +169,62 @@ const AdminConfig = () => {
                 ))
               )}
             </ul>
-            </div>
+          </div>
         )}
-        </div>
-
-      
-        {showForm && (
+      </div>
+  
+      {showForm && (
         <>
           {formType === "box" ? (
-            <CreateBoxScreen onCancel={() => setShowForm(false)} />
-          ) : (
             <div className="form-overlay">
               <div className="admin-form">
-                <h3>Adicionar Box</h3>
-
+                <h3>{editingItem ? "Editar Box" : "Adicionar Box"}</h3>
+  
                 <label>
-                  Nome: 
-                  <input type="text" value={formData.nome || ""} onChange={(e) => setFormData({ ...formData,
-                    nome: e.target.value
-                  })}
+                  Nome:
+                  <input
+                    type="text"
+                    value={formData.nome || ""}
+                    onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
                   />
                 </label>
-
+  
                 <label>
-                  Itens: 
-                  <input type="text" value={formData.itens?.join(", ") || ""}
-                    onChange={(e) => 
-                    setFormData({ 
-                      ...formData, 
-                      itens: e.target.value.split(", ").map((item) => item.trim()), 
-
+                  Tema:
+                  <input
+                    type="text"
+                    value={formData.tema || ""}
+                    onChange={(e) => setFormData({ ...formData, tema: e.target.value })}
+                  />
+                </label>
+                <label>
+                Itens:
+                <input
+                  type="text"
+                  value={formData.itens?.join(", ") || ""}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      itens: e.target.value
+                        .split(/,\s*/g)  // Divide por vírgula e qualquer quantidade de espaço após ela
+                        .map((item) => item.trim())  // Remove espaços extras ao redor dos itens
+                        .filter((item) => item !== "")  // Remove itens vazios
                     })
                   }
-                  />
-                </label>
+                />
+              </label>
 
                 <button onClick={handleSubmit}>Salvar</button>
                 <button onClick={() => setShowForm(false)}>Cancelar</button>
-
               </div>
             </div>
-
-
-        )}
-
+          ) : (
+            <CreateBoxScreen onCancel={() => setShowForm(false)} />
+          )}
         </>
-      
       )}
     </div>
   );
-};
+}
 
 export default AdminConfig;
