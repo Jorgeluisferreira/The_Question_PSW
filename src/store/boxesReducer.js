@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:3004'; // Atualize com a URL do seu JSON Server
+const BASE_URL = 'http://127.0.0.1:3004'; // Atualize com a URL do seu JSON Server
 
 // Thunk para buscar caixas
 export const fetchBoxes = createAsyncThunk("boxes/fetchBoxes", async () => {
@@ -10,7 +10,7 @@ export const fetchBoxes = createAsyncThunk("boxes/fetchBoxes", async () => {
 });
 
 export const createBox = createAsyncThunk("boxes/createBox", async (boxData) => {
-  const response = await axios.post(`${BASE_URL}/caixasPassadas`, boxData);
+  const response = await axios.post(`${BASE_URL}/boxes`, boxData);
   return response.data;  // Retorna a box criada (ou qualquer dado relevante)
 });
 
@@ -35,7 +35,7 @@ const boxesSlice = createSlice({
   extraReducers: (builder) => {
     builder
     .addCase(fetchBoxes.fulfilled, (state, action) => {
-      state.boxes = action.payload;
+      state.boxes = action.payload.map(box => ({ id: box._id, ...box }));;
       state.boxStatus = "succeeded";
     })
     .addCase(fetchBoxes.pending, (state) => {

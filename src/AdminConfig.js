@@ -3,7 +3,8 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPlans } from "./store/plansReducer";
 import { fetchBoxes } from "./store/boxesReducer";
-import { fetchUsers, editUser, addUser } from "./store/userReducer"; // Importando editUser e addUser
+import { deleteBox } from "./store/boxesReducer";
+import { fetchUsers, editUser, addUser } from "./store/userReducer"; 
 import axios from "axios";
 import "./AdminConfig.css";
 import CreateBoxScreen from "./component/CreateBoxScreen";
@@ -28,16 +29,11 @@ const AdminConfig = () => {
   );
 
   useEffect(() => {
-    if (planStatus === "idle") {
-      dispatch(fetchPlans());
-    }
     if (boxStatus === "idle") {
       dispatch(fetchBoxes());
     }
-    if (userStatus === "idle") {
-      dispatch(fetchUsers());
-    }
-  }, [dispatch, planStatus, boxStatus, userStatus]);
+  }, [dispatch, boxStatus]);
+  
 
   const handleAdd = (type) => {
     setFormType(type);
@@ -51,6 +47,10 @@ const AdminConfig = () => {
     setEditingItem(item);
     setFormData({ ...item }); // Preencher os dados do item a ser editado no formulário
     setShowForm(true);
+  };
+
+  const handleDelete = (id) => {
+    dispatch(deleteBox(id)); // Deleta a caixa
   };
 
   const handleSubmit = async () => {

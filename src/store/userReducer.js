@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // URL do backend
-const BASE_URL = "http://localhost:3004/users";
+const BASE_URL = "http://127.0.0.1:3004";
 
 // Thunk para buscar os dados do backend
 export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
