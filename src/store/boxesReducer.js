@@ -14,6 +14,19 @@ export const createBox = createAsyncThunk("boxes/createBox", async (boxData) => 
   return response.data;  // Retorna a box criada (ou qualquer dado relevante)
 });
 
+// Atualizar caixa
+export const updateBox = createAsyncThunk("boxes/updateBox", async ({ id, data }) => {
+  const response = await axios.put(`${BASE_URL}/boxes/${id}`, data);
+  return response.data; // Retorna a caixa atualizada
+});
+
+// Deletar caixa
+export const deleteBox = createAsyncThunk("boxes/deleteBox", async (id) => {
+  await axios.delete(`${BASE_URL}/boxes/${id}`);
+  return id; // Retorna o id da caixa deletada
+});
+
+
 // Slice de caixas
 const boxesSlice = createSlice({
   name: "boxes",
@@ -21,17 +34,29 @@ const boxesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchBoxes.fulfilled, (state, action) => {
-        state.boxes = action.payload;
-        state.boxStatus = "succeeded";
-      })
-      .addCase(fetchBoxes.pending, (state) => {
-        state.boxStatus = "loading";
-      })
-      .addCase(fetchBoxes.rejected, (state, action) => {
-        state.boxStatus = "failed";
-        state.boxError = action.error.message;
-      });
+    .addCase(fetchBoxes.fulfilled, (state, action) => {
+      state.boxes = action.payload;
+      state.boxStatus = "succeeded";
+    })
+    .addCase(createBox.fulfilled, (state, action) => {
+      state.boxes.push(action.payload); // Adiciona a caixa nova
+    })
+    .addCase(updateBox.fulfilled, (state, action) => {
+      const index = state.boxes.findIndex(box => box._id === action.payload._id);
+      if (index !== -1) {
+        state.boxes[index] = action.payload; // Atualiza a caixa
+      }
+    })
+    .addCase(deleteBox.fulfilled, (state, action) => {
+      state.boxes = state.boxes.filter(box => box._id !== action.payload); // Remove a caixa deletada
+    })
+    .addCase(fetchBoxes.pending, (state) => {
+      state.boxStatus = "loading";
+    })
+    .addCase(fetchBoxes.rejected, (state, action) => {
+      state.boxStatus = "failed";
+      state.boxError = action.error.message;
+    });
   },
 });
 
