@@ -24,6 +24,15 @@ export const createPlan = createAsyncThunk('plans/createPlan', async (plan, { di
   }
 });
 
+// Thunk para associar o plano ao usuário
+export const associarPlanoAoUsuario = createAsyncThunk(
+  "plans/associarPlanoAoUsuario", 
+  async ({ userId, planoId }) => {
+    const response = await axios.post(`${BASE_URL}/associarPlano/${userId}`, { planoId });
+    return response.data;
+  }
+);
+
 
 const plansSlice = createSlice({
   name: "plans",
@@ -42,6 +51,17 @@ const plansSlice = createSlice({
         state.PlanStatus = "failed";
         state.error = action.error.message;
         console.log(state.error)
+      });
+  builder
+      .addCase(createPlan.rejected, (state, action) => {
+        state.planStatus = "failed";
+        state.error = action.payload || action.error.message;
+        console.log(state.error);
+      })
+      .addCase(associarPlanoAoUsuario.rejected, (state, action) => {
+        state.planStatus = "failed";
+        state.error = action.payload || action.error.message;
+        console.log(state.error);
       });
   },
 });

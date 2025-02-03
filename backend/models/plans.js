@@ -13,7 +13,11 @@ const plansSchema = new Schema({
     price:{
         type: Number,
         required: true
-    }
+    },
+    boxes:[{
+        type: Schema.Types.ObjectId, 
+        ref: 'boxes'
+    }]
 })
 
 var Plans = mongoose.model('plans', plansSchema)
