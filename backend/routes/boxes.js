@@ -35,19 +35,19 @@ router.post('/', async (req, res) => {
     await existingPlan.save();
 
     // Encontra os usuários que têm a assinatura ativa nesse plano
-    const activeUsers = await Users.find({ assinatura: objectIdPlan, isActive: true });
+    // const activeUsers = await Users.find({ assinatura: objectIdPlan, isActive: true });
 
-    if (activeUsers.length === 0) {
-      console.log("Nenhum usuário ativo encontrado para esse plano");
-      return res.status(404).json({ message: 'Nenhum usuário ativo encontrado para este plano' });
-    }
+    // if (activeUsers.length === 0) {
+    //   console.log("Nenhum usuário ativo encontrado para esse plano");
+    //   return res.status(404).json({ message: 'Nenhum usuário ativo encontrado para este plano' });
+    // }
 
-    // Adiciona a nova caixa aos usuários ativos
-    for (const user of activeUsers) {
-      user.boxes.push(newBox._id);
-      await user.save();
-      console.log(`Caixa ${newBox._id} adicionada ao usuário ${user._id}`);
-    }
+    // // Adiciona a nova caixa aos usuários ativos
+    // for (const user of activeUsers) {
+    //   user.boxes.push(newBox._id);
+    //   await user.save();
+    //   console.log(`Caixa ${newBox._id} adicionada ao usuário ${user._id}`);
+    // }
 
     res.status(201).json({ message: 'Caixa criada e associada com sucesso aos usuários', newBox });
   } catch (error) {
