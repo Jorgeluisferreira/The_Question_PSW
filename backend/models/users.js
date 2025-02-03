@@ -19,9 +19,8 @@ const usersSchema = new Schema({
         required: true
     },
     assinatura:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'plans',
-        default: null
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'plans'
     },
     endereco:{
         type:String
@@ -40,7 +39,8 @@ const usersSchema = new Schema({
     },
     boxes: [{ 
         type: Schema.Types.ObjectId, 
-        ref: "boxes" 
+        ref: "boxes",
+        default: null 
     }],
     dataCancelamento: {
         type: Date
