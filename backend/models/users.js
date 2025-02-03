@@ -39,8 +39,7 @@ const usersSchema = new Schema({
     },
     boxes: [{ 
         type: Schema.Types.ObjectId, 
-        ref: "boxes",
-        default: null 
+        ref: "boxes"
     }],
     dataCancelamento: {
         type: Date

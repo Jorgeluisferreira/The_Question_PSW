@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const router = express.Router();
 const Box = require('../models/boxes');
 const Plans = require('../models/plans');
@@ -14,37 +15,44 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Criar uma nova caixa
 router.post('/', async (req, res) => {
   try {
-      const { nome, tema, itens, plan } = req.body;
+    const { nome, tema, itens, planId } = req.body; // 'planId' para simplificação
 
-      // Verifica se o plano existe
-      const existingPlan = await Plans.findById(plan);
-      if (!existingPlan) {
-          return res.status(404).json({ message: 'Plano não encontrado' });
-      }
+    const objectIdPlan = new mongoose.Types.ObjectId(planId);
 
-      // Cria a nova caixa
-      const newBox = await Box.create({ nome, tema, itens, plan });
+    // Verifica se o plano existe
+    const existingPlan = await Plans.findById(objectIdPlan);
+    if (!existingPlan) {
+      return res.status(404).json({ message: 'Plano não encontrado' });
+    }
 
-      // Atualiza o plano para incluir a nova caixa
-      existingPlan.boxes.push(newBox._id);
-      await existingPlan.save();
+    // Cria a nova caixa
+    const newBox = await Box.create({ nome, tema, itens, plan: planId });
 
-      // Encontra os usuários que ainda têm a assinatura ativa nesse plano
-      const activeUsers = await Users.find({ plan: existingPlan._id, isActive: true });
+    // Atualiza o plano para incluir a nova caixa
+    existingPlan.boxes.push(newBox._id);
+    await existingPlan.save();
 
-      // Adiciona a nova caixa apenas aos usuários com assinatura ativa
-      for (const user of activeUsers) {
-          user.boxes.push(newBox._id);
-          await user.save();
-      }
+    // Encontra os usuários que têm a assinatura ativa nesse plano
+    const activeUsers = await Users.find({ assinatura: objectIdPlan, isActive: true });
 
-      res.status(201).json(newBox);
+    if (activeUsers.length === 0) {
+      console.log("Nenhum usuário ativo encontrado para esse plano");
+      return res.status(404).json({ message: 'Nenhum usuário ativo encontrado para este plano' });
+    }
+
+    // Adiciona a nova caixa aos usuários ativos
+    for (const user of activeUsers) {
+      user.boxes.push(newBox._id);
+      await user.save();
+      console.log(`Caixa ${newBox._id} adicionada ao usuário ${user._id}`);
+    }
+
+    res.status(201).json({ message: 'Caixa criada e associada com sucesso aos usuários', newBox });
   } catch (error) {
-      console.error('Erro ao criar caixa:', error);
-      res.status(500).json({ message: 'Erro interno ao criar caixa' });
+    console.error('Erro ao criar caixa:', error);
+    res.status(500).json({ message: 'Erro interno ao criar caixa' });
   }
 });
 
