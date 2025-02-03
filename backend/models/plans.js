@@ -14,9 +14,10 @@ const plansSchema = new Schema({
         type: Number,
         required: true
     },
-    boxes:[{
+    boxes: [{
         type: Schema.Types.ObjectId, 
-        ref: 'boxes'
+        ref: 'boxes',
+        default: [] 
     }]
 })
 

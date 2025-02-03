@@ -44,7 +44,8 @@ const usersSchema = new Schema({
     }],
     dataCancelamento: {
         type: Date
-    }
+    },
+    isActive: { type: Boolean, default: true }
 })
 
 var Users = mongoose.model('users', usersSchema)

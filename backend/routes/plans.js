@@ -16,25 +16,15 @@ router.route('/')
 })
 .post((req,res,next) => {
   
-  const { name, itens, price, boxes } = req.body;
+  const { name, itens, price } = req.body;
 
     Plans.create({
       name,
       itens,
-      price,
-      boxes
+      price
   })
     .then((plan) => {
       console.log("Plano criado", plan);
-      boxes.forEach((boxId) => {
-        Box.findByIdAndUpdate(boxId, { $push: { plans: plan._id } }, { new: true })
-          .then((updatedBox) => {
-            console.log("Caixa atualizada:", updatedBox);
-          })
-          .catch((err) => {
-            console.error("Erro ao atualizar caixa:", err);
-          });
-        });
       res.statusCode = 200
       res.setHeader('Content-Type', 'application/json');
       res.json(plan);
