@@ -9,7 +9,7 @@ var plansRouter = require('./routes/plans');
 var usersRouter = require('./routes/users');
 var feedbackRouter = require('./routes/feedback');
 var boxesRouter = require('./routes/boxes');
-
+var subscriptionsRouter = require('./routes/subscriptions')
 
 const mongoose = require('mongoose');
 
@@ -35,5 +35,6 @@ app.use('/plans', plansRouter);
 app.use('/users', usersRouter);
 app.use('/feedback', feedbackRouter);
 app.use('/boxes', boxesRouter);
+app.use('/subscriptions', subscriptionsRouter);
 
 module.exports = app;

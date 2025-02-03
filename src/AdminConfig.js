@@ -29,9 +29,10 @@ const AdminConfig = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchBoxes());
-  }, [dispatch]);
-  
+    dispatch(fetchBoxes(), fetchPlans(), fetchUsers, fetchUsers);
+    setShowForm(false);
+  }, [selectedTab], [dispatch]);
+
 
   const handleAdd = (type) => {
     setFormType(type);
@@ -40,6 +41,11 @@ const AdminConfig = () => {
     setShowForm(true);
   };
   
+  const handleTabChange = (tab) => {
+    setSelectedTab(tab);
+    setShowForm(false); // Fecha o formulário ao mudar de aba
+  };
+
   const handleEdit = (box) => {
     setFormData({
       nome: box.nome,
@@ -55,11 +61,24 @@ const AdminConfig = () => {
     dispatch(deleteBox(id)); // Deleta a caixa
   };
 
+  
+
   const handleSubmit = async () => {
     try {
       let response;
+
+      if (formType === "plan") {
+        if (editingItem) {
+          // Atualizando um plano
+          await axios.put(`http://localhost:3000/planos/${editingItem.id}`, formData);
+        } else {
+          // Adicionando um novo plano
+          response = await axios.post("http://localhost:3000/planos", formData);
+        }
+       
+        dispatch(fetchPlans()); // Recarregar planos
   
-      if (formType === "box") {
+      } else if (formType === "box") {
         if (editingItem) {
           // Atualizando uma caixa existente
           await axios.put(`http://localhost:3004/boxes/${editingItem._id}`, formData); // Usando o _id para MongoDB

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPlans } from "./store/plansReducer";
 import { editUser } from "./store/userReducer";
+import { associarPlanoAoUsuario } from "./store/plansReducer";
 import "./AssinarPlano.css";
 
 
@@ -132,6 +133,10 @@ function AssinarPlano() {
   try {
 
     dispatch(editUser(userData));
+    
+    if (userData.assinatura) {
+      dispatch(associarPlanoAoUsuario({ userId: userData.id, planoId: userData.assinatura }));
+  }
     navigate("/agradecimento");
   } catch (error) {
     console.error("Erro ao assinar o plano:", error);

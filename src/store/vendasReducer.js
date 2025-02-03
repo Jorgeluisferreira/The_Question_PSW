@@ -9,6 +9,18 @@ export const fetchVendas = createAsyncThunk("vendas/fetchVendas", async () => {
   return response.data;
 });
 
+export const subscribeBox = createAsyncThunk(
+  "vendas/subscribeBox",
+  async ({ userId, boxId }) => {
+    const response = await axios.post(`${BASE_URL}/subscribe`, {
+      userId,
+      boxId,
+    });
+    return response.data;
+  }
+);
+
+
 // Slice de planos
 const vendasSlice = createSlice({
   name: "vendas",
