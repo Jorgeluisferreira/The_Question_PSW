@@ -22,16 +22,17 @@ const SuggestionScreen = () => {
       alert("Por favor, escreva uma sugestão antes de enviar.");
       return;
     }
-
+  
     const suggestionData = {
-      nome: currentUser.nome,
+      nome: currentUser.nome,  // Usando o nome do usuário em vez do userId
       mensagem: newSuggestion,
       createdAt: new Date().toISOString(),
     };
-
+  
     dispatch(addSuggestion(suggestionData)); // Usa o thunk para enviar ao backend
     setNewSuggestion(""); // Limpa o campo de texto
   };
+  
 
   return (
     <div className="suggestion-container">
