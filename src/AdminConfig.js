@@ -1,10 +1,8 @@
-
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPlans } from "./store/plansReducer";
 import { fetchBoxes } from "./store/boxesReducer";
 import { deleteBox } from "./store/boxesReducer";
-import { fetchUsers, editUser, addUser } from "./store/userReducer"; 
+import { fetchUsers } from "./store/userReducer"; 
 import axios from "axios";
 import "./AdminConfig.css";
 import CreateBoxScreen from "./component/CreateBoxScreen";
@@ -12,15 +10,12 @@ import CreateBoxScreen from "./component/CreateBoxScreen";
 const AdminConfig = () => {
   const dispatch = useDispatch();
 
-  const [selectedTab, setSelectedTab] = useState("plans");
+  const [selectedTab, setSelectedTab] = useState("boxes");
   const [formType, setFormType] = useState(null);
   const [formData, setFormData] = useState({});
   const [showForm, setShowForm] = useState(false);
-  const [editingItem, setEditingItem] = useState(null); // Para saber qual item está sendo editado
+  const [editingItem, setEditingItem] = useState(null);
 
-  const { plans, status: planStatus, error: planError } = useSelector(
-    (state) => state.plans
-  );
   const { boxes, status: boxStatus, error: boxError } = useSelector(
     (state) => state.boxes
   );
@@ -29,89 +24,65 @@ const AdminConfig = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchBoxes(), fetchPlans(), fetchUsers, fetchUsers);
+    dispatch(fetchBoxes());
+    dispatch(fetchUsers());
     setShowForm(false);
-  }, [selectedTab], [dispatch]);
-
+  }, [selectedTab, dispatch]);
 
   const handleAdd = (type) => {
     setFormType(type);
     setFormData({});
-    setEditingItem(null); // Não estamos editando nenhum item
+    setEditingItem(null);
     setShowForm(true);
   };
   
   const handleTabChange = (tab) => {
     setSelectedTab(tab);
-    setShowForm(false); // Fecha o formulário ao mudar de aba
+    setShowForm(false);
   };
 
   const handleEdit = (box) => {
     setFormData({
       nome: box.nome,
       itens: box.itens || [],
-      tema: box.tema || "",  // Inicializando o tema
+      tema: box.tema || "",
     });
     setFormType("box");
-    setEditingItem(box);  // Definindo o item a ser editado
-    setShowForm(true);  // Exibindo o formulário para edição
+    setEditingItem(box);
+    setShowForm(true);
   };
 
   const handleDelete = (id) => {
-    dispatch(deleteBox(id)); // Deleta a caixa
+    dispatch(deleteBox(id));
   };
-
-  
 
   const handleSubmit = async () => {
     try {
       let response;
 
-      if (formType === "plan") {
+      if (formType === "box") {
         if (editingItem) {
-          // Atualizando um plano
-          await axios.put(`http://localhost:3000/planos/${editingItem.id}`, formData);
+          await axios.put(`http://localhost:3004/boxes/${editingItem._id}`, formData);
         } else {
-          // Adicionando um novo plano
-          response = await axios.post("http://localhost:3000/planos", formData);
-        }
-       
-        dispatch(fetchPlans()); // Recarregar planos
-  
-      } else if (formType === "box") {
-        if (editingItem) {
-          // Atualizando uma caixa existente
-          await axios.put(`http://localhost:3004/boxes/${editingItem._id}`, formData); // Usando o _id para MongoDB
-        } else {
-          // Adicionando uma nova caixa
           response = await axios.post("http://localhost:3004/boxes", formData);
         }
-        dispatch(fetchBoxes()); // Recarregar as caixas após a criação ou edição
-  
-        // Exibir alerta em caso de sucesso
+        dispatch(fetchBoxes());
+
         if (response && response.status === 201) {
           alert("Box salvo com sucesso!");
         }
       }
-  
-      setShowForm(false); // Fechar o formulário após o envio
+      setShowForm(false);
     } catch (error) {
       console.error("Erro ao salvar a caixa:", error);
       alert("Erro ao salvar a caixa.");
     }
   };  
-  
 
   return (
     <div className="admin-config">
       <h2>Configurações de Administrador</h2>
       <div className="tabs">
-        <button
-          className={`tab-button ${selectedTab === "plans" ? "active" : ""}`}
-          onClick={() => setSelectedTab("plans")}
-        >
-          Planos
-        </button>
         <button
           className={`tab-button ${selectedTab === "boxes" ? "active" : ""}`}
           onClick={() => setSelectedTab("boxes")}
@@ -127,27 +98,6 @@ const AdminConfig = () => {
       </div>
   
       <div className="content">
-        {selectedTab === "plans" && (
-          <div>
-            <h3>Planos</h3>
-            <button onClick={() => handleAdd("plan")}>Adicionar Plano</button>
-            <ul>
-              {planStatus === "loading" ? (
-                <p>Carregando planos...</p>
-              ) : planStatus === "failed" ? (
-                <p>Erro ao carregar planos: {planError}</p>
-              ) : (
-                plans.map((plan) => (
-                  <li key={plan.id}>
-                    {plan.nome} - Itens: {plan.itens.join(", ")}
-                    <button onClick={() => handleEdit(plan, "plan")}>Editar</button>
-                  </li>
-                ))
-              )}
-            </ul>
-          </div>
-        )}
-  
         {selectedTab === "boxes" && (
           <div>
             <h3>Boxes</h3>
@@ -163,13 +113,13 @@ const AdminConfig = () => {
                     Nome: {box.nome} - Tema: {box.tema} - Itens: {box.itens.join(", ")}
                     <button 
                       className="edit-button"
-                      onClick={() => handleEdit(box, "box")}
+                      onClick={() => handleEdit(box)}
                     >
                       Editar
                     </button>
                     <button
                       className="edit-button"
-                      onClick={() => handleDelete(box.id)} // Passando o id corretamente
+                      onClick={() => handleDelete(box.id)}
                     >
                       Deletar
                     </button>
@@ -192,7 +142,7 @@ const AdminConfig = () => {
                 users.map((user) => (
                   <li key={user.id} className="user-card">
                     {user.nome} - {user.email} - {user.tipo}
-                    <button onClick={() => handleEdit(user, "user")}>Editar</button>
+                    <button onClick={() => handleEdit(user)}>Editar</button>
                   </li>
                 ))
               )}
@@ -233,10 +183,7 @@ const AdminConfig = () => {
                   onChange={(e) =>
                     setFormData({
                       ...formData,
-                      itens: e.target.value
-                        .split(/,\s*/g)  // Divide por vírgula e qualquer quantidade de espaço após ela
-                        .map((item) => item.trim())  // Remove espaços extras ao redor dos itens
-                        .filter((item) => item !== "")  // Remove itens vazios
+                      itens: e.target.value.split(/,\s*/g).map((item) => item.trim()).filter((item) => item !== "")
                     })
                   }
                 />
