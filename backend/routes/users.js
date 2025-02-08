@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 var router = express.Router();
 const Users = require('../models/users')
 const bcrypt = require('bcryptjs');
-const router = express.Router();
 
 /* GET users listing. */
 router.route('/')

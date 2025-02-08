@@ -83,7 +83,6 @@ app.post('/login', async (req, res) => {
 // Resto das rotas...
 var indexRouter = require('./routes/index');
 var plansRouter = require('./routes/plans');
-var usersRouter = require('./routes/users');
 var feedbackRouter = require('./routes/feedback');
 var boxesRouter = require('./routes/boxes');
 var subscriptionsRouter = require('./routes/subscriptions');
