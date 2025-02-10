@@ -31,6 +31,7 @@ router.route('/')
     }, (err) => {console.log( 'error:'+ err)})
     .catch((err) => {console.log('error outside'+err)})
 })
+
 // Função de assinatura do plano
 .post((req, res, next) => {
   const { userId, planoId } = req.body; // Espera-se que o corpo tenha o `userId` e `planoId`
@@ -74,6 +75,42 @@ router.route('/')
       console.error("Erro ao encontrar o plano:", err);
       res.status(500).json({ message: "Erro ao encontrar o plano." });
     });
+});
+
+// Editar um plano existente (PUT)
+router.put('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, itens, price } = req.body;
+
+    const updatedPlan = await Plans.findByIdAndUpdate(id, { name, itens, price }, { new: true });
+
+    if (!updatedPlan) {
+      return res.status(404).json({ message: 'Plano não encontrado.' });
+    }
+
+    res.status(200).json(updatedPlan);
+  } catch (error) {
+    console.error('Erro ao atualizar plano:', error);
+    res.status(500).json({ message: 'Erro ao atualizar plano.' });
+  }
+});
+
+// Deletar um plano (DELETE)
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedPlan = await Plans.findByIdAndDelete(id);
+
+    if (!deletedPlan) {
+      return res.status(404).json({ message: 'Plano não encontrado.' });
+    }
+
+    res.status(200).json({ message: 'Plano deletado com sucesso.' });
+  } catch (error) {
+    console.error('Erro ao deletar plano:', error);
+    res.status(500).json({ message: 'Erro ao deletar plano.' });
+  }
 });
 
 module.exports = router;

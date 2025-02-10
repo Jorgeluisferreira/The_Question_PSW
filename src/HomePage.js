@@ -14,7 +14,7 @@ import { fetchFeedbacks } from "./store/feedbackReducer";
 import FeedbackCard from "./component/FeedbackCard";
 import { useState } from "react";
 import Navbar from "./component/Navbar";
-
+import planImg from './images/box.png'  
 function HomePage() {
 
 
@@ -148,7 +148,7 @@ function HomePage() {
                         planoUser={currentUser ? currentUser.assinatura : ""}
                         id={plano._id}
                         nome={plano.name}
-                        image={`http://localhost:3001${plano.image}`}
+                        image={planImg}
                         itens={plano.itens}
                         price={plano.price}
                     />

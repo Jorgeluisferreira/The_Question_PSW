@@ -75,16 +75,6 @@ function CreatePlanScreen() {
         />
       </Form.Group>
 
-      {/* Campo para adicionar a imagem */}
-      <Form.Group controlId="image">
-        <Form.Label>Imagem</Form.Label>
-        <Form.Control
-          type="file"
-          onChange={(e) => setImage(e.target.files[0])}
-          accept="image/*"
-        />
-      </Form.Group>
-
       {/* Botão de envio */}
       <Button type="submit" className="mt-3">
         Criar Plano

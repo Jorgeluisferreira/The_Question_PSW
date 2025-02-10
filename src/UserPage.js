@@ -12,6 +12,7 @@ import Navbar from "./component/Navbar";
 import FeedbackScreen from "./feedbackScreen"
 import SuggestionScreen from "./SuggestionScreen";
 import CreatePlanScreen from "./component/CreatePlanScreen";
+import EditPlans from "./component/EditPlans";
 
 
 
@@ -119,8 +120,21 @@ function UserPage() {
                                             Criar Novos Planos
                                         </Button>
                                     </li>
+                                    
                                 )}
 
+                            {currentUser?.tipo === "admin" && (
+                                    <li className="nav-item">
+                                        <Button
+                                            variant="link"
+                                            className={`text-white ${selectedOption === "editarPlanos" ? "active" : ""}`}
+                                            onClick={() => handleMenuClick("editarPlanos")}
+                                        >
+                                            Editar Planos
+                                        </Button>
+                                    </li>
+                                    
+                            )}
                         </ul>
                     </div>
 
@@ -132,6 +146,7 @@ function UserPage() {
                         {selectedOption === "feedback" && <FeedbackScreen />}
                         {selectedOption === "suggestion" && <SuggestionScreen />}
                         {selectedOption === "criarPlanos" && currentUser?.tipo === "admin" && <CreatePlanScreen />}
+                        {selectedOption === "editarPlanos" && currentUser?.tipo === "admin" && <EditPlans />}
 
                     </div>
                 </div>

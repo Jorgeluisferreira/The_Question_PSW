@@ -24,6 +24,28 @@ export const createPlan = createAsyncThunk('plans/createPlan', async (plan, { di
   }
 });
 
+export const editPlan = createAsyncThunk("plans/editPlan", async (plan) => {
+  const response = await axios.put(`${BASE_URL}/plans/${plan.id}`, plan);
+  return response.data;
+});
+
+export const deletePlan = createAsyncThunk(
+  "plans/deletePlan",
+  async (planId, { dispatch, rejectWithValue }) => {
+    try {
+      await axios.delete(`${BASE_URL}/plans/${planId}`);
+      console.log(`Plano ${planId} deletado do DB`);
+
+      // Recarrega os planos após a exclusão
+      dispatch(fetchPlans());
+      return planId;
+    } catch (error) {
+      console.error("Erro ao deletar o plano:", error.message);
+      return rejectWithValue("Erro ao deletar o plano");
+    }
+  }
+);
+
 // Thunk para associar o plano ao usuário
 export const associarPlanoAoUsuario = createAsyncThunk(
   "plans/associarPlanoAoUsuario", 
@@ -62,6 +84,23 @@ const plansSlice = createSlice({
         state.planStatus = "failed";
         state.error = action.payload || action.error.message;
         console.log(state.error);
+      })
+      .addCase(editPlan.fulfilled, (state, action) => {
+        // Atualiza localmente o plano na lista para evitar duplicação
+        state.plans = state.plans.map((p) =>
+          p._id === action.payload._id ? action.payload : p
+        );
+      })
+      .addCase(editPlan.rejected, (state, action) => {
+        state.PlanStatus = "failed";
+        state.error = action.payload || action.error.message;
+        console.log(state.error);
+      }) .addCase(deletePlan.fulfilled, (state, action) => {
+        state.plans = state.plans.filter((p) => p.id !== action.payload);
+      })
+      .addCase(deletePlan.rejected, (state, action) => {
+        state.PlanStatus = "failed";
+        state.error = action.payload || action.error.message;
       });
   },
 });
