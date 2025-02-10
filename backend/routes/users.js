@@ -1,84 +1,94 @@
-var express = require('express');
+const express = require('express');
 const mongoose = require('mongoose');
-var router = express.Router();
-const Users = require('../models/users')
+const router = express.Router();
+const Users = require('../models/users');
 const bcrypt = require('bcryptjs');
 
 /* GET users listing. */
 router.route('/')
-.get((req, res, next) =>{
-  Users.find({}).populate('assinatura').then((user) => {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.json(user);
-    console.log('get users infos')
-    console.log(user)
-  }, (err) => {console.log( 'error:'+ err)})
-  .catch((err) => {console.log('error outside'+err)})
+  .get(async (req, res, next) => {
+    try {
+      const users = await Users.find({}).populate('assinatura');
+      res.status(200).json(users);
+      console.log('GET - Informações dos usuários:', users);
+    } catch (err) {
+      console.error('Erro ao buscar usuários:', err);
+      res.status(500).json({ error: 'Erro ao buscar usuários' });
+    }
+  })
+  .post(async (req, res, next) => {
+    try {
+      const { senha, ...rest } = req.body; // Extrai a senha do corpo da requisição
 
-})
-.post((req,res,next) => {
-  Users.create(req.body)
-  .then((user) =>{
-    console.log("usuario criado", user)
-    res.statusCode = 200
-      res.setHeader('Content-Type', 'application/json');
-      res.json(user);
-  },(err) => {console.log( 'error:'+ err)})
-  .catch((err) => {console.log('error outside'+err)})
+      // Criptografa a senha
+      const salt = await bcrypt.genSalt(10); // Gera um salt
+      const hashedPassword = await bcrypt.hash(senha, salt); // Criptografa a senha
+
+      // Cria o usuário com a senha criptografada
+      const user = await Users.create({ ...rest, senha: hashedPassword });
+
+      res.status(201).json(user);
+      console.log('POST - Usuário criado:', user);
+    } catch (err) {
+      console.error('Erro ao criar usuário:', err);
+      res.status(500).json({ error: 'Erro ao criar usuário' });
+    }
+  });
+
+// Rota para fazer login
+router.post('/login', async (req, res) => {
+  try {
+    const { email, senha } = req.body;
+
+    // Busca o usuário pelo email
+    const user = await Users.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ error: 'Usuário não encontrado' });
+    }
+
+    // Logs para depuração
+    console.log('Senha fornecida:', senha);
+    console.log('Senha criptografada no banco:', user.senha);
+
+    // Verifica se a senha está correta
+    const isPasswordValid = await bcrypt.compare(senha, user.senha);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: 'Senha incorreta' });
+    }
+
+    // Se a senha estiver correta, retorna o usuário (ou um token JWT, por exemplo)
+    res.status(200).json({ message: 'Login bem-sucedido', user });
+  } catch (err) {
+    console.error('Erro ao fazer login:', err);
+    res.status(500).json({ error: 'Erro ao fazer login' });
+  }
 });
 
+// Rota para atualizar um usuário
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params; // Pega o ID da URL
-    console.log(id)
+
+    // Verifica se o corpo da requisição contém a senha
+    if (req.body.senha) {
+      const salt = await bcrypt.genSalt(10);
+      req.body.senha = await bcrypt.hash(req.body.senha, salt); // Criptografa a nova senha
+    }
+
     const updatedUser = await Users.findByIdAndUpdate(id, req.body, { new: true }).populate('assinatura');
 
     if (!updatedUser) {
-      return res.status(404).json({ error: 'Plano não encontrado' });
+      return res.status(404).json({ error: 'Usuário não encontrado' });
     }
+
     res.status(200).json(updatedUser);
-    console.log('PUT - Plano atualizado:', updatedUser);
+    console.log('PUT - Usuário atualizado:', updatedUser);
   } catch (err) {
-    console.error('Erro ao atualizar plano:', err);
-    res.status(500).json({ error: 'Erro ao atualizar plano' });
+    console.error('Erro ao atualizar usuário:', err);
+    res.status(500).json({ error: 'Erro ao atualizar usuário' });
   }
 });
-
-
-router.post('/register', async (req, res) => {
-  const { nome, email, senha, tipo } = req.body;  // Recebe as informações do usuário do corpo da requisição
-
-  try {
-      // Verifica se o usuário já existe
-      const userExists = await Users.findOne({ email });
-
-      if (userExists) {
-          return res.status(400).send('Email já está em uso!');
-      }
-
-      // Criptografa a senha antes de salvar no banco de dados
-      const hashedPassword = await bcrypt.hash(senha, 10);
-
-      // Cria um novo usuário no banco de dados
-      const newUser = new Users({
-          nome,
-          email,
-          senha: hashedPassword,
-          tipo,  // Exemplo: 'admin' ou 'usuário comum'
-          isActive: true  // Usuário ativo por padrão
-      });
-
-      // Salva o novo usuário no banco de dados
-      await newUser.save();
-
-      res.status(201).send('Usuário registrado com sucesso!');
-  } catch (error) {
-      console.error(error);
-      res.status(500).send('Erro ao registrar usuário!');
-  }
-});
-
-
 
 module.exports = router;
