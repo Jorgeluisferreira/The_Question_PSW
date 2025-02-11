@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const router = express.Router();
 const Users = require('../models/users');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken'); // Adicione esta linha para usar JWT
 
 /* GET users listing. */
 router.route('/')
@@ -35,37 +36,6 @@ router.route('/')
     }
   });
 
-// Rota para fazer login
-router.post('/login', async (req, res) => {
-  try {
-    const { email, senha } = req.body;
-
-    // Busca o usuário pelo email
-    const user = await Users.findOne({ email });
-
-    if (!user) {
-      return res.status(404).json({ error: 'Usuário não encontrado' });
-    }
-
-    // Logs para depuração
-    console.log('Senha fornecida:', senha);
-    console.log('Senha criptografada no banco:', user.senha);
-
-    // Verifica se a senha está correta
-    const isPasswordValid = await bcrypt.compare(senha, user.senha);
-
-    if (!isPasswordValid) {
-      return res.status(401).json({ error: 'Senha incorreta' });
-    }
-
-    // Se a senha estiver correta, retorna o usuário (ou um token JWT, por exemplo)
-    res.status(200).json({ message: 'Login bem-sucedido', user });
-  } catch (err) {
-    console.error('Erro ao fazer login:', err);
-    res.status(500).json({ error: 'Erro ao fazer login' });
-  }
-});
-
 // Rota para atualizar um usuário
 router.put('/:id', async (req, res) => {
   try {
@@ -88,6 +58,35 @@ router.put('/:id', async (req, res) => {
   } catch (err) {
     console.error('Erro ao atualizar usuário:', err);
     res.status(500).json({ error: 'Erro ao atualizar usuário' });
+  }
+});
+
+// Rota de login
+router.post('/login', async (req, res) => {
+  try {
+    const { email, senha } = req.body;
+
+    // Verifica se o usuário existe
+    const user = await Users.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: 'Usuário não encontrado' });
+    }
+
+    // Verifica se a senha está correta
+    const isPasswordValid = await bcrypt.compare(senha, user.senha);
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: 'Senha incorreta' });
+    }
+
+    // Gera um token JWT
+    const token = jwt.sign({ id: user._id }, 'seuSegredoAqui', { expiresIn: '1h' });
+
+    // Retorna o token e algumas informações do usuário (opcional)
+    res.status(200).json({ token, user: { id: user._id, nome: user.nome, email: user.email } });
+    console.log('POST - Login realizado com sucesso:', user.email);
+  } catch (err) {
+    console.error('Erro ao realizar login:', err);
+    res.status(500).json({ error: 'Erro ao realizar login' });
   }
 });
 

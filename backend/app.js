@@ -6,6 +6,7 @@ const logger = require('morgan');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const mongoose = require('mongoose');
+const router = express.Router();
 
 // Conexão com o MongoDB
 const url = 'mongodb://127.0.0.1:27017/thequestion';
@@ -19,20 +20,49 @@ connect.then((db) => {
 
 const app = express();
 
-// Configuração do middleware de sessão
+// Middleware de sessão (coloque depois do cookieParser e antes do CORS)
+app.use(cookieParser());
 app.use(session({
   secret: 'meuSegredo123',
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({
-    mongoUrl: 'mongodb://127.0.0.1:27017/thequestion',
+    mongoUrl: url, // Reutilizando a URL do MongoDB
     collectionName: 'sessions',
   }),
   cookie: {
-    secure: false,
-    maxAge: 1000 * 60 * 60 * 24,
+    secure: false, // Altere para true se estiver usando HTTPS
+    httpOnly: true, // Protege contra ataques XSS
+    maxAge: 1000 * 60 * 60 * 24, // 1 dia
   },
 }));
+
+// CORS (coloque depois do express-session)
+app.use(cors({
+  origin: 'http://localhost:3000', // Ajuste para o front-end correto
+  credentials: true, // Permite envio de cookies entre front e back
+}));
+
+
+router.post('/login', async (req, res) => {
+  const { email, senha } = req.body;
+
+  const user = await User.findOne({ email, senha }); // Simulação da busca no BD
+  if (!user) {
+    return res.status(401).json({ error: 'E-mail ou senha inválidos' });
+  }
+
+  req.session.user = user; // Armazena o usuário na sessão
+  res.json({ message: 'Login bem-sucedido', user });
+});
+
+
+router.get('/current-user', (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ error: 'Usuário não autenticado' });
+  }
+  res.json(req.session.user);
+});
 
 // Outros middlewares
 app.use(logger('dev'));
@@ -59,4 +89,7 @@ app.use('/boxes', boxesRouter);
 app.use('/subscriptions', subscriptionsRouter);
 app.use('/suggestions', suggestionRoutes);
 
+
+module.exports = router;
 module.exports = app;
+
