@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPlans, editPlan, deletePlan } from "../store/plansReducer";
+import { associarPlanoAoUsuario } from '../store/plansReducer'; // CORRETO
+import { fetchPlans, deletePlan, editPlan } from '../store/plansReducer';
+
+
 
 function EditPlans() {
   const dispatch = useDispatch();

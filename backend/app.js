@@ -8,6 +8,9 @@ const Users = require('./models/users'); // Certifique-se de importar o modelo U
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const usersRouter = require('./routes/users');
+const subscriptionRoutes = require('./routes/subscriptionRoutes.js');
+
+
 
 // Conexão com o MongoDB
 const mongoose = require('mongoose');
@@ -23,6 +26,9 @@ connect.then((db) => {
 var app = express();
 
 // Configuração do middleware de sessão
+
+app.use('/api', subscriptionRoutes);
+
 app.use(session({
     secret: 'meuSegredo123',
     resave: false,

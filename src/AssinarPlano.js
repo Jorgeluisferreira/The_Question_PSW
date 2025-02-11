@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPlans } from "./store/plansReducer";
-import { editUser } from "./store/userReducer";
-import { associarPlanoAoUsuario } from "./store/plansReducer";
+import { fetchPlans } from "../src/store/plansReducer";
+import { editUser } from "../src/store/userReducer";
+import { deletePlan, editPlan, associarPlanoAoUsuario, subscribePlan } from '../src/store/plansReducer';
 import "./AssinarPlano.css";
 
 
@@ -107,6 +107,10 @@ function AssinarPlano() {
 
   const validateCardExpiry = (expiry) => {
     return /^(0[1-9]|1[0-2])\/\d{4}$/.test(expiry);
+  };
+
+  const handleSubscribe = (userId, planId) => {
+    dispatch(subscribePlan({ userId, planId }));
   };
 
 

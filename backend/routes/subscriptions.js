@@ -1,86 +1,84 @@
-var express = require('express');
-const mongoose = require('mongoose');
-var router = express.Router();
-const Users = require('../models/users');
-const Plans = require('../models/plans');
+const express = require('express');
+const router = express.Router();
+const Subscription = require('../models/subscritpion'); // Modelo de Assinatura
+const User = require('../models/users'); // Modelo de Usuário
+const Plans = require('../models/plans'); // Modelo de Planos
 
-// Rota para o usuário assinar um plano
-router.put("/:userId/subscribe", async (req, res) => {
-  console.log("Entrei aqui")
-  console.log("Corpo da requisição:", req.body);
-
+// Listar todas as assinaturas
+router.get('/', async (req, res) => {
   try {
-    const { userId } = req.params;
-    const planId  = req.body.planId;
-
-    console.log("ID do plano recebido:", planId);
-    console.log("Tipo de planId:", typeof planId);
-
-    if (planId.length !== 24) {
-      return res.status(400).json({ message: "ID do plano deve ter 24 caracteres." });
-    }
-
-    const hexRegex = /^[0-9A-Fa-f]{24}$/;
-    if (!hexRegex.test(planId)) {
-      return res.status(400).json({ message: "ID do plano inválido. Deve ser uma string hexadecimal de 24 caracteres." });
-    }
-
-    const objectIdPlano = new mongoose.Types.ObjectId(planId);
-    
-    // Verifica se o planId é válido
-    if (!mongoose.Types.ObjectId.isValid(objectIdPlano)) {
-      return res.status(400).json({ message: "ID do plano inválido." });
-    }
-
-
-    // Verifica se o plano existe
-    const plano = await Plans.findById(objectIdPlano);
-    if (!plano) {
-      return res.status(404).json({ message: "Plano não encontrado." });
-    }
-
-    const user = await Users.findById(userId);
-    if (!user) {
-      return res.status(404).json({ message: "Usuário não encontrado." });
-    }
-
-    // Atualiza o plano do usuário
-    user.assinatura = objectIdPlano;  // Atualize aqui para usar o ObjectId
-    user.isActive = true;
-
-    // Associa as caixas do plano ao usuário
-    for (const boxId of plano.boxes) {
-      if (!user.boxes.includes(boxId)) {
-        user.boxes.push(boxId); // Adiciona as caixas ao usuário
-      }
-    }
-
-    await user.save();
-
-    res.status(200).json({ message: "Plano assinado com sucesso!", user });
-  } catch (error) {
-    console.error("Erro ao assinar plano:", error);
-    res.status(500).json({ message: "Erro interno ao assinar plano." });
+    const subscriptions = await Subscription.find({}).populate('userId').populate('planId');
+    res.status(200).json(subscriptions);
+  } catch (err) {
+    console.error('Erro ao buscar assinaturas:', err);
+    res.status(500).json({ message: 'Erro ao buscar assinaturas.' });
   }
 });
 
-
-// Rota para cancelar a assinatura de um usuário
-router.post('/cancelar/:userId', async (req, res) => {
+// Criar uma nova assinatura
+router.post('/', async (req, res) => {
   try {
-    const { userId } = req.params;
+    const { userId, planId } = req.body;
 
-    // Encontra o usuário e marca a assinatura como inativa
-    const user = await Users.findByIdAndUpdate(userId, { isActive: false }, { new: true });
+    // Verifica se o usuário e o plano existem
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: 'Usuário não encontrado.' });
 
-    if (!user) {
-      return res.status(404).json({ message: 'Usuário não encontrado' });
+    const plan = await Plans.findById(planId);
+    if (!plan) return res.status(404).json({ message: 'Plano não encontrado.' });
+
+    // Criar a assinatura no banco de dados
+    const newSubscription = await Subscription.create({
+      userId,
+      planId,
+      createdAt: new Date()
+    });
+
+    // Atualiza o usuário com a assinatura ativa
+    user.assinatura = newSubscription._id;
+    await user.save();
+
+    res.status(201).json({ message: 'Assinatura criada com sucesso!', subscription: newSubscription });
+  } catch (err) {
+    console.error('Erro ao criar assinatura:', err);
+    res.status(500).json({ message: 'Erro ao criar assinatura.' });
+  }
+});
+
+// Atualizar uma assinatura
+router.put('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { planId } = req.body;
+
+    const subscription = await Subscription.findByIdAndUpdate(id, { planId }, { new: true });
+
+    if (!subscription) {
+      return res.status(404).json({ message: 'Assinatura não encontrada.' });
     }
 
-    res.status(200).json({ message: 'Assinatura cancelada com sucesso', user });
-  } catch (error) {
-    console.error('Erro ao cancelar assinatura:', error);
-    res.status(500).json({ message: 'Erro interno ao cancelar assinatura' });
+    res.status(200).json({ message: 'Assinatura atualizada com sucesso!', subscription });
+  } catch (err) {
+    console.error('Erro ao atualizar assinatura:', err);
+    res.status(500).json({ message: 'Erro ao atualizar assinatura.' });
+  }
+});
+
+// Deletar uma assinatura
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deletedSubscription = await Subscription.findByIdAndDelete(id);
+
+    if (!deletedSubscription) {
+      return res.status(404).json({ message: 'Assinatura não encontrada.' });
+    }
+
+    res.status(200).json({ message: 'Assinatura deletada com sucesso.' });
+  } catch (err) {
+    console.error('Erro ao deletar assinatura:', err);
+    res.status(500).json({ message: 'Erro ao deletar assinatura.' });
   }
 });
 
