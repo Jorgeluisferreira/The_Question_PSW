@@ -28,6 +28,39 @@ router.route('/')
       });
   });
 
+    // Editar feedback
+    router.route('/:id')
+    .put((req, res) => {
+      const { id } = req.params;
+      const { mensagem } = req.body;
+  
+      Feedback.findByIdAndUpdate(id, { mensagem }, { new: true })
+        .then((feedback) => {
+          if (!feedback) {
+            return res.status(404).json({ error: 'Feedback não encontrado' });
+          }
+          res.status(200).json(feedback);
+        })
+        .catch((err) => {
+          res.status(500).json({ error: 'Erro ao atualizar feedback' });
+        });
+    })
+    .delete((req, res) => {
+      const { id } = req.params;
+  
+      Feedback.findByIdAndDelete(id)
+        .then((feedback) => {
+          if (!feedback) {
+            return res.status(404).json({ error: 'Feedback não encontrado' });
+          }
+          res.status(200).json({ message: 'Feedback deletado com sucesso' });
+        })
+        .catch((err) => {
+          res.status(500).json({ error: 'Erro ao excluir feedback' });
+        });
+    });
+  
+
 module.exports = router;
 
 

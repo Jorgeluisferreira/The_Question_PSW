@@ -160,20 +160,20 @@ function HomePage() {
 
 
         {/* Seção de Planos com Carrossel */}
-      <section className="py-5 bg-light text-center">
-                <div className="container">
-                    <h2>Feedbacks</h2>
-                    {feedbacks.length === 0 ? (
-                        <p>Nenhum plano encontrado.</p>
-                    ) : (
-                        <div className="scroll-container">
-                            {feedbacks.map((feedback, index) => (
-                               <FeedbackCard id={feedback.id} nome={feedback.nome} mensagem={feedback.mensagem} />
-                            ))}
-                        </div>
-                    )}
-                </div>
-        </section>
+        <section className="py-5 bg-light text-center" id="feedbacks">
+  <div className="container">
+    <h2>Feedbacks</h2>
+    {feedbacks.length === 0 ? (
+      <p>Nenhum feedback encontrado.</p>
+    ) : (
+      <div className="scroll-container">
+        {feedbacks.map((feedback) => (
+          <FeedbackCard key={feedback.id} id={feedback.id} nome={feedback.nome} mensagem={feedback.mensagem} />
+        ))}
+      </div>
+    )}
+  </div>
+</section>
 
       {/* Seção Contato */}
       <section id="contato" className="py-5 bg-dark text-white text-center">
