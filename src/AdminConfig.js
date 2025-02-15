@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBoxes, deleteBox } from "./store/boxesReducer";
-import { fetchUsers } from "./store/userReducer";
+import { fetchUsers, editUser } from "./store/userReducer";
 import axios from "axios";
 import "./AdminConfig.css";
 import PlanoDropdown from "./component/PlanDropdown"; // Ajuste o caminho conforme necessário
@@ -9,113 +8,79 @@ import PlanoDropdown from "./component/PlanDropdown"; // Ajuste o caminho confor
 const AdminConfig = () => {
   const dispatch = useDispatch();
 
-  const [selectedTab, setSelectedTab] = useState("boxes");
+  const [selectedTab, setSelectedTab] = useState("users");
   const [formType, setFormType] = useState(null);
   const [formData, setFormData] = useState({});
   const [showForm, setShowForm] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
 
-  const { boxes, status: boxStatus, error: boxError } = useSelector(
-    (state) => state.boxes
-  );
   const { users, status: userStatus, error: userError } = useSelector(
     (state) => state.users
   );
 
-  // Simulação de planos disponíveis (caso não venham da API)
-  const plans = [
-    { id: "1", nome: "Básico" },
-    { id: "2", nome: "Premium" },
-    { id: "3", nome: "Deluxe" },
-  ];
-
   useEffect(() => {
-    dispatch(fetchBoxes());
     dispatch(fetchUsers());
     setShowForm(false);
   }, [selectedTab, dispatch]);
-
-  const handleAdd = () => {
-    setFormType("box");
-    setFormData({});
-    setEditingItem(null);
-    setShowForm(true);
-  };
 
   const handleTabChange = (tab) => {
     setSelectedTab(tab);
     setShowForm(false);
   };
 
-  const handleEdit = (box) => {
+  const handleEdit = (user) => {
     setFormData({
-      nome: box.nome,
-      itens: box.itens || [],
-      tema: box.tema || "",
-      planId: box.plan || "", 
+      nome: user.nome,
+      email: user.email,
+      role: user.tipo === "admin" ? "Administrador" : "Usuário",
+      status: user.isActive ? "Ativo" : "Desativado",
+      assinatura: user.assinatura,
     });
-    setFormType("box");
-    setEditingItem(box);
+    setFormType("user");
+    setEditingItem(user);
     setShowForm(true);
-  };
-
-  const handleDelete = (id) => {
-    dispatch(deleteBox(id));
   };
 
   const handleSubmit = async () => {
     try {
-      let response;
-      
-      // Verifica se formData.itens é uma string e, caso seja, divide. Se for um array, mantém o valor.
-      const itensArray = Array.isArray(formData.itens)
-        ? formData.itens
-        : formData.itens.split(",").map(item => item.trim());  // Transformar string em array, se necessário
-    
       const formattedData = {
         nome: formData.nome,
-        tema: formData.tema,
-        itens: itensArray, // Usar itens já processados
-        planId: formData.planId, // Enviar o `planId` correto
+        email: formData.email,
+        tipo: formData.role === "Administrador" ? "admin" : "usuario",
+        isActive: formData.status === "Ativo",
+        assinatura: formData.assinatura,
       };
-    
+
       if (editingItem) {
-        // Atualizar caixa existente
-        response = await axios.put(
-          `http://localhost:3004/boxes/${editingItem._id}`,
+        // Atualizar usuário existente
+        const response = await axios.put(
+          `http://localhost:3004/users/${editingItem._id}`,
           formattedData
         );
         if (response.status === 200) {
-          alert("Box editado com sucesso!");
+          alert("Usuário editado com sucesso!");
         }
       } else {
-        // Criar nova caixa
-        response = await axios.post("http://localhost:3004/boxes", formattedData);
+        // Criar novo usuário
+        const response = await axios.post("http://localhost:3004/users", formattedData);
         if (response.status === 201) {
-          alert("Box criado com sucesso!");
+          alert("Usuário criado com sucesso!");
         }
       }
-      
-      dispatch(fetchBoxes()); // Recarregar a lista
-      
+
+      dispatch(fetchUsers()); // Recarregar a lista
+
       setShowForm(false);
     } catch (error) {
-      console.error("Erro ao salvar a caixa:", error);
-      alert(editingItem ? "Erro ao editar a caixa." : "Erro ao criar a caixa.");
+      console.error("Erro ao salvar o usuário:", error);
+      alert(editingItem ? "Erro ao editar o usuário." : "Erro ao criar o usuário.");
     }
   };
-  
 
   return (
     <div className="admin-config">
       <h2>Configurações de Administrador</h2>
       <div className="tabs">
-        <button
-          className={`tab-button ${selectedTab === "boxes" ? "active" : ""}`}
-          onClick={() => handleTabChange("boxes")}
-        >
-          Boxes
-        </button>
         <button
           className={`tab-button ${selectedTab === "users" ? "active" : ""}`}
           onClick={() => handleTabChange("users")}
@@ -125,35 +90,6 @@ const AdminConfig = () => {
       </div>
 
       <div className="content">
-        {selectedTab === "boxes" && (
-          <div>
-          <h3>Boxes</h3>
-          <button onClick={handleAdd}>Adicionar Box</button>
-          <ul>
-            {boxStatus === "loading" ? (
-              <p>Carregando caixas...</p>
-            ) : boxStatus === "failed" ? (
-              <p>Erro ao carregar caixas: {boxError}</p>
-            ) : (
-              boxes.map((box) => {
-                return (
-                  <li key={box.id}>
-                    Nome: {box.nome} - Tema: {box.tema} - Itens: {box.itens.join(", ")} - Plano: {(box.plan && box.plan.name) || "Nenhum"}
-                    <button className="edit-button" onClick={() => handleEdit(box)}>
-                      Editar
-                    </button>
-                    <button className="delete-button" onClick={() => handleDelete(box.id)}>
-                      Deletar
-                    </button>
-                  </li>
-                );
-              })
-            )}
-          </ul>
-        </div>
-        
-        )}
-
         {selectedTab === "users" && (
           <div>
             <h3>Cadastros</h3>
@@ -175,10 +111,10 @@ const AdminConfig = () => {
         )}
       </div>
 
-      {showForm && formType === "box" && (
+      {showForm && formType === "user" && (
         <div className="form-overlay">
           <div className="admin-form">
-            <h3>{editingItem ? "Editar Box" : "Adicionar Box"}</h3>
+            <h3>{editingItem ? "Editar Usuário" : "Adicionar Usuário"}</h3>
 
             <label>
               Nome:
@@ -190,27 +126,41 @@ const AdminConfig = () => {
             </label>
 
             <label>
-              Tema:
+              E-mail:
               <input
                 type="text"
-                value={formData.tema || ""}
-                onChange={(e) => setFormData({ ...formData, tema: e.target.value })}
-              />
-            </label>
-            <label>
-              Itens:
-              <input
-                type="text"
-                value={formData.itens || ""}
-                onChange={(e) => setFormData({ ...formData, itens: e.target.value })}
+                value={formData.email || ""}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               />
             </label>
 
             <label>
-              Plano:
+              Role:
+              <select
+                value={formData.role || ""}
+                onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+              >
+                <option value="Usuário">Usuário</option>
+                <option value="Administrador">Administrador</option>
+              </select>
+            </label>
+
+            <label>
+              Status:
+              <select
+                value={formData.status || ""}
+                onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+              >
+                <option value="Ativo">Ativo</option>
+                <option value="Desativado">Desativado</option>
+              </select>
+            </label>
+
+            <label>
+              Assinatura:
               <PlanoDropdown
-                selectedPlan={formData.planId}
-                setSelectedPlan={(selectedPlan) => setFormData({ ...formData, planId: selectedPlan })}
+                selectedPlan={formData.assinatura}
+                setSelectedPlan={(selectedPlan) => setFormData({ ...formData, assinatura: selectedPlan })}
                 isEditing={!!editingItem}
               />
             </label>
