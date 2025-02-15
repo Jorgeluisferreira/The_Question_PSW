@@ -9,7 +9,10 @@ function UserList() {
   useEffect(() => {
         if (PlanStatus === "idle") {
         dispatch(fetchPlans());
+        console.log("Planos carregados:", plans);//log
         }
+
+
   }, [PlanStatus, dispatch]);
 
 

@@ -30,7 +30,9 @@ export const loginUser = createAsyncThunk(
         throw new Error("E-mail ou senha inválidos.");
       }
 
+      // Salva o usuário no localStorage
       localStorage.setItem("currentUser", JSON.stringify(user));
+
       return user; // Retorna o usuário encontrado
     } catch (error) {
       return rejectWithValue(error.message); // Rejeita com a mensagem de erro
@@ -46,8 +48,9 @@ export const editUser = createAsyncThunk(
       const response = await axios.put(`${BASE_URL}/${userData.id}`, userData);
       const user = response.data;
 
+      // Atualiza o usuário no localStorage
       localStorage.setItem("currentUser", JSON.stringify(user));
-      console.log(user)
+
       return user; // Retorna os dados atualizados
     } catch (error) {
       return rejectWithValue(error.message); // Rejeita com a mensagem de erro
@@ -67,7 +70,7 @@ const userSlice = createSlice({
   name: "users",
   initialState: {
     users: [],
-    currentUser: JSON.parse(localStorage.getItem("currentUser")) || null,
+    currentUser: JSON.parse(localStorage.getItem("currentUser")) || null, // Carrega do localStorage se existir
     status: "idle",
     error: null,
   },
@@ -91,7 +94,7 @@ const userSlice = createSlice({
       })
       .addCase(addUser.fulfilled, (state, action) => {
         state.users.push(action.payload);
-        localStorage.setItem("currentUser", JSON.stringify(action.payload));
+        localStorage.setItem("currentUser", JSON.stringify(action.payload)); // Salva o novo usuário no localStorage
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.currentUser = action.payload; // Define o usuário logado
@@ -108,7 +111,7 @@ const userSlice = createSlice({
         state.users = state.users.map((user) =>
           user.id === action.payload.id ? action.payload : user
         );
-        localStorage.setItem("currentUser", JSON.stringify(state.currentUser));
+        localStorage.setItem("currentUser", JSON.stringify(state.currentUser)); // Atualiza no localStorage
       })
       .addCase(editUser.rejected, (state, action) => {
         state.error = action.payload; // Armazena o erro da edição
