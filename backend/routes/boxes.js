@@ -8,7 +8,7 @@ const Users = require('../models/users');
 // Buscar todas as caixas
 router.get('/', async (req, res) => {
   try {
-    const boxes = await Box.find();
+    const boxes = await Box.find().populate("plan");
     res.json(boxes);
   } catch (error) {
     res.status(500).json({ error: 'Erro ao buscar caixas' });

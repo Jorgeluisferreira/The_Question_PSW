@@ -52,7 +52,7 @@ const AdminConfig = () => {
       nome: box.nome,
       itens: box.itens || [],
       tema: box.tema || "",
-      planId: box.plan || "", // Garantindo que o plano seja editável
+      planId: box.plan || "", 
     });
     setFormType("box");
     setEditingItem(box);
@@ -127,18 +127,18 @@ const AdminConfig = () => {
       <div className="content">
         {selectedTab === "boxes" && (
           <div>
-            <h3>Boxes</h3>
-            <button onClick={handleAdd}>Adicionar Box</button>
-            <ul>
-              {boxStatus === "loading" ? (
-                <p>Carregando caixas...</p>
-              ) : boxStatus === "failed" ? (
-                <p>Erro ao carregar caixas: {boxError}</p>
-              ) : (
-                boxes.map((box) => (
+          <h3>Boxes</h3>
+          <button onClick={handleAdd}>Adicionar Box</button>
+          <ul>
+            {boxStatus === "loading" ? (
+              <p>Carregando caixas...</p>
+            ) : boxStatus === "failed" ? (
+              <p>Erro ao carregar caixas: {boxError}</p>
+            ) : (
+              boxes.map((box) => {
+                return (
                   <li key={box.id}>
-                    Nome: {box.nome} - Tema: {box.tema} - Itens: {box.itens.join(", ")} - Plano:{" "}
-                    {box.plano ? plans.find((plan) => plan.id === box.plano)?.nome : "Nenhum"}
+                    Nome: {box.nome} - Tema: {box.tema} - Itens: {box.itens.join(", ")} - Plano: {(box.plan && box.plan.name) || "Nenhum"}
                     <button className="edit-button" onClick={() => handleEdit(box)}>
                       Editar
                     </button>
@@ -146,10 +146,12 @@ const AdminConfig = () => {
                       Deletar
                     </button>
                   </li>
-                ))
-              )}
-            </ul>
-          </div>
+                );
+              })
+            )}
+          </ul>
+        </div>
+        
         )}
 
         {selectedTab === "users" && (
