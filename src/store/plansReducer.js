@@ -46,12 +46,16 @@ export const deletePlan = createAsyncThunk(
   }
 );
 
-// Thunk para associar o plano ao usuário
+// Thunk para associação de plano
 export const associarPlanoAoUsuario = createAsyncThunk(
-  "plans/associarPlanoAoUsuario", 
-  async ({ userId, planoId }) => {
-    const response = await axios.post(`${BASE_URL}/associarPlano/${userId}`, { planoId });
-    return response.data;
+  "plans/associarPlano",
+  async ({ userId, planoId }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${BASE_URL}/plans/subscribe`, { userId, planoId });
+      return response.data.user.assinatura;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Erro ao assinar plano');
+    }
   }
 );
 
@@ -106,5 +110,4 @@ const plansSlice = createSlice({
 });
 
 export default plansSlice.reducer;
-
 
