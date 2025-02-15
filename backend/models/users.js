@@ -19,33 +19,11 @@ const usersSchema = new Schema({
         required: true
     },
     assinatura:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref:'plans'
-    },
-    endereco:{
-        type:String
-    },
-    cpf:{
-        type:Number
-    },
-    numeroCartao:{
-        type:Number
-    },
-    cvv:{
-        type:Number
-    },
-    validadeCartao:{
-        type:String
-    },
-    boxes: [{ 
-        type: Schema.Types.ObjectId, 
-        ref: "boxes"
-    }],
-    dataCancelamento: {
-        type: Date
+        type: Schema.Types.ObjectId,
+        ref:'assinatura'
     },
     isActive: { type: Boolean, default: true }
-})
+});
 
-var Users = mongoose.model('users', usersSchema)
+const Users = mongoose.model('users', usersSchema);
 module.exports = Users;

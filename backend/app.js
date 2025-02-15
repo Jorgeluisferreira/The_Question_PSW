@@ -3,7 +3,6 @@ var path = require('path');
 const cors = require('cors');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const bcrypt = require('bcryptjs');
 const Users = require('./models/users'); // Certifique-se de importar o modelo Users
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
@@ -45,7 +44,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Rota de login - utilizando o banco de dados e criptografia de senha
+// Rota de login - sem bcrypt.compare
 app.post('/login', async (req, res) => {
     const { email, senha } = req.body;  // Recebe o email e a senha do corpo da requisição
 
@@ -57,10 +56,8 @@ app.post('/login', async (req, res) => {
             return res.status(401).send('Usuário não encontrado!');
         }
 
-        // Compare a senha fornecida com a senha armazenada no banco de dados
-        const isMatch = await bcrypt.compare(senha, user.senha);
-
-        if (!isMatch) {
+        // Compare a senha fornecida diretamente com a senha armazenada no banco de dados (em texto plano)
+        if (senha !== user.senha) {
             return res.status(401).send('Senha inválida!');
         }
 
@@ -94,9 +91,8 @@ app.use('/users', usersRouter);
 app.use('/feedback', feedbackRouter);
 app.use('/boxes', boxesRouter);
 app.use('/suggestions', suggestionRoutes);
+app.use('/assinatura', usersRouter);  // Adiciona a rota de assinaturas
 
 app.use(express.json());
-app.use('/users', usersRouter); 
-
 
 module.exports = app;

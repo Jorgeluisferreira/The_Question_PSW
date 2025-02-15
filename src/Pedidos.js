@@ -1,91 +1,106 @@
+import React, { Component } from "react";
 import Navbar from "./component/Navbar";
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
-import { fetchVendas } from "./store/vendasReducer";
-import { fetchBoxes } from "./store/boxesReducer";
+import axios from "axios";
 
-function Pedidos() {
-  const currentUser = useSelector((state) => state.users.currentUser);
-  const { vendas, vendasStatus, vendasError } = useSelector(
-    (state) => state.vendas
-  );
-  const { boxes, boxStatus, boxError } = useSelector((state) => state.boxes);
-  const [expanded, setExpanded] = useState(null); // Controle da expansão
+class Pedidos extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentUser: null, // Armazenar usuário atual
+      vendas: [], // Armazenar vendas
+      boxes: [], // Armazenar caixas
+      expanded: null, // Controle da expansão
+    };
+  }
 
-  const dispatch = useDispatch();
+  componentDidMount() {
+    // Buscar dados de vendas
+    axios
+      .get('http://localhost:3004/assinatura') // Substitua a URL com o endpoint correto
+      .then((response) => {
+        this.setState({ vendas: response.data });
+      })
+      .catch((error) => {
+        console.error('Erro ao buscar vendas:', error);
+      });
 
-  // Quando a página for carregada, dispara a ação para buscar as vendas
-  useEffect(() => {
-    if (vendasStatus === "idle") {
-      dispatch(fetchVendas());
-    }
-  }, [vendasStatus, dispatch]);
+    // Buscar dados de boxes
+    axios
+      .get('http://localhost:3004/boxes') // Substitua a URL com o endpoint correto
+      .then((response) => {
+        this.setState({ boxes: response.data });
+      })
+      .catch((error) => {
+        console.error('Erro ao buscar caixas:', error);
+      });
+  }
 
-  // Quando a página for carregada, dispara a ação para buscar as caixas
-  useEffect(() => {
-    if (boxStatus === "idle") {
-      dispatch(fetchBoxes());
-    }
-  }, [boxStatus, dispatch]);
-
-  const toggleExpand = (id) => {
-    setExpanded(expanded === id ? null : id); // Alterna entre expandir e contrair
+  toggleExpand = (id) => {
+    this.setState((prevState) => ({
+      expanded: prevState.expanded === id ? null : id, // Alterna entre expandir e contrair
+    }));
   };
 
-  const findBox = (idCaixa) => {
-    // Aqui estamos garantindo que estamos acessando o campo correto de boxes
-    const box = boxes.find((box) => box._id === idCaixa); // Supondo que você use "_id"
+  findBox = (idCaixa) => {
+    const box = this.state.boxes.find((box) => box._id === idCaixa);
     if (box) {
       return box.tema;
     }
     return "Tema não encontrado"; // Caso a caixa não seja encontrada
   };
 
-  return (
-    <>
-      <Navbar nome={currentUser ? currentUser.nome : ""} />
-      <div className="container mt-4">
-        <h2>Seus Pedidos</h2>
-        <div className="list-group">
-          {vendas.map((venda) => (
-            venda.idUser === currentUser.id ? (
-              <div key={venda.id} className="list-group-item mb-3">
-                <div className="d-flex justify-content-between align-items-center">
-                  <div>
-                    <h5>Pedido numero: {venda.id}</h5>
-                    <p>Status: {venda.status || "Não informado"}</p>
-                  </div>
-                  <button
-                    className="btn btn-link"
-                    onClick={() => toggleExpand(venda.id)}
-                  >
-                    {expanded === venda.id ? "Fechar" : "Detalhes"}
-                  </button>
-                </div>
+  render() {
+    const { currentUser, vendas, expanded } = this.state;
 
-                {expanded === venda.id && (
-                  <div className="mt-3">
-                    <h6>Detalhes do Pedido:</h6>
-                    {/* Aqui usamos a função findBox para encontrar o tema da caixa */}
-                    <p>tema da Caixa: {findBox(venda.idCaixa)}</p>
-                    <p>
-                      Atualizações:{" "}
-                      {venda.mensagens
-                        .slice() // Cria uma cópia do array para não alterar o original
-                        .reverse() // Inverte a ordem das mensagens
-                        .map((mensagem, index) => (
-                          <p key={index}>{mensagem}</p>
-                        ))}
-                    </p>
+    return (
+      <>
+        <Navbar nome={currentUser ? currentUser.nome : ""} />
+        <div className="container mt-4">
+          <h2>Seus Pedidos</h2>
+          <div className="list-group">
+            {currentUser ? (
+              vendas.map((venda) =>
+                venda.idUser === currentUser.id ? (
+                  <div key={venda.id} className="list-group-item mb-3">
+                    <div className="d-flex justify-content-between align-items-center">
+                      <div>
+                        <h5>Pedido numero: {venda.id}</h5>
+                        <p>Status: {venda.status || "Não informado"}</p>
+                      </div>
+                      <button
+                        className="btn btn-link"
+                        onClick={() => this.toggleExpand(venda.id)}
+                      >
+                        {expanded === venda.id ? "Fechar" : "Detalhes"}
+                      </button>
+                    </div>
+
+                    {expanded === venda.id && (
+                      <div className="mt-3">
+                        <h6>Detalhes do Pedido:</h6>
+                        <p>tema da Caixa: {this.findBox(venda.idCaixa)}</p>
+                        <p>
+                          Atualizações:{" "}
+                          {venda.mensagens
+                            .slice()
+                            .reverse()
+                            .map((mensagem, index) => (
+                              <p key={index}>{mensagem}</p>
+                            ))}
+                        </p>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            ) : null
-          ))}
+                ) : null
+              )
+            ) : (
+              <p>Carregando dados do usuário...</p> // Exibe mensagem enquanto não tiver o usuário
+            )}
+          </div>
         </div>
-      </div>
-    </>
-  );
+      </>
+    );
+  }
 }
 
 export default Pedidos;

@@ -71,15 +71,17 @@ function UserPage() {
                                     Informações do Usuário
                                 </Button>
                             </li>
-                            <li className="nav-item">
-                                <Button
-                                    variant="link"
-                                    className={`text-white ${selectedOption === "assinatura" ? "active" : ""}`}
-                                    onClick={() => handleMenuClick("assinatura")}
-                                >
-                                    Informações da Assinatura
-                                </Button>
-                            </li>
+                            {/* 
+                                <li className="nav-item">
+                                    <Button
+                                        variant="link"
+                                        className={`text-white ${selectedOption === "assinatura" ? "active" : ""}`}
+                                        onClick={() => handleMenuClick("assinatura")}
+                                    >
+                                        Informações da Assinatura
+                                    </Button>
+                                </li>
+                            */}
                             {currentUser?.tipo === "admin" && (
                                 <li className="nav-item">
                                     <Button
