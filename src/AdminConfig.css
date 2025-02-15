@@ -224,3 +224,45 @@
 .admin-config .edit-button:focus {
   outline: none; /* Remove o contorno padrão do foco */
 }
+
+/* Estilização do select */
+.admin-config .admin-form select {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background-color: #2a2a2a; /* Preto mais claro */
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  /* Estilo quando o select está em foco */
+  .admin-config .admin-form select:focus {
+    outline: none;
+    border-color: #ff4d4d; /* Borda vermelha */
+    box-shadow: 0 0 5px #ff4d4d; /* Efeito de brilho */
+  }
+  
+  /* Estilizando as opções dentro do select */
+  .admin-config .admin-form select option {
+    background-color: #333; /* Cor de fundo das opções */
+    color: #fff; /* Cor do texto das opções */
+  }
+  
+  /* Adicionando hover ao select para dar feedback visual */
+  .admin-config .admin-form select:hover {
+    border-color: #ff4d4d; /* Borda vermelha quando passar o mouse */
+    box-shadow: 0 0 5px #ff4d4d; /* Efeito de brilho */
+  }
+  
+  /* No seu arquivo CSS */
+.admin-config .admin-form select:hover {
+    background-color: #f0f0f0; /* Cor de fundo cinza claro */
+    color: #888; /* Cor do texto cinza */
+    border: 1px solid #ccc; /* Borda cinza */
+    cursor: not-allowed; /* Cursor para indicar que não é possível interagir */
+  }
+  

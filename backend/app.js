@@ -85,7 +85,6 @@ var indexRouter = require('./routes/index');
 var plansRouter = require('./routes/plans');
 var feedbackRouter = require('./routes/feedback');
 var boxesRouter = require('./routes/boxes');
-var subscriptionsRouter = require('./routes/subscriptions');
 const suggestionRoutes = require('./routes/suggestion');
 
 // Definindo as outras rotas
@@ -94,7 +93,6 @@ app.use('/plans', plansRouter);
 app.use('/users', usersRouter);
 app.use('/feedback', feedbackRouter);
 app.use('/boxes', boxesRouter);
-app.use('/subscriptions', subscriptionsRouter);
 app.use('/suggestions', suggestionRoutes);
 
 app.use(express.json());
