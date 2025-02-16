@@ -36,21 +36,6 @@ router.put('/:id', async (req, res) => {
       { new: true } // Retorna o documento atualizado
     );
 
-    // Encontra os usuários que têm a assinatura ativa nesse plano
-    const activeUsers = await Users.find({ assinatura: objectIdPlan, isActive: true });
-
-    if (activeUsers.length === 0) {
-      console.log("Nenhum usuário ativo encontrado para esse plano");
-      return res.status(404).json({ message: 'Nenhum usuário ativo encontrado para este plano' });
-    }
-
-    // Adiciona a nova caixa aos usuários ativos
-    for (const user of activeUsers) {
-      user.boxes.push(newBox._id);
-      await user.save();
-      console.log(`Caixa ${newBox._id} adicionada ao usuário ${user._id}`);
-    }
-
     if (!updatedBox) {
       return res.status(404).json({ message: 'Caixa não encontrada' });
     }

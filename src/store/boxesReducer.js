@@ -35,7 +35,7 @@ const boxesSlice = createSlice({
   extraReducers: (builder) => {
     builder
     .addCase(fetchBoxes.fulfilled, (state, action) => {
-      state.boxes = action.payload.map(box => ({ id: box._id, ...box }));;
+      state.boxes = action.payload
       state.boxStatus = "succeeded";
     })
     .addCase(fetchBoxes.pending, (state) => {
@@ -58,6 +58,6 @@ const boxesSlice = createSlice({
       state.boxes = state.boxes.filter(box => box._id !== action.payload); // Remove a caixa deletada
     })
   },
-});
+}) ;
 
 export default boxesSlice.reducer;
