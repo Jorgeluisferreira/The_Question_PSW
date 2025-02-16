@@ -4,7 +4,7 @@ import { fetchUsers } from "./store/userReducer";
 import axios from "axios";
 import "./AdminConfig.css";
 import PlanoDropdown from "./component/PlanDropdown"; // Ajuste o caminho conforme necessário
-import { fetchBoxes, deleteBox } from "./store/boxesReducer"; // Ação de boxes
+import { fetchBoxes, deleteBox, createBox } from "./store/boxesReducer"; // Ação de boxes
 
 const AdminConfig = () => {
   const dispatch = useDispatch();
@@ -55,6 +55,28 @@ const AdminConfig = () => {
         assinatura: formData.assinatura,
       };
 
+  
+
+      const handleSubmitBox = async () => {
+        try {
+          const formattedData = {
+            nome: formData.nome,
+            tema: formData.tema,
+            itens: formData.itens.split(", "), // Transforma a string em array
+            planId: formData.plan,
+          };
+      
+          await dispatch(createBox(formattedData));
+          alert("Caixa criada com sucesso!");
+          dispatch(fetchBoxes()); // Atualiza a lista de caixas
+          setShowForm(false);
+        } catch (error) {
+          console.error("Erro ao criar a caixa:", error);
+          alert("Erro ao criar a caixa.");
+        }
+      };
+      
+
       if (editingItem) {
         // Atualizar usuário existente
         const response = await axios.put(`http://localhost:3004/users/${editingItem._id}`, formattedData);
@@ -88,6 +110,13 @@ const AdminConfig = () => {
     });
     setFormType("box");
     setEditingItem(box);
+    setShowForm(true);
+  };
+
+  const handleCreateBox = () => {
+    setFormData({ nome: "", tema: "", itens: "", plan: "" });
+    setFormType("box");
+    setEditingItem(null);
     setShowForm(true);
   };
 
@@ -178,6 +207,7 @@ const AdminConfig = () => {
           <div>
             <h3>Caixas</h3>
             <ul>
+            <button onClick={handleCreateBox}>Adicionar Caixa</button>
               {boxStatus === "loading" ? (
                 <p>Carregando caixas...</p>
               ) : boxStatus === "failed" ? (
@@ -273,12 +303,16 @@ const AdminConfig = () => {
               />
             </label>
             <label>
-              Plano:
-              <PlanoDropdown value={formData.plan} onChange={(e) => setFormData({ ...formData, plan: e.target.value })} />
-            </label>
-            <button onClick={handleSubmitBox}>Salvar</button>
-            <button onClick={() => setShowForm(false)}>Cancelar</button>
-          </div>
+            Plano:
+            <PlanoDropdown
+  selectedPlan={formData.plan} 
+  setSelectedPlan={(value) => setFormData({ ...formData, plan: value })}
+  isEditing={editingItem != null}
+/>
+    </label>
+    <button onClick={handleSubmitBox}>Salvar</button>
+    <button onClick={() => setShowForm(false)}>Cancelar</button>
+  </div>
         </div>
       )}
     </div>
