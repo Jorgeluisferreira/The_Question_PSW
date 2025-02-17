@@ -8,7 +8,7 @@ const plansSchema = new Schema({
     },
     itens: {
         type: [String],
-        required: true
+        required: false
     },
     price:{
         type: Number,

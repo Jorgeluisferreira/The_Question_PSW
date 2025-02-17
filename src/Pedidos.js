@@ -77,10 +77,11 @@ class Pedidos extends Component {
             {currentUser ? (
               vendas.map((venda) => {
                 if (venda.idUser === currentUser.id) {
-                  const assinatura = this.findUserSubscription(currentUser.id);
+                  const assinatura = this.findUserSubscription(currentUser.id) || {};
                   const plano = assinatura ? assinatura.plano : "Plano não informado"; // Usando o nome do plano
                   const dataAssinatura = assinatura ? new Date(assinatura.dataAssinatura).toLocaleDateString() : "Data não informada";
-                  const boxesInclusas = assinatura ? assinatura.boxes : [];
+                  //const boxesInclusas = assinatura ? assinatura.boxes : [];
+                  const boxesInclusas = assinatura.boxes || [];
 
                   return (
                     <div key={venda._id} className="list-group-item mb-3">
@@ -93,7 +94,7 @@ class Pedidos extends Component {
                               <p>Data da Assinatura: {dataAssinatura}</p>
                               <p>Caixas inclusas:</p>
                               <ul>
-                                {boxesInclusas.length > 0 ? (
+                                { boxesInclusas && boxesInclusas.length > 0 ? (
                                   boxesInclusas.map((boxId) => (
                                     <li key={boxId}>{this.findBox(boxId)}</li>
                                   ))

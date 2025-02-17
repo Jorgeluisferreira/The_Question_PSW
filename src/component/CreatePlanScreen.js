@@ -50,7 +50,8 @@ function CreatePlanScreen() {
         />
       </Form.Group>
 
-      {/* Campo de itens */}
+      
+      {/* Campo de itens 
       <Form.Group controlId="itens">
         <Form.Label>Itens do Plano (separados por vírgulas)</Form.Label>
         <Form.Control
@@ -61,6 +62,7 @@ function CreatePlanScreen() {
           required
         />
       </Form.Group>
+      */}
 
       {/* Campo do preço */}
       <Form.Group controlId="price">
