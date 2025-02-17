@@ -26,6 +26,31 @@ export const addSuggestion = createAsyncThunk(
   }
 );
 
+// **Thunk** para atualizar uma sugestão
+export const updateSuggestion = createAsyncThunk(
+  "suggestions/updateSuggestion",
+  async ({ id, mensagem }) => {
+    try {
+      const response = await axios.put(`${BASE_URL}/suggestions/${id}`, { mensagem });
+      return response.data;
+    } catch (error) {
+      throw new Error("Erro ao atualizar sugestão: " + (error.response?.data?.error || error.message));
+    }
+  }
+);
+
+// **Thunk** para excluir uma sugestão
+export const deleteSuggestion = createAsyncThunk(
+  "suggestions/deleteSuggestion",
+  async (id) => {
+    try {
+      await axios.delete(`${BASE_URL}/suggestions/${id}`);
+      return id; // Retornamos o ID para remover localmente do Redux
+    } catch (error) {
+      throw new Error("Erro ao excluir sugestão: " + (error.response?.data?.error || error.message));
+    }
+  }
+);      
 
 // **Slice** para gerenciar o estado de sugestões
 const suggestionSlice = createSlice({
@@ -62,6 +87,15 @@ const suggestionSlice = createSlice({
       .addCase(addSuggestion.rejected, (state, action) => {
         state.suggestionStatus = "failed";
         state.suggestionError = action.error.message;
+      })
+      .addCase(updateSuggestion.fulfilled, (state, action) => {
+        const index = state.suggestions.findIndex(s => s._id === action.payload._id);
+        if (index !== -1) {
+          state.suggestions[index] = action.payload;
+        }
+      })
+      .addCase(deleteSuggestion.fulfilled, (state, action) => {
+        state.suggestions = state.suggestions.filter(s => s._id !== action.payload);
       });
   },
 });
