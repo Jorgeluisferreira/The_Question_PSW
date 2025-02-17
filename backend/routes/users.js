@@ -64,11 +64,12 @@ router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const { nome, email, tipo, endereco, cpf, numeroCartao, cvv, validadeCartao } = req.body;
+    console.log('Dados recebidos para atualizar usuário:', req.body);
 
     // Atualiza o usuário
     const updatedUser = await Users.findByIdAndUpdate(
       id,
-      { nome, email, tipo },
+      { nome, email, tipo},
       { new: true }
     ).populate('assinatura');
 
