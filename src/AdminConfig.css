@@ -258,11 +258,5 @@
     box-shadow: 0 0 5px #ff4d4d; /* Efeito de brilho */
   }
   
-  /* No seu arquivo CSS */
-.admin-config .admin-form select:hover {
-    background-color: #f0f0f0; /* Cor de fundo cinza claro */
-    color: #888; /* Cor do texto cinza */
-    border: 1px solid #ccc; /* Borda cinza */
-    cursor: not-allowed; /* Cursor para indicar que não é possível interagir */
-  }
+
   
