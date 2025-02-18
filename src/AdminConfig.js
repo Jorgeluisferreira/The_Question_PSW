@@ -37,7 +37,8 @@ const AdminConfig = () => {
       nome: user.nome,
       email: user.email,
       role: user.tipo === "admin" ? "Administrador" : "Usuário",
-      status: user.isActive ? "Ativo" : "Desativado"
+      status: user.isActive ? "Ativo" : "Desativado",
+      assinatura: user.assinatura,
     });
     setFormType("user");
     setEditingItem(user);
@@ -50,11 +51,11 @@ const AdminConfig = () => {
         nome: formData.nome,
         email: formData.email,
         tipo: formData.role === "Administrador" ? "admin" : "usuario",
-        status: formData.isActive ? "Ativo" : "Desativado",
+        isActive: formData.status === "Ativo",
         assinatura: formData.assinatura,
       };
 
-      console.log("Dados formatados:", formattedData);
+  
 
       const handleSubmitBox = async () => {
         try {
@@ -254,6 +255,16 @@ const AdminConfig = () => {
               >
                 <option value="Usuário">Usuário</option>
                 <option value="Administrador">Administrador</option>
+              </select>
+            </label>
+            <label>
+              Status:
+              <select
+                value={formData.status || ""}
+                onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+              >
+                <option value="Ativo">Ativo</option>
+                <option value="Desativado">Desativado</option>
               </select>
             </label>
             <button onClick={handleSubmitUser}>Salvar</button>
