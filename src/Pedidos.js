@@ -62,10 +62,11 @@ class Pedidos extends Component {
     if (user && user.assinatura) {
       return user.assinatura; // Retorna a assinatura associada ao usuário
     }
-    return null;
+    return {};
   };
 
   render() {
+    
     const { currentUser, vendas, expanded } = this.state;
 
     return (
@@ -75,66 +76,65 @@ class Pedidos extends Component {
           <h2>Seus Pedidos</h2>
           <div className="list-group">
             {currentUser ? (
-              vendas.map((venda) => {
-                if (venda.idUser === currentUser.id) {
-                  const assinatura = this.findUserSubscription(currentUser.id) || {};
-                  const plano = assinatura ? assinatura.plano : "Plano não informado"; // Usando o nome do plano
-                  const dataAssinatura = assinatura ? new Date(assinatura.dataAssinatura).toLocaleDateString() : "Data não informada";
-                  //const boxesInclusas = assinatura ? assinatura.boxes : [];
-                  const boxesInclusas = assinatura.boxes || [];
-
-                  return (
-                    <div key={venda._id} className="list-group-item mb-3">
-                      <div className="d-flex justify-content-between align-items-center">
-                        <div>
-                          <h5>Plano: {plano}</h5> {/* Exibindo o nome do plano */}
-                          <p>Status: {venda.status || "Não informado"}</p>
-                          {assinatura && (
-                            <>
-                              <p>Data da Assinatura: {dataAssinatura}</p>
-                              <p>Caixas inclusas:</p>
-                              <ul>
-                                { boxesInclusas && boxesInclusas.length > 0 ? (
-                                  boxesInclusas.map((boxId) => (
-                                    <li key={boxId}>{this.findBox(boxId)}</li>
-                                  ))
-                                ) : (
-                                  <p>Nenhuma caixa associada.</p>
-                                )}
-                              </ul>
-                            </>
-                          )}
+              vendas.length > 0 ? (
+                vendas.map((venda) => {
+                  if (venda.idUser === currentUser.id) {
+                    const assinatura = this.findUserSubscription(currentUser.id) || {};
+                    const plano = assinatura.plano || "Plano não informado";
+                    const dataAssinatura = assinatura.dataAssinatura
+                      ? new Date(assinatura.dataAssinatura).toLocaleDateString()
+                      : "Data não informada";
+                    const boxesInclusas = assinatura.boxes || [];
+  
+                    return (
+                      <div key={venda._id} className="list-group-item mb-3">
+                        <div className="d-flex justify-content-between align-items-center">
+                          <div>
+                            <h5>Plano #{vendas._id}: {plano}</h5> {/* Agora mostra o número do plano */}
+                            <p>Status: {venda.status || "Não informado"}</p>
+                            <p>Data da Assinatura: {dataAssinatura}</p>
+                            <p>Caixas inclusas:</p>
+                            <ul>
+                              {boxesInclusas.length > 0 ? (
+                                boxesInclusas.map((boxId) => (
+                                  <li key={boxId}>{this.findBox(boxId)}</li>
+                                ))
+                              ) : (
+                                <p>Nenhuma caixa associada.</p>
+                              )}
+                            </ul>
+                          </div>
+                          <button className="btn btn-link" onClick={() => this.toggleExpand(venda._id)}>
+                            {expanded === venda._id ? "Fechar" : "Detalhes"}
+                          </button>
                         </div>
-                        <button
-                          className="btn btn-link"
-                          onClick={() => this.toggleExpand(venda._id)}
-                        >
-                          {expanded === venda._id ? "Fechar" : "Detalhes"}
-                        </button>
+  
+                        {expanded === venda._id && (
+                          <div className="mt-3">
+                            <h6>Detalhes do Pedido:</h6>
+                            <p>Tema da Caixa: {this.findBox(venda.idCaixa)}</p>
+                            <p>
+                              Atualizações:{" "}
+                              {venda.mensagens && venda.mensagens.length > 0 ? (
+                                venda.mensagens.slice().reverse().map((mensagem, index) => (
+                                  <p key={index}>{mensagem}</p>
+                                ))
+                              ) : (
+                                <span>Nenhuma atualização disponível.</span>
+                              )}
+                            </p>
+                          </div>
+                        )}
                       </div>
-
-                      {expanded === venda._id && (
-                        <div className="mt-3">
-                          <h6>Detalhes do Pedido:</h6>
-                          <p>tema da Caixa: {this.findBox(venda.idCaixa)}</p>
-                          <p>
-                            Atualizações:{" "}
-                            {venda.mensagens
-                              .slice()
-                              .reverse()
-                              .map((mensagem, index) => (
-                                <p key={index}>{mensagem}</p>
-                              ))}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  );
-                }
-                return null;
-              })
+                    );
+                  }
+                  return null;
+                })
+              ) : (
+                <p>Nenhum pedido encontrado.</p>
+              )
             ) : (
-              <p>Carregando dados do usuário...</p> // Exibe mensagem enquanto não tiver o usuário
+              <p>Carregando dados do usuário...</p>
             )}
           </div>
         </div>
